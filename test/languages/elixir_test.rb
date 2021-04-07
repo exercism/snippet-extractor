@@ -10,7 +10,6 @@ module SnippetExtractor
 
           # And a blank line ⬆️
           # It has some requires like this:
-          require 'json'
 
           # And then eventually the code
           defmodule TwoFer do
