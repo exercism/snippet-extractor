@@ -11,7 +11,7 @@ module SnippetExtractor
 
           use Lib\\NotExercism;
 
-          // I love C#!!
+          // I love C#!! But get paid with PHP
 
           /*
            * Comment
