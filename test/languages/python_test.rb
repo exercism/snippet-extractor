@@ -9,14 +9,6 @@ module SnippetExtractor
           # The above is sometimes used to note
           # where the python interpreter is located
 
-          # Files may start with a module *docstring* using
-          # single or double quotes:
-          '''
-          Created on Tue Apr  6 09:27:51 2021
-
-          @author: aliceP
-          '''
-
           # And after this comes the import statements, if any:
           import re
           from collections import Counter
@@ -30,12 +22,6 @@ module SnippetExtractor
         CODE
 
         expected = <<~CODE
-          '''
-          Created on Tue Apr  6 09:27:51 2021
-
-          @author: aliceP
-          '''
-
           import re
           from collections import Counter
 
