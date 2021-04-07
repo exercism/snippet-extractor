@@ -35,12 +35,11 @@ jobs:
         run: |
           bundle exec rake test
           ./cc-test-reporter format-coverage -t simplecov -o codeclimate.backend.json coverage/backend/.resultset.json
-
       # Publish the coverage to CodeClimate
-      - name: Publish code coverage
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-        env:
-          GIT_BRANCH: ${GITHUB_REF/refs\/heads\//}
-          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-        run: |
-          ./cc-test-reporter upload-coverage -i codeclimate.*.json
+      # - name: Publish code coverage
+      #   if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      #   env:
+      #     GIT_BRANCH: ${GITHUB_REF/refs\/heads\//}
+      #     CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+      #   run: |
+      #     ./cc-test-reporter upload-coverage -i codeclimate.*.json
