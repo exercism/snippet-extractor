@@ -1,4 +1,5 @@
 require "test_helper"
+require 'json'
 
 module SnippetExtractor
   class ProcessRequestTest < Minitest::Test
@@ -12,17 +13,18 @@ module SnippetExtractor
         Some code
       CODE
 
-      event = {
-        source_code: code,
-        language: 'ruby'
-      }
+      event = JSON.parse({
+        queryStringParameters: {
+          source_code: code,
+          language: :ruby
+        }
+      }.to_json)
 
       expected = {
         statusCode: 200,
         headers: {
           'Content-Length': 9,
-          'Content-Type': 'application/plain; charset=utf-8',
-          'Content-disposition': 'attachment;snippet.txt'
+          'Content-Type': 'application/plain; charset=utf-8'
         },
         isBase64Encoded: false,
         body: snippet.rstrip
