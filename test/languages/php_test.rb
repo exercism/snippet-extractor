@@ -2,7 +2,7 @@ require "test_helper"
 
 module SnippetExtractor
   module Languages
-    class CsharpTest < Minitest::Test
+    class PhpTest < Minitest::Test
       def test_full_example
         code = <<~CODE
           <?php
@@ -56,7 +56,7 @@ module SnippetExtractor
           }
         CODE
 
-        assert_equal expected, ExtractSnippet.(code, :csharp)
+        assert_equal expected, ExtractSnippet.(code, :php)
       end
     end
   end

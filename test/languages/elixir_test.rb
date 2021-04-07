@@ -2,7 +2,7 @@ require "test_helper"
 
 module SnippetExtractor
   module Languages
-    class RubyTest < Minitest::Test
+    class ElixirTest < Minitest::Test
       def test_full_example
         code = <<~CODE
           # This is a file
@@ -24,7 +24,7 @@ module SnippetExtractor
           end
         CODE
 
-        assert_equal expected, ExtractSnippet.(code, :ruby)
+        assert_equal expected, ExtractSnippet.(code, :elixir)
       end
     end
   end
