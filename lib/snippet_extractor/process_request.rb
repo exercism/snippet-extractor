@@ -21,11 +21,16 @@ module SnippetExtractor
     end
 
     def source_code
-      event['body']
+      body[:source_code]
     end
 
     def language
-      event['queryStringParameters']['language']
+      body[:language]
+    end
+
+    memoize
+    def body
+      JSON.parse(event['body'], symbolize_names: true)
     end
   end
 end

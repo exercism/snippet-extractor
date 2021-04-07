@@ -14,10 +14,10 @@ module SnippetExtractor
       CODE
 
       event = JSON.parse({
-        body: code,
-        queryStringParameters: {
-          language: :ruby
-        }
+        body: {
+          language: :ruby,
+          source_code: code
+        }.to_json
       }.to_json)
 
       expected = {
