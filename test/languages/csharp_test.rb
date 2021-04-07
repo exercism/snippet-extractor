@@ -29,6 +29,7 @@ module SnippetExtractor
 
               public static double Total() => Enumerable.Range(1, 64).Select(Square).Sum();
             }
+              }
         CODE
 
         assert_equal expected, ExtractSnippet.(code, :csharp)
