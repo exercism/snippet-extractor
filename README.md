@@ -17,6 +17,8 @@ Along with each language file is a test file in `lib/languages/$slug_test.rb`.
 When adding or making changes to a language file, please add or update the corresponding language file, copying `ruby_test.rb` as your basis.
 At a minimum all references to "ruby" (case insensitive) should be changed to the slug of your language - searching for these is a good way to start.
 
+Ruby, PHP and C# all contain good examples of different of different things that could be skipped and are good files to look at.
+
 ## Running the tests
 
 You can run the tests locally or rely on the CI to test things for you (it's fast).
