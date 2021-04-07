@@ -8,10 +8,12 @@ end
 gem 'json'
 gem 'mandate'
 gem 'rake'
+gem 'zeitwerk'
 
 group :test do
   gem 'minitest', '~> 5.10', '!= 5.10.2'
   gem 'minitest-stub-const'
   gem 'mocha'
   gem 'simplecov', '~> 0.17.0'
+  gem 'httparty'
 end

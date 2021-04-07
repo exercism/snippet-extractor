@@ -14,7 +14,6 @@ module SnippetExtractor
         headers: {
           'Content-Length': snippet.bytesize,
           'Content-Type': 'application/plain; charset=utf-8',
-          'Content-disposition': 'attachment;snippet.txt'
         },
         isBase64Encoded: false,
         body: snippet
@@ -22,11 +21,11 @@ module SnippetExtractor
     end
 
     def source_code
-      event['source_code']
+      event['queryStringParameters']['source_code']
     end
 
     def language
-      event['language']
+      event['queryStringParameters']['language']
     end
   end
 end
