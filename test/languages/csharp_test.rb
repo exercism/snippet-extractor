@@ -12,21 +12,25 @@ module SnippetExtractor
           using something.baddass
 
           // I love C#!!
-
-          public static class Grains
+          namespace Grasses
           {
+            public static class Grains
+            {
               public static double Square(int i) => Math.Pow(2, i - 1);
 
               public static double Total() => Enumerable.Range(1, 64).Select(Square).Sum();
+            }
           }
         CODE
 
         expected = <<~CODE
-          public static class Grains
           {
+            public static class Grains
+            {
               public static double Square(int i) => Math.Pow(2, i - 1);
 
               public static double Total() => Enumerable.Range(1, 64).Select(Square).Sum();
+            }
           }
         CODE
 
