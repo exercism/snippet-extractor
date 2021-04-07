@@ -12,7 +12,8 @@ module SnippetExtractor
           using something.baddass
 
           // I love C#!!
-          namespace Grasses {
+          namespace Grasses
+          {
             public static class Grains
             {
               public static double Square(int i) => Math.Pow(2, i - 1);
