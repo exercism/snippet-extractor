@@ -3,7 +3,7 @@
 ![Tests](https://github.com/exercism/generic-snippet-extractor/workflows/Tests/badge.svg)
 
 This is Exercism's generic snippet extractor.
-It takes an exercism submission and extracts the first 10 interesting lines of code.
+It takes an exercism submission and extracts the first ten "interesting" lines of code.
 
 ## Add your language
 
