@@ -13,7 +13,7 @@ A language file contains a list of the beginnings of lines that can be ignored.
 The extractor skips over all lines that match the ones in this file until it finds the first non-matching.
 Things like HEREDOC are not currently supported.
 
-Along with each language file is a test file in `lib/languages/$slug_test.rb`.
+Along with each language file is a test file in `test/languages/$slug_test.rb`.
 When adding or making changes to a language file, please add or update the corresponding language file, copying `ruby_test.rb` as your basis.
 At a minimum all references to "ruby" (case insensitive) should be changed to the slug of your language - searching for these is a good way to start.
 
