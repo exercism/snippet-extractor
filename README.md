@@ -5,13 +5,15 @@
 This is Exercism's generic snippet extractor. 
 It takes an exercism submission and extracts the first 10 interesting lines of code.
 
-It is run with `./bin/run.sh $LANGUAGE_SLUG $PATH_TO_FILES $PATH_FOR_OUTPUT` and will read the source code from `$PATH_TO_FILES` and write a text file with a snippet to `$PATH_FOR_OUTPUT`.
+## Add your language
 
-For example:
+Each language has a file inside `lib/languages` with the filename `$slug.txt` - for example: `lib/lanugages/ruby.txt`.
 
-```bash
-./bin/run.sh ruby ~/submission-238382y7sds7fsadfasj23j/ ~/submission-238382y7sds7fsadfasj23j/output
-```
+A language file contains a list of the beginnings of lines that can be ignored.
+The extractor skips over all lines that match the ones in this file until it finds the first non-matching.
+
+Along with each language file is a test file in `lib/languages/$slug_test.rb`. 
+When adding or making changes to a language file, please add or update the corresponding language file, copying `ruby_test.rb` as your basis.
 
 ## Running the tests
 
