@@ -16,9 +16,9 @@ module SnippetExtractor
           # And then any constants or globals
           WORDS = re.compile("[a-z0-9]+(['][a-z]+)?")
 
-          #finally, some code:
+          # Finally, some code:
           def count_words(text):
-              return Counter(word.group(0) for word in WORDS.finderiter(text.lower()))
+              return Counter(word.group(0) for word in WORDS.finditer(text.lower()))
         CODE
 
         expected = <<~CODE
