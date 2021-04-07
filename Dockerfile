@@ -1,15 +1,15 @@
-FROM ruby:2.6.6-alpine3.12
+FROM amazon/aws-lambda-ruby
 
-RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh && \
-    apk add build-base gcc wget git
+RUN yum install -y make gcc
 
-RUN gem install bundler -v 2.1.4
+WORKDIR /var/task
 
-WORKDIR /opt/snippet-extractor
+RUN gem install json -v '2.3.1' 
 
 COPY . .
 
-RUN bundle install
+RUN bundle config set deployment 'true' && \
+    bundle config set without 'development test' && \
+    bundle install
 
-ENTRYPOINT ["sh", "/opt/snippet-extractor/bin/run.sh"]
+CMD [ "source.SnippetExtractor.process_request." ]

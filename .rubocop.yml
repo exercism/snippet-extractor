@@ -24,10 +24,6 @@ Layout/MultilineMethodCallIndentation:
 Layout/EmptyLinesAroundAccessModifier:
   EnforcedStyle: only_before
 
-Layout/LineLength:
-  Exclude:
-    - "scripts/generate_fixture.rb"
-
 Lint/SuppressedException:
   Exclude:
     - "test/**/*"
