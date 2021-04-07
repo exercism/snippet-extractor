@@ -21,7 +21,7 @@ module SnippetExtractor
     end
 
     def source_code
-      event['queryStringParameters']['source_code']
+      event['body']
     end
 
     def language

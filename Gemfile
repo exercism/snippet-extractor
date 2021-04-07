@@ -15,9 +15,7 @@ group :test do
   gem 'minitest-stub-const'
   gem 'mocha'
   gem 'simplecov', '~> 0.17.0'
-  gem 'httparty'
   gem 'rubocop', require: false
   gem 'rubocop-minitest', require: false
   gem 'rubocop-performance', require: false
-
 end
