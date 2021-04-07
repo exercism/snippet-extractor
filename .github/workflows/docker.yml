@@ -48,7 +48,16 @@ jobs:
           tags: |
             ${{ env.ECR_REGISTRY }}/${{ github.event.repository.name }}:production
             ${{ env.ECR_REGISTRY }}/${{ github.event.repository.name }}:${{ github.sha }}
-            ${{ github.event.repository.full_name }}:latest
-            ${{ github.event.repository.full_name }}:${{ github.sha }}
+            # ${{ github.event.repository.full_name }}:latest
+            # ${{ github.event.repository.full_name }}:${{ github.sha }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
+
+      - name: deploy lambda
+        uses: appleboy/lambda-action@1e05c1377056f21ebb2ce69b910bc16b943c2a66
+        with:
+          aws_access_key_id: ${{ secrets.AWS_LAMBDA_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_LAMBDA_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          function_name: snippet_extractor
+          image_uri: ${{ env.ECR_REGISTRY }}/${{ github.event.repository.name }}:production
