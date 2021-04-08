@@ -22,6 +22,9 @@ module SnippetExtractor
 
         expected = <<~CODE
           proc twoFer =
+            ##[ doc comment ]##
+            ## more doc comment
+            # A non-doc comment
             discard
         CODE
 
