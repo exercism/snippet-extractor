@@ -37,8 +37,7 @@ module SnippetExtractor
               return Integer.parseInt(in.readLine());
             }
           }
-
-          CODE
+        CODE
 
         expected = <<~CODE
           public class Solution {
@@ -57,10 +56,9 @@ module SnippetExtractor
               return Integer.parseInt(in.readLine());
             }
           }
-
         CODE
 
-        assert_equal expected, ExtractSnippet.(code, :php)
+        assert_equal expected, ExtractSnippet.(code, :java)
       end
     end
   end
