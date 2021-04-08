@@ -5,11 +5,10 @@ module SnippetExtractor
     class CsharpTest < Minitest::Test
       def test_full_example
         code = <<~CODE
-          /* Welcome to my program
-          * It is very cool!!
-          */
-
           using something.baddass
+
+          /// Saying things over
+          /// multiple lines of code
 
           // I love C#!!
           namespace Grasses
@@ -24,6 +23,7 @@ module SnippetExtractor
         CODE
 
         expected = <<~CODE
+          namespace Grasses
           {
             public static class Grains
             {
