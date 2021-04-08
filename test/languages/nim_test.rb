@@ -18,14 +18,15 @@ module SnippetExtractor
             ##[ doc comment ]##
             ## more doc comment
             discard
+          # A non doc comment
         CODE
 
         expected = <<~CODE
           proc twoFer =
             ##[ doc comment ]##
             ## more doc comment
-            # A non-doc comment
             discard
+          # A non doc comment
         CODE
 
         assert_equal expected, ExtractSnippet.(code, :nim)
