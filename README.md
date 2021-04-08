@@ -1,4 +1,4 @@
-# Exercism's Ruby Representer
+# Exercism's Generic Snippet Extractor
 
 ![Tests](https://github.com/exercism/generic-snippet-extractor/workflows/Tests/badge.svg)
 
