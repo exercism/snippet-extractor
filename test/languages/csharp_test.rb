@@ -7,6 +7,9 @@ module SnippetExtractor
         code = <<~CODE
           using something.baddass
 
+          /// Saying things over
+          /// multiple lines of code
+
           // I love C#!!
           namespace Grasses
           {
