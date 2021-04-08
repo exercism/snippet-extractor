@@ -29,7 +29,7 @@ module SnippetExtractor
             (format nil "~@R" number))
         CODE
 
-        assert_equal expected, ExtractSnippet.(code, :commonlisp)
+        assert_equal expected, ExtractSnippet.(code, 'common-lisp')
       end
     end
   end

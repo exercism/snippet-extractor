@@ -19,6 +19,10 @@ At a minimum all references to "ruby" (case insensitive) should be changed to th
 
 Ruby, PHP and C# all contain good examples of different of different things that could be skipped and are good files to look at.
 
+### Slugs with hyphens
+
+For slugs with hyphens, check out `common-lisp` as your example.
+
 ## Running the tests
 
 You can run the tests locally or rely on the CI to test things for you (it's fast).

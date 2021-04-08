@@ -5,8 +5,6 @@ module SnippetExtractor
     initialize_with :event, :context
 
     def call
-      p event
-      p context
       snippet = ExtractSnippet.(source_code, language)
 
       {
