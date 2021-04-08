@@ -7,6 +7,8 @@ It takes an exercism submission and extracts the first ten "interesting" lines o
 
 ## Add your language
 
+(NOTE: `slug` here is not the Exercism slug of the track (which is in kebab-case), but either a single word or the slug in snake_case.
+
 Each language has a file inside `lib/languages` with the filename `$slug.txt` - for example: `lib/languages/ruby.txt`.
 
 A language file contains a list of the beginnings of lines that can be ignored.
