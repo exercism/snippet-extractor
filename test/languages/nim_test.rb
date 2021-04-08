@@ -5,6 +5,7 @@ module SnippetExtractor
     class NimTest < Minitest::Test
       def test_full_example
         code = <<~CODE
+          ## Module doc comment
           # This is a file
           # With some comments in it
 
