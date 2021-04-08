@@ -31,13 +31,6 @@ module SnippetExtractor
             xhr.open('GET', url, true);
             xhr.send();
           }
-
-          export function getUsefulContents(url, callback) {
-            getJSON(url, data => callback(JSON.parse(data)));
-          }
-
-          getUsefulContents('http://www.example.com',
-            data => { doSomethingUseful(data); });
         CODE
 
         expected = <<~CODE
@@ -49,13 +42,6 @@ module SnippetExtractor
             xhr.open('GET', url, true);
             xhr.send();
           }
-
-          export function getUsefulContents(url, callback) {
-            getJSON(url, data => callback(JSON.parse(data)));
-          }
-
-          getUsefulContents('http://www.example.com',
-            data => { doSomethingUseful(data); });
         CODE
 
         assert_equal expected, ExtractSnippet.(code, :javascript)
