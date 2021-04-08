@@ -10,7 +10,7 @@ It takes an exercism submission and extracts the first ten "interesting" lines o
 Each language has a file inside `lib/languages` with the filename `$slug.txt` - for example: `lib/lanugages/ruby.txt`.
 
 A language file contains a list of the beginnings of lines that can be ignored.
-The extractor skips over all lines that match the ones in this file until it finds the first non-matching.
+The extractor skips over all lines of code that start with a line on the `$lang.txt` file, until it finds the first non-matching.
 Things like HEREDOC and block comments where there is not some marker on each line are not currently supported.
 
 Along with each language file is a test file in `test/languages/$slug_test.rb`.
