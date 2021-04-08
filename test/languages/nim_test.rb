@@ -7,8 +7,9 @@ module SnippetExtractor
         code = <<~CODE
           # This is a file
           # With some comments in it
+
           # And a blank line ⬆️
-          # It has some requires like this:
+          # It has some module-related code like this:
           import json
           export json
           from json import nil
