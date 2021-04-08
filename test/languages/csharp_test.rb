@@ -5,10 +5,6 @@ module SnippetExtractor
     class CsharpTest < Minitest::Test
       def test_full_example
         code = <<~CODE
-          /* Welcome to my program
-          * It is very cool!!
-          */
-
           using something.baddass
 
           // I love C#!!
