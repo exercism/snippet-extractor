@@ -23,23 +23,23 @@ module SnippetExtractor
            *
            */
 
-           let numberRegexp = /^[0-9]+$/;
-           class ZipCodeValidator {
-             isAcceptable(s: string) {
-               return s.length === 5 && numberRegexp.test(s);
-             }
-           }
-           export = ZipCodeValidator;
+          let numberRegexp = /^[0-9]+$/;
+          class ZipCodeValidator {
+            isAcceptable(s: string) {
+              return s.length === 5 && numberRegexp.test(s);
+            }
+          }
+          export = ZipCodeValidator;
         CODE
 
         expected = <<~CODE
           let numberRegexp = /^[0-9]+$/;
-           class ZipCodeValidator {
-             isAcceptable(s: string) {
-               return s.length === 5 && numberRegexp.test(s);
-             }
-           }
-           export = ZipCodeValidator;
+          class ZipCodeValidator {
+            isAcceptable(s: string) {
+              return s.length === 5 && numberRegexp.test(s);
+            }
+          }
+          export = ZipCodeValidator;
         CODE
 
         assert_equal expected, ExtractSnippet.(code, :typescript)
