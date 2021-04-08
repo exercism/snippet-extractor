@@ -24,6 +24,7 @@ module SnippetExtractor
         CODE
 
         expected = <<~CODE
+          namespace Grasses
           {
             public static class Grains
             {
