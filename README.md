@@ -35,3 +35,9 @@ Then, run the following command to run the tests:
 ```bash
 bundle exec rake test
 ```
+
+To only run the tests in a single test file, add `TEST=<relative-path-to-test-file>`:
+
+```bash
+bundle exec rake test TEST=test/languages/csharp_test.rb
+```
