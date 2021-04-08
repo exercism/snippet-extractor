@@ -2,7 +2,7 @@ require "test_helper"
 
 module SnippetExtractor
   module Languages
-    class CsharpTest < Minitest::Test
+    class TypescriptTest < Minitest::Test
       def test_full_example
         code = <<~CODE
 
