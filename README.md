@@ -7,7 +7,7 @@ It takes an exercism submission and extracts the first ten "interesting" lines o
 
 ## Add your language
 
-Each language has a file inside `lib/languages` with the filename `$slug.txt` - for example: `lib/lanugages/ruby.txt`.
+Each language has a file inside `lib/languages` with the filename `$slug.txt` - for example: `lib/languages/ruby.txt`.
 
 A language file contains a list of the beginnings of lines that can be ignored.
 The extractor skips over all lines of code that start with a line on the `$lang.txt` file, until it finds the first non-matching, at which point it takes the next 10 lines.
