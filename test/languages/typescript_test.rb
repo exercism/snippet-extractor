@@ -42,7 +42,7 @@ module SnippetExtractor
            export = ZipCodeValidator;
         CODE
 
-        assert_equal expected, ExtractSnippet.(code, :csharp)
+        assert_equal expected, ExtractSnippet.(code, :typescript)
       end
     end
   end
