@@ -56,7 +56,7 @@ module SnippetExtractor
             data => { doSomethingUseful(data); });
         CODE
 
-        assert_equal expected, ExtractSnippet.(code, :csharp)
+        assert_equal expected, ExtractSnippet.(code, :javascript)
       end
     end
   end
