@@ -40,5 +40,18 @@ module SnippetExtractorExtended
       # Then
       assert_equal [SimpleRule.new('word','p')], rule_list
     end
+
+    def test_just_word_creates_simple_rule_with_just_modifier
+      # Given
+      rule_text =
+        %q{word\j
+        }
+
+      # When
+      rule_list = RuleParser.(rule_text)
+
+      # Then
+      assert_equal [SimpleRule.new('word','j')], rule_list
+    end
   end
 end
