@@ -107,5 +107,17 @@ module SnippetExtractorExtended
       assert_equal [SimpleRule.new('    word','')], rule_list
     end
 
+    def test_multiline_rule_creates_multiline_rule_containing_both_rules
+      # Given
+      rule_text =
+        %q{word-->>other word\j
+        }
+
+      # When
+      rule_list = RuleParser.(rule_text)
+
+      # Then
+      assert_equal [MultilineRule.new(SimpleRule.new('word',''), SimpleRule.new('other word','j'))], rule_list
+    end
   end
 end
