@@ -5,7 +5,13 @@ module SnippetExtractorExtended
     initialize_with :rule_text
 
     def call
-      return []
+      rules = []
+
+      unless rule_text.empty?
+        rules.append SimpleRule.new(rule_text.rstrip)
+      end
+
+      rules
     end
   end
 end
