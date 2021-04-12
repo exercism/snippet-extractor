@@ -92,6 +92,8 @@ All of these are open to future improvements if a track needs it, until we have 
 
 * There can only be one rule with the same first id. If there are more than one, an exception will occur when creating
   the trie. Possible improvement if its really necessary.
+* We are able to support arguments supplying them after the `!e` in the first line. For example, not limiting
+  ourselves to 10 lines. It might be useful to add extra meta functionality for specific tracks.
 
 **If you find something missing, please open an issue so we can check its inclusion**
 
