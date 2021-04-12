@@ -1,5 +1,4 @@
 module SnippetExtractorExtended
-
   SimpleRule = Struct.new(:word, :modifiers)
   MultilineRule = Struct.new(:start_rule, :end_rule)
 
@@ -8,13 +7,13 @@ module SnippetExtractorExtended
 
     initialize_with :rule_text
 
-    MULTILINE_TOKEN = '-->>'
+    MULTILINE_TOKEN = '-->>'.freeze
 
     def call
-      rule_text.lines
-        .reject {|line| line.strip.empty?}
-        .map {|line| line.gsub(/\n/, '')}
-        .map do |line|
+      rule_text.lines.
+        reject { |line| line.strip.empty? }.
+        map { |line| line.delete("\n") }.
+        map do |line|
           if line.include? MULTILINE_TOKEN
             multiline_rule line
           else
@@ -24,14 +23,14 @@ module SnippetExtractorExtended
     end
 
     def simple_rule(line)
-      word, modifiers =line.split('\\')
+      word, modifiers = line.split('\\')
       modifiers = '' if modifiers.nil?
 
       SimpleRule.new(word, modifiers)
     end
 
     def multiline_rule(line)
-      start_rule, end_rule = line.split('-->>').map {|line| simple_rule line}
+      start_rule, end_rule = line.split('-->>').map { |rule| simple_rule rule }
 
       MultilineRule.new(start_rule, end_rule)
     end
