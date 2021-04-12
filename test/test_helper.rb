@@ -17,7 +17,6 @@ class Minitest::Test
 end
 
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
-require "snippet_extractor"
 Dir[File.join(".", "**/*.rb")].each { |f| require f unless f[/^\.\/test\//]}
 
 class Minitest::Test
