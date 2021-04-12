@@ -11,8 +11,8 @@ It will then retrieve the first 10 lines of remaining code.
 
 ### Syntax
 
-`id` means any string. Even though `\` are reserved for special syntax, they should be usable mid identifier. If for some
-language this gives any problems, please open an issue so we can look into other options.
+`id` means any string. The only reserved character is `+`. If for some language this gives any problems, please open an 
+issue so we can look into other options.
 
 The txt file is divided in several rules, one for each line. Every rule has a different behaviour. Please see the below
 table for the different rules and what they'll match.
@@ -91,9 +91,6 @@ All of these are open to future improvements if a track needs it, until we have 
 
 * There can only be one rule with the same first id. If there are more than one, an exception will occur when creating
   the trie. Possible improvement if its really necessary.
-* Any tab-based delimitators are not currently on design for this tool. Tabs ARE read before splitting, but a line will
-  always be split before checking for a save. Technically, you could use a rule that checked for a number of tabs,
-  but we don't have any way to detect code segments at the same indentation level and it would require some effort.
 
 **If you find something missing, please open an issue so we can check its inclusion**
 

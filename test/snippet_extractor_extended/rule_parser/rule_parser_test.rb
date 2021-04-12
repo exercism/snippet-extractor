@@ -18,15 +18,27 @@ module SnippetExtractorExtended
     def test_word_creates_simple_rule_with_word
       # Given
       rule_text =
-        %{word
+        %q{word
         }
 
       # When
       rule_list = RuleParser.(rule_text)
 
       # Then
-      assert_equal [SimpleRule.new('word')], rule_list
+      assert_equal [SimpleRule.new('word', '')], rule_list
     end
 
+    def test_partial_word_creates_simple_rule_with_partial_modifier
+      # Given
+      rule_text =
+        %q{word\p
+        }
+
+      # When
+      rule_list = RuleParser.(rule_text)
+
+      # Then
+      assert_equal [SimpleRule.new('word','p')], rule_list
+    end
   end
 end
