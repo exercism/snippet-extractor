@@ -67,5 +67,18 @@ module SnippetExtractorExtended
       assert_equal [SimpleRule.new('word','pj')], rule_list
     end
 
+    def test_with_word_with_repeated_character_should_bring_simple_rule_with_word_with_repeated_character
+      # Given
+      rule_text =
+        %q{wo+rd\pj
+        }
+
+      # When
+      rule_list = RuleParser.(rule_text)
+
+      # Then
+      assert_equal [SimpleRule.new('wo+rd','pj')], rule_list
+    end
+
   end
 end
