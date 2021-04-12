@@ -17,7 +17,7 @@ issue so we can look into other options.
 The txt file is divided in several rules, one for each line. Every rule has a different behaviour. Please see the below
 table for the different rules and what they'll match.
 
-* Rule -> The syntax a line should have to apply that rule. For every ryle, the example `id` will be used
+* Rule -> The syntax a line should have to apply that rule. For every rule, the example `id` will be used
 * Matches completely -> Matches on entire word, or for any occurrence. A word here is any string separated by spaces.
 * Skips line -> If the match skips the entire line from the match until the next, or if it only ignores up from/until the match.
 * Example -> Example of strings that will match. a pair of brackets `[]` will mark what is skipped.
@@ -25,9 +25,9 @@ table for the different rules and what they'll match.
 |  Rule  |  Matches completely  |    Skips line   |  Example                               | Comment                                                                        |
 |--------|----------------------|-----------------|----------------------------------------|--------------------------------------------------------------------------------|
 |  `id`  |         Yes          |        Yes      | List [**id** lists 4 3 2 ;]            | The default                                                                    |
-| `id\*` |         No           |        Yes      | var [**id**entifier car A car]         | For symbols that can be used without spaces like `/*a*/`                       |
-| `id\.` |         Yes          |        No       | var resume; List [**id**] lists 4 3 2 ;| For symbols that can be put mid sentence. Better used with multiline rule.     |
-| `id\*.`|         No           |        No       | var [**id**]entifier car A car         | Useful for cases like `/*This is an int*/int sum=0;`
+| `id\p` |         No           |        Yes      | var [**id**entifier car A car]         | For symbols that can be used without spaces like `/*a*/`                       |
+| `id\j` |         Yes          |        No       | var resume; List [**id**] lists 4 3 2 ;| For symbols that can be put mid sentence. Better used with multiline rule.     |
+| `id\pj`|         No           |        No       | var [**id**]entifier car A car         | Useful for cases like `/*This is an int*/int sum=0;`
 
 Note: `id\ ` is a valid rule and is the same as `id`. You can use that if you need a rule that needs to use `\ ` character,
 for example: `\id\\` that will match with the string `\id\ `
@@ -42,7 +42,7 @@ Some examples:
 
 * 
 Rule:  
-`?/* -->> ?*/<` 
+`/*\p-->>?*/\pj`
 
 On:
 ```
@@ -57,7 +57,7 @@ def solve(data):
 
 * 
 Rule:
-`import -->> from`
+`import-->>from`
 
 On:
 ```
@@ -74,13 +74,14 @@ Result:
 
 *
 Rule:
-`#[ -->> ]#`
+`#+[-->>]#+`
 
 On:
 ```
 #[
  Doc
-#]
+]#
+###[More Doc]###
 ```
 
 Result: *empty* 
