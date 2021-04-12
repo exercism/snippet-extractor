@@ -67,7 +67,7 @@ module SnippetExtractorExtended
       assert_equal [SimpleRule.new('word','pj')], rule_list
     end
 
-    def test_with_word_with_repeated_character_should_bring_simple_rule_with_word_with_repeated_character
+    def test_word_with_repeated_character_should_bring_simple_rule_with_word_with_repeated_character
       # Given
       rule_text =
         %q{wo+rd\pj
@@ -78,6 +78,33 @@ module SnippetExtractorExtended
 
       # Then
       assert_equal [SimpleRule.new('wo+rd','pj')], rule_list
+    end
+
+    def test_word_with_spaces_are_respected_in_the_simple_rule
+      # Given
+      rule_text =
+        %q{ word  \
+        }
+
+      # When
+      rule_list = RuleParser.(rule_text)
+
+      # Then
+      assert_equal [SimpleRule.new(' word  ', '')], rule_list
+    end
+
+    def test_word_with_tabs_are_respected_in_the_simple_rule
+      # Given
+      rule_text =
+        %q{
+    word
+        }
+
+      # When
+      rule_list = RuleParser.(rule_text)
+
+      # Then
+      assert_equal [SimpleRule.new('    word','')], rule_list
     end
 
   end
