@@ -23,14 +23,14 @@ module SnippetExtractorExtended
         end
     end
 
-    def simple_rule (line)
+    def simple_rule(line)
       word, modifiers =line.split('\\')
       modifiers = '' if modifiers.nil?
 
       SimpleRule.new(word, modifiers)
     end
 
-    def multiline_rule (line)
+    def multiline_rule(line)
       start_rule, end_rule = line.split('-->>').map {|line| simple_rule line}
 
       MultilineRule.new(start_rule, end_rule)
