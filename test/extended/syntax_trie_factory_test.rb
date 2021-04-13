@@ -2,6 +2,9 @@ require "test_helper"
 
 module SnippetExtractor
   module Extended
+    SyntaxTrieFactory
+    RuleParser
+
     class SyntaxTrieFactoryTest < Minitest::Test
       def test_empty_rules_bring_empty_trie
         # Given
@@ -17,7 +20,7 @@ module SnippetExtractor
       def test_simple_word_rule_brings_trie_with_rule
         # Given
         rules = [ SnippetExtractor::Extended::SimpleRule.new('word','')]
-        expected = syntax_trie_maker({'w':{'o':{'r':{'d':{' ': SnippetExtractor::Extended::LineSkip.new([:all])}}}}})
+        #expected = syntax_trie_maker({'w':{'o':{'r':{'d':{' ': SnippetExtractor::Extended::LineSkip.new([:all])}}}}})
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
