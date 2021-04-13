@@ -16,14 +16,15 @@ module SnippetExtractor
 
       def test_simple_word_rule_brings_trie_with_rule
         # Given
-        rules = [SimpleRule.new('word','')]
-        expected = {'w':{'o':{'r':{'d':{' ': LineSkip.new([:all])}}}}}
+        rules = [ SnippetExtractor::Extended::SimpleRule.new('word','')]
+        expected = syntax_trie_maker({'w':{'o':{'r':{'d':{' ': SnippetExtractor::Extended::LineSkip.new([:all])}}}}})
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
 
         # Then
         assert_equal SyntaxTrie.new, syntax_trie
+        #assert_equal expected, syntax_trie
       end
 
       def syntax_trie_maker(expected_hashes)
