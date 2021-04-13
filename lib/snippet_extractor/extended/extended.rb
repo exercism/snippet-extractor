@@ -8,7 +8,7 @@ module SnippetExtractor
       def call
         raise 'Given file is not a extended version rule text' if rule_text[0] != "!e"
 
-        CodeParser.(code, SintaxTrie.(RuleParser.(rule_text)))[0..10]
+        CodeParser.(code, SyntaxTrieFactory.(RuleParser.(rule_text)))[0..10]
       end
 
       memoize
