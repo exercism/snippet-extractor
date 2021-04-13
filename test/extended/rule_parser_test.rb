@@ -1,7 +1,7 @@
 require "test_helper"
 
 module SnippetExtractor
-  module SnippetExtractorExtended
+  module Extended
     class RuleParserTest < Minitest::Test
       def test_empty_file_brings_empty_rule_list
         # Given
@@ -96,15 +96,15 @@ module SnippetExtractor
       def test_word_with_tabs_are_respected_in_the_simple_rule
         # Given
         rule_text =
-          '
-      word
-          '
+          "
+\t\t\tword
+          "
 
         # When
         rule_list = RuleParser.(rule_text)
 
         # Then
-        assert_equal [SimpleRule.new('    word', '')], rule_list
+        assert_equal [SimpleRule.new("\t\t\tword", '')], rule_list
       end
 
       def test_multiline_rule_creates_multiline_rule_containing_both_rules

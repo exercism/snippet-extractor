@@ -1,5 +1,5 @@
 module SnippetExtractor
-  module SnippetExtractorExtended
+  module Extended
     SimpleRule = Struct.new(:word, :modifiers)
     MultilineRule = Struct.new(:start_rule, :end_rule)
 
