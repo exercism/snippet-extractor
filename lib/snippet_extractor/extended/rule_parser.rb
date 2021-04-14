@@ -1,14 +1,25 @@
 module SnippetExtractor
   module Extended
-    SimpleRule = Struct.new(:word, :modifiers)
+
+    MULTILINE_TOKEN = '-->>'.freeze
+    PARTIAL_MODIFIER  = "p".freeze
+    JUST_MODIFIER     = "j".freeze
+
+    SimpleRule = Struct.new(:word, :modifiers) do
+      def whole_word?()
+        not modifiers.include? PARTIAL_MODIFIER
+      end
+
+      def skip_line?()
+        not modifiers.include? JUST_MODIFIER
+      end
+    end
     MultilineRule = Struct.new(:start_rule, :end_rule)
 
     class RuleParser
       include Mandate
 
       initialize_with :rule_text
-
-      MULTILINE_TOKEN = '-->>'.freeze
 
       def call
         rule_text.lines.
