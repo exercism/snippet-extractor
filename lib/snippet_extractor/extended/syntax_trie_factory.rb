@@ -18,8 +18,16 @@ module SnippetExtractor
     SyntaxTrie = Struct.new(:root) do
       def add(rule)
         self.root = SyntaxTrieNode.new({}, "", nil) if root.nil?
-        word = !rule.whole_word? ? rule.word : " #{rule.word} "
+
+        word = get_word_from_rule(rule)
+
         self.root.map_word(word, rule)
+      end
+
+      def get_word_from_rule(rule)
+        if rule.is_a? MultilineRule; then rule = rule.start_rule end
+
+        !rule.whole_word? ? rule.word : " #{rule.word} "
       end
     end
 

@@ -164,6 +164,48 @@ module SnippetExtractor
         assert_equal expected, syntax_trie
       end
 
+      def test_simple_multiline_rule
+        # Given
+        rules = [MultilineRule.new(SimpleRule.new('w', 'p'), SimpleRule.new('o', 'j'))]
+        expected = syntax_trie_maker({ 'w': [
+          {},
+          Multi.new(Line.new('w'),syntax_trie_maker({' ':{'o':{' ':[{}, Just.new('o')]}}}))] })
+
+        # When
+        syntax_trie = SyntaxTrieFactory.(rules)
+
+        # Then
+        assert_equal expected, syntax_trie
+      end
+
+      def test_multiple_multi_line
+        # Given
+        rules = [MultilineRule.new(SimpleRule.new('w', 'p'), SimpleRule.new('o', 'j')), MultilineRule.new(SimpleRule.new('word', 'p'), SimpleRule.new('other', ''))]
+        expected = syntax_trie_maker({ 'w': [
+          {'o': {'r':{'d':[ {}, Multi.new(Line.new('word'),syntax_trie_maker({' ':{'o':{'t':{'h':{'e':{'r':{' ':[{}, Line.new('other')]}}}}}}}))]}}},
+          Multi.new(Line.new('w'),syntax_trie_maker({' ':{'o':{' ':[{}, Just.new('o')]}}}))]})
+
+        # When
+        syntax_trie = SyntaxTrieFactory.(rules)
+
+        # Then
+        assert_equal expected, syntax_trie
+      end
+
+      def test_mix_up
+        # Given
+        rules = [SimpleRule.new('w', 'p'), MultilineRule.new(SimpleRule.new('word', 'p'), SimpleRule.new('other', ''))]
+        expected = syntax_trie_maker({ 'w': [
+          {'o': {'r':{'d':[ {}, Multi.new(Line.new('word'),syntax_trie_maker({' ':{'o':{'t':{'h':{'e':{'r':{' ':[{}, Line.new('other')]}}}}}}}))]}}},
+          Line.new('w')]})
+
+        # When
+        syntax_trie = SyntaxTrieFactory.(rules)
+
+        # Then
+        assert_equal expected, syntax_trie
+      end
+
       # Object mothers
       def syntax_trie_maker(expected_hashes)
         SyntaxTrie.new(syntax_node_maker(expected_hashes, ""))
