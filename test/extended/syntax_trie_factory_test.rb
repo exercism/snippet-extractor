@@ -41,7 +41,7 @@ module SnippetExtractor
         assert_equal expected, syntax_trie
       end
 
-      def test_two_words_without_same_substring
+      def test_two_words_with_different_roots
         # Given
         rules = [SimpleRule.new('word',''), SimpleRule.new('asd','')]
         expected = syntax_trie_maker(
@@ -85,6 +85,75 @@ module SnippetExtractor
         assert_raises { SyntaxTrieFactory.(rules) }
       end
 
+      def test_single_partial_word_rule
+        # Given
+        rules = [SimpleRule.new('word','p')]
+        expected = syntax_trie_maker({'w':{'o':{'r':{'d': [{}, SimpleRule.new('word','p')]}}}})
+
+        # When
+        syntax_trie = SyntaxTrieFactory.(rules)
+
+        # Then
+        assert_equal expected, syntax_trie
+      end
+
+      def test_two_partial_words_with_different_roots
+        # Given
+        rules = [SimpleRule.new('word','p'), SimpleRule.new('asd','p')]
+        expected = syntax_trie_maker(
+          {
+            'w':{'o':{'r':{'d':[{}, SimpleRule.new('word','p')]}}},
+            'a':{'s':{'d':[{},SimpleRule.new('asd','p')]}}
+          })
+
+        # When
+        syntax_trie = SyntaxTrieFactory.(rules)
+
+        # Then
+        assert_equal expected, syntax_trie
+      end
+
+      def test_two_partial_words_with_same_root
+        # Given
+        rules = [SimpleRule.new('word','p'), SimpleRule.new('w','jp')]
+        expected = syntax_trie_maker(
+          {
+            'w':[
+              {'o':{'r':{'d':[{}, SimpleRule.new('word','p')]}}},
+              SimpleRule.new('w','jp')]
+          })
+
+        # When
+        syntax_trie = SyntaxTrieFactory.(rules)
+
+        # Then
+        assert_equal expected, syntax_trie
+      end
+
+      def mixing_partial_non_partial_word_with_mixed_roots
+        # Given
+        rules = [SimpleRule.new('word',''), SimpleRule.new('word','p'), SimpleRule.new('w',''), SimpleRule.new('w','p')]
+        expected = syntax_trie_maker(
+          {
+            ' ':{
+              'w':{
+                'o':{'r':{'d':{' ': [{}, SimpleRule.new('word','')]}}},
+                ' ':[{},  SimpleRule.new('w','')]
+              },
+            },
+            'w':[
+              {'o':{'r':{'d':[{}, SimpleRule.new('word','p')]}}},
+              SimpleRule.new('w','p')]
+          })
+
+        # When
+        syntax_trie = SyntaxTrieFactory.(rules)
+
+        # Then
+        assert_equal expected, syntax_trie
+      end
+
+      # Object mothers
       def syntax_trie_maker(expected_hashes)
         SyntaxTrie.new(syntax_node_maker(expected_hashes, ""))
       end
