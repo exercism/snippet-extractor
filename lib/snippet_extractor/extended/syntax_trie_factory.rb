@@ -29,15 +29,32 @@ module SnippetExtractor
           unless self.rule.nil?
             raise "Mapping conflict: #{word} has rule #{rule}, but #{map_rule} tries to overwrite it" end
 
-          self.rule = map_rule
+          self.rule = transform_rule(map_rule)
         else
           unless mapping.key? map_word[0]
             self.mapping[map_word[0]] =
               SyntaxTrieNode.new({}, self.word + map_word[0], nil)
           end
-          self.mapping[map_word[0]].map(map_word[1..], map_rule)
+          self.mapping[map_word[0]].map_word(map_word[1..], map_rule)
+        end
+      end
+
+      def transform_rule(rule)
+        case rule
+        when MultilineRule then Multi.new(transform_rule(rule.start_rule), SyntaxTrieFactory.([rule.end_rule]))
+        when SimpleRule
+          if rule.skip_line?
+            Line.new(rule.word)
+          else
+            Just.new(rule.word)
+          end
         end
       end
     end
+
+    # Rules
+    Just = Struct.new(:original_word)
+    Line = Struct.new(:original_word)
+    Multi = Struct.new(:from_rule, :to_syntax_trie)
   end
 end

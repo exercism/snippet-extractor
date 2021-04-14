@@ -20,7 +20,7 @@ module SnippetExtractor
       def test_even_simpler_word_rule_brings_trie_with_rule
         # Given
         rules = [SimpleRule.new('w', '')]
-        expected = syntax_trie_maker({ ' ': { 'w': { ' ': [{}, SimpleRule.new('w', '')] } } })
+        expected = syntax_trie_maker({ ' ': { 'w': { ' ': [{}, Line.new('w')] } } })
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
@@ -33,7 +33,7 @@ module SnippetExtractor
         # Given
         rules = [SimpleRule.new('word', '')]
         expected = syntax_trie_maker({ ' ': { 'w': { 'o': { 'r': { 'd': { ' ': [{},
-                                                                                SimpleRule.new('word', '')] } } } } } })
+                                                                                Line.new('word')] } } } } } })
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
@@ -48,8 +48,8 @@ module SnippetExtractor
         expected = syntax_trie_maker(
           {
             ' ': {
-              'w': { 'o': { 'r': { 'd': { ' ': [{}, SimpleRule.new('word', '')] } } } },
-              'a': { 's': { 'd': { ' ': [{}, SimpleRule.new('asd', '')] } } }
+              'w': { 'o': { 'r': { 'd': { ' ': [{}, Line.new('word')] } } } },
+              'a': { 's': { 'd': { ' ': [{}, Line.new('asd')] } } }
             }
           }
         )
@@ -68,8 +68,8 @@ module SnippetExtractor
           {
             ' ': {
               'w': {
-                'o': { 'r': { 'd': { ' ': [{}, SimpleRule.new('word', '')] } } },
-                ' ': [{}, SimpleRule.new('w', 'j')]
+                'o': { 'r': { 'd': { ' ': [{}, Line.new('word')] } } },
+                ' ': [{}, Just.new('w')]
               }
             }
           }
@@ -93,7 +93,7 @@ module SnippetExtractor
       def test_single_partial_word_rule
         # Given
         rules = [SimpleRule.new('word', 'p')]
-        expected = syntax_trie_maker({ 'w': { 'o': { 'r': { 'd': [{}, SimpleRule.new('word', 'p')] } } } })
+        expected = syntax_trie_maker({ 'w': { 'o': { 'r': { 'd': [{}, Line.new('word')] } } } })
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
@@ -107,8 +107,8 @@ module SnippetExtractor
         rules = [SimpleRule.new('word', 'p'), SimpleRule.new('asd', 'p')]
         expected = syntax_trie_maker(
           {
-            'w': { 'o': { 'r': { 'd': [{}, SimpleRule.new('word', 'p')] } } },
-            'a': { 's': { 'd': [{}, SimpleRule.new('asd', 'p')] } }
+            'w': { 'o': { 'r': { 'd': [{}, Line.new('word')] } } },
+            'a': { 's': { 'd': [{}, Line.new('asd')] } }
           }
         )
 
@@ -125,8 +125,8 @@ module SnippetExtractor
         expected = syntax_trie_maker(
           {
             'w': [
-              { 'o': { 'r': { 'd': [{}, SimpleRule.new('word', 'p')] } } },
-              SimpleRule.new('w', 'jp')
+              { 'o': { 'r': { 'd': [{}, Line.new('word')] } } },
+              Just.new('w')
             ]
           }
         )
@@ -146,13 +146,13 @@ module SnippetExtractor
           {
             ' ': {
               'w': {
-                'o': { 'r': { 'd': { ' ': [{}, SimpleRule.new('word', '')] } } },
-                ' ': [{}, SimpleRule.new('w', '')]
+                'o': { 'r': { 'd': { ' ': [{}, Line.new('word')] } } },
+                ' ': [{}, Line.new('w')]
               }
             },
             'w': [
-              { 'o': { 'r': { 'd': [{}, SimpleRule.new('word', 'p')] } } },
-              SimpleRule.new('w', 'p')
+              { 'o': { 'r': { 'd': [{}, Line.new('word')] } } },
+              Line.new('w')
             ]
           }
         )
