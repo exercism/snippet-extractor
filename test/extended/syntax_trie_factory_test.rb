@@ -19,8 +19,8 @@ module SnippetExtractor
 
       def test_even_simpler_word_rule_brings_trie_with_rule
         # Given
-        rules = [SimpleRule.new('w','')]
-        expected = syntax_trie_maker({' ':{'w':{' ': [{}, SimpleRule.new('w','')]}}})
+        rules = [SimpleRule.new('w', '')]
+        expected = syntax_trie_maker({ ' ': { 'w': { ' ': [{}, SimpleRule.new('w', '')] } } })
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
@@ -31,8 +31,9 @@ module SnippetExtractor
 
       def test_simple_word_rule_brings_trie_with_rule
         # Given
-        rules = [SimpleRule.new('word','')]
-        expected = syntax_trie_maker({' ':{'w':{'o':{'r':{'d':{' ': [{}, SimpleRule.new('word','')]}}}}}})
+        rules = [SimpleRule.new('word', '')]
+        expected = syntax_trie_maker({ ' ': { 'w': { 'o': { 'r': { 'd': { ' ': [{},
+                                                                                SimpleRule.new('word', '')] } } } } } })
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
@@ -43,13 +44,15 @@ module SnippetExtractor
 
       def test_two_words_with_different_roots
         # Given
-        rules = [SimpleRule.new('word',''), SimpleRule.new('asd','')]
+        rules = [SimpleRule.new('word', ''), SimpleRule.new('asd', '')]
         expected = syntax_trie_maker(
           {
-            ' ':{
-               'w':{'o':{'r':{'d':{' ': [{}, SimpleRule.new('word','')]}}}},
-               'a':{'s':{'d':{' ':[{},SimpleRule.new('asd','')]}}}
-             }})
+            ' ': {
+              'w': { 'o': { 'r': { 'd': { ' ': [{}, SimpleRule.new('word', '')] } } } },
+              'a': { 's': { 'd': { ' ': [{}, SimpleRule.new('asd', '')] } } }
+            }
+          }
+        )
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
@@ -60,15 +63,17 @@ module SnippetExtractor
 
       def test_two_words_with_same_root
         # Given
-        rules = [SimpleRule.new('word',''), SimpleRule.new('w','j')]
+        rules = [SimpleRule.new('word', ''), SimpleRule.new('w', 'j')]
         expected = syntax_trie_maker(
           {
-            ' ':{
-              'w':{
-                'o':{'r':{'d':{' ': [{}, SimpleRule.new('word','')]}}},
-                ' ':[{},  SimpleRule.new('w','j')]
-              },
-            }})
+            ' ': {
+              'w': {
+                'o': { 'r': { 'd': { ' ': [{}, SimpleRule.new('word', '')] } } },
+                ' ': [{}, SimpleRule.new('w', 'j')]
+              }
+            }
+          }
+        )
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
@@ -79,7 +84,7 @@ module SnippetExtractor
 
       def test_two_conflicting_rules
         # Given
-        rules = [SimpleRule.new('word',''), SimpleRule.new('word','j')]
+        rules = [SimpleRule.new('word', ''), SimpleRule.new('word', 'j')]
 
         # Expect
         assert_raises { SyntaxTrieFactory.(rules) }
@@ -87,8 +92,8 @@ module SnippetExtractor
 
       def test_single_partial_word_rule
         # Given
-        rules = [SimpleRule.new('word','p')]
-        expected = syntax_trie_maker({'w':{'o':{'r':{'d': [{}, SimpleRule.new('word','p')]}}}})
+        rules = [SimpleRule.new('word', 'p')]
+        expected = syntax_trie_maker({ 'w': { 'o': { 'r': { 'd': [{}, SimpleRule.new('word', 'p')] } } } })
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
@@ -99,12 +104,13 @@ module SnippetExtractor
 
       def test_two_partial_words_with_different_roots
         # Given
-        rules = [SimpleRule.new('word','p'), SimpleRule.new('asd','p')]
+        rules = [SimpleRule.new('word', 'p'), SimpleRule.new('asd', 'p')]
         expected = syntax_trie_maker(
           {
-            'w':{'o':{'r':{'d':[{}, SimpleRule.new('word','p')]}}},
-            'a':{'s':{'d':[{},SimpleRule.new('asd','p')]}}
-          })
+            'w': { 'o': { 'r': { 'd': [{}, SimpleRule.new('word', 'p')] } } },
+            'a': { 's': { 'd': [{}, SimpleRule.new('asd', 'p')] } }
+          }
+        )
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
@@ -115,13 +121,15 @@ module SnippetExtractor
 
       def test_two_partial_words_with_same_root
         # Given
-        rules = [SimpleRule.new('word','p'), SimpleRule.new('w','jp')]
+        rules = [SimpleRule.new('word', 'p'), SimpleRule.new('w', 'jp')]
         expected = syntax_trie_maker(
           {
-            'w':[
-              {'o':{'r':{'d':[{}, SimpleRule.new('word','p')]}}},
-              SimpleRule.new('w','jp')]
-          })
+            'w': [
+              { 'o': { 'r': { 'd': [{}, SimpleRule.new('word', 'p')] } } },
+              SimpleRule.new('w', 'jp')
+            ]
+          }
+        )
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
@@ -132,19 +140,22 @@ module SnippetExtractor
 
       def mixing_partial_non_partial_word_with_mixed_roots
         # Given
-        rules = [SimpleRule.new('word',''), SimpleRule.new('word','p'), SimpleRule.new('w',''), SimpleRule.new('w','p')]
+        rules = [SimpleRule.new('word', ''), SimpleRule.new('word', 'p'), SimpleRule.new('w', ''),
+                 SimpleRule.new('w', 'p')]
         expected = syntax_trie_maker(
           {
-            ' ':{
-              'w':{
-                'o':{'r':{'d':{' ': [{}, SimpleRule.new('word','')]}}},
-                ' ':[{},  SimpleRule.new('w','')]
-              },
+            ' ': {
+              'w': {
+                'o': { 'r': { 'd': { ' ': [{}, SimpleRule.new('word', '')] } } },
+                ' ': [{}, SimpleRule.new('w', '')]
+              }
             },
-            'w':[
-              {'o':{'r':{'d':[{}, SimpleRule.new('word','p')]}}},
-              SimpleRule.new('w','p')]
-          })
+            'w': [
+              { 'o': { 'r': { 'd': [{}, SimpleRule.new('word', 'p')] } } },
+              SimpleRule.new('w', 'p')
+            ]
+          }
+        )
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
@@ -163,7 +174,7 @@ module SnippetExtractor
         sub_hash_trie = content.is_a?(Array) ? content[0] : content
         rule = content.is_a?(Array) ? content[1] : nil
         SyntaxTrieNode.new(
-          Hash[sub_hash_trie.map {|key,value| [key.to_s, syntax_node_maker(value, current_word+key.to_s)]}],
+          Hash[sub_hash_trie.map { |key, value| [key.to_s, syntax_node_maker(value, current_word + key.to_s)] }],
           current_word,
           rule
         )
