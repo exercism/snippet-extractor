@@ -25,7 +25,7 @@ module SnippetExtractor
       end
 
       def get_word_from_rule(rule)
-        if rule.is_a? MultilineRule; then rule = rule.start_rule end
+        rule = rule.start_rule if rule.is_a? MultilineRule
 
         !rule.whole_word? ? rule.word : " #{rule.word} "
       end
@@ -34,10 +34,16 @@ module SnippetExtractor
     SyntaxTrieNode = Struct.new(:mapping, :word, :rule) do
       def map_word(map_word, map_rule)
         if map_word.empty?
-          unless self.rule.nil?
-            raise "Mapping conflict: #{word} has rule #{rule}, but #{map_rule} tries to overwrite it" end
+          if self.rule.nil?
+            self.rule = transform_rule(map_rule)
+          elsif map_rule.is_a?(MultilineRule) && self.rule.is_a?(Multi)
+            unless self.rule.from_rule == transform_rule(map_rule.start_rule)
+              raise "Mapping conflict: #{self.word} has rule #{self.rule}, but #{map_rule} tries to overwrite it" end
 
-          self.rule = transform_rule(map_rule)
+            self.rule.syntax_trie.add(map_rule.end_rule)
+          elsif self.rule != transform_rule(map_rule)
+            raise "Mapping conflict: #{self.word} has rule #{self.rule}, but #{map_rule} tries to overwrite it"
+          end
         else
           unless mapping.key? map_word[0]
             self.mapping[map_word[0]] =
@@ -63,6 +69,6 @@ module SnippetExtractor
     # Rules
     Just = Struct.new(:original_word)
     Line = Struct.new(:original_word)
-    Multi = Struct.new(:from_rule, :to_syntax_trie)
+    Multi = Struct.new(:from_rule, :syntax_trie)
   end
 end

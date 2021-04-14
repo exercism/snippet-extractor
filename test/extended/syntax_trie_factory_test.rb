@@ -90,6 +90,19 @@ module SnippetExtractor
         assert_raises { SyntaxTrieFactory.(rules) }
       end
 
+      def test_two_same_rules_doesnt_conflict
+        # Given
+        rules = [SimpleRule.new('word', ''), SimpleRule.new('word', '')]
+        expected = syntax_trie_maker({ ' ': { 'w': { 'o': { 'r': { 'd': { ' ': [{},
+                                                                                Line.new('word')] } } } } } })
+
+        # When
+        syntax_trie = SyntaxTrieFactory.(rules)
+
+        # Then
+        assert_equal expected, syntax_trie
+      end
+
       def test_single_partial_word_rule
         # Given
         rules = [SimpleRule.new('word', 'p')]
@@ -168,8 +181,10 @@ module SnippetExtractor
         # Given
         rules = [MultilineRule.new(SimpleRule.new('w', 'p'), SimpleRule.new('o', 'j'))]
         expected = syntax_trie_maker({ 'w': [
-          {},
-          Multi.new(Line.new('w'),syntax_trie_maker({' ':{'o':{' ':[{}, Just.new('o')]}}}))] })
+                                       {},
+                                       Multi.new(Line.new('w'),
+                                                 syntax_trie_maker({ ' ': { 'o': { ' ': [{}, Just.new('o')] } } }))
+                                     ] })
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
@@ -180,10 +195,19 @@ module SnippetExtractor
 
       def test_multiple_multi_line
         # Given
-        rules = [MultilineRule.new(SimpleRule.new('w', 'p'), SimpleRule.new('o', 'j')), MultilineRule.new(SimpleRule.new('word', 'p'), SimpleRule.new('other', ''))]
+        rules = [MultilineRule.new(SimpleRule.new('w', 'p'), SimpleRule.new('o', 'j')),
+                 MultilineRule.new(SimpleRule.new('word', 'p'), SimpleRule.new('other', ''))]
         expected = syntax_trie_maker({ 'w': [
-          {'o': {'r':{'d':[ {}, Multi.new(Line.new('word'),syntax_trie_maker({' ':{'o':{'t':{'h':{'e':{'r':{' ':[{}, Line.new('other')]}}}}}}}))]}}},
-          Multi.new(Line.new('w'),syntax_trie_maker({' ':{'o':{' ':[{}, Just.new('o')]}}}))]})
+                                       { 'o': { 'r': { 'd': [{},
+                                                             Multi.new(Line.new('word'),
+                                                                       syntax_trie_maker({ ' ': { 'o': {
+                                                                                           't': { 'h': { 'e': { 'r': { ' ': [
+                                                                                             {}, Line.new('other')
+                                                                                           ] } } } }
+                                                                                         } } }))] } } },
+                                       Multi.new(Line.new('w'),
+                                                 syntax_trie_maker({ ' ': { 'o': { ' ': [{}, Just.new('o')] } } }))
+                                     ] })
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
@@ -196,14 +220,66 @@ module SnippetExtractor
         # Given
         rules = [SimpleRule.new('w', 'p'), MultilineRule.new(SimpleRule.new('word', 'p'), SimpleRule.new('other', ''))]
         expected = syntax_trie_maker({ 'w': [
-          {'o': {'r':{'d':[ {}, Multi.new(Line.new('word'),syntax_trie_maker({' ':{'o':{'t':{'h':{'e':{'r':{' ':[{}, Line.new('other')]}}}}}}}))]}}},
-          Line.new('w')]})
+                                       { 'o': { 'r': { 'd': [{},
+                                                             Multi.new(Line.new('word'),
+                                                                       syntax_trie_maker({ ' ': { 'o': {
+                                                                                           't': { 'h': { 'e': { 'r': { ' ': [
+                                                                                             {}, Line.new('other')
+                                                                                           ] } } } }
+                                                                                         } } }))] } } },
+                                       Line.new('w')
+                                     ] })
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
 
         # Then
         assert_equal expected, syntax_trie
+      end
+
+      def test_conflict_between_simple_and_multi_rule
+        # Given
+        rules = [SimpleRule.new('word', ''), MultilineRule.new(SimpleRule.new('word', ''), SimpleRule.new('asdf', ''))]
+
+        # Expect
+        assert_raises { SyntaxTrieFactory.(rules) }
+      end
+
+      def test_multi_rules_with_same_start_rule_merge_end_rule_tries
+        # Given
+        rules = [MultilineRule.new(SimpleRule.new('w', 'p'), SimpleRule.new('o', 'j')),
+                 MultilineRule.new(SimpleRule.new('w', 'p'), SimpleRule.new('od', 'j'))]
+        expected = syntax_trie_maker({ 'w': [
+                                       {},
+                                       Multi.new(Line.new('w'),
+                                                 syntax_trie_maker({ ' ': { 'o': { ' ': [{}, Just.new('o')],
+                                                                                   'd': { ' ': [{},
+                                                                                                Just.new('od')] } } } }))
+                                     ] })
+
+        # When
+        syntax_trie = SyntaxTrieFactory.(rules)
+
+        # Then
+        assert_equal expected, syntax_trie
+      end
+
+      def test_conflict_between_multirules_same_beginning_but_with_different_rule
+        # Given
+        rules = [MultilineRule.new(SimpleRule.new('w', 'p'), SimpleRule.new('o', 'j')),
+                 MultilineRule.new(SimpleRule.new('w', 'pj'), SimpleRule.new('od', 'j'))]
+
+        # Expect
+        assert_raises { SyntaxTrieFactory.(rules) }
+      end
+
+      def test_conflict_between_multirules_same_end_with_different_rules
+        # Given
+        rules = [MultilineRule.new(SimpleRule.new('w', 'p'), SimpleRule.new('o', 'j')),
+                 MultilineRule.new(SimpleRule.new('w', 'p'), SimpleRule.new('o', ''))]
+
+        # Expect
+        assert_raises { SyntaxTrieFactory.(rules) }
       end
 
       # Object mothers
