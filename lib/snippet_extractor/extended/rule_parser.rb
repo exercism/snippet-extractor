@@ -23,6 +23,7 @@ module SnippetExtractor
       def call
         rule_text.lines.
           reject { |line| line.strip.empty? }.
+          map(&:downcase).
           map { |line| line.delete("\n") }.
           map do |line|
             if line.include? MULTILINE_TOKEN

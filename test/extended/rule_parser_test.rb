@@ -28,6 +28,19 @@ module SnippetExtractor
         assert_equal [SimpleRule.new('word', '')], rule_list
       end
 
+      def test_rules_are_always_lower_casered
+        # Given
+        rule_text =
+          'WORD
+          '
+
+        # When
+        rule_list = RuleParser.(rule_text)
+
+        # Then
+        assert_equal [SimpleRule.new('word', '')], rule_list
+      end
+
       def test_partial_word_creates_simple_rule_with_partial_modifier
         # Given
         rule_text =
