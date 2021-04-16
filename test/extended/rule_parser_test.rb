@@ -3,8 +3,6 @@ require "test_helper"
 module SnippetExtractor
   module Extended
     class RuleParserTest < Minitest::Test
-      RuleParser
-
       def test_empty_file_brings_empty_rule_list
         # Given
         rule_text =
