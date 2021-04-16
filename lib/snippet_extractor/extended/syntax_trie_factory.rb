@@ -6,22 +6,16 @@ module SnippetExtractor
       initialize_with :rules
 
       def call
-        # Not happy with this struct instantiate. Move to other class maybe?
-        trie = SyntaxTrie.new(nil)
-        rules.each { |rule| trie.add(rule) }
+        trie = SyntaxTrie.new(SyntaxTrieNode.new({}, "", nil))
+        rules.each { |rule| add_rule(trie, rule) }
 
         trie
       end
-    end
 
-    # Trie nodes
-    SyntaxTrie = Struct.new(:root) do
-      def add(rule)
-        self.root = SyntaxTrieNode.new({}, "", nil) if root.nil?
-
+      def add_rule(trie, rule)
         word = get_word_from_rule(rule)
 
-        self.root.map_word(word, rule)
+        set_next_node(trie.root, word, rule)
       end
 
       def get_word_from_rule(rule)
@@ -29,33 +23,57 @@ module SnippetExtractor
 
         !rule.whole_word? ? rule.word : " #{rule.word} "
       end
-    end
 
-    SyntaxTrieNode = Struct.new(:mapping, :word, :rule) do
-      def map_word(map_word, map_rule)
-        if map_word.empty?
-          if self.rule.nil?
-            self.rule = transform_rule(map_rule)
-          elsif map_rule.is_a?(MultilineRule) && self.rule.is_a?(Multi)
-            unless self.rule.from_rule == transform_rule(map_rule.start_rule)
-              raise "Mapping conflict: #{self.word} has rule #{self.rule}, but #{map_rule} tries to overwrite it" end
+      def set_next_node(node, word, rule)
+        if word.empty?
+          handle_rule_placement node, rule
+          return
+        end
 
-            self.rule.syntax_trie.add(map_rule.end_rule)
-          elsif self.rule != transform_rule(map_rule)
-            raise "Mapping conflict: #{self.word} has rule #{self.rule}, but #{map_rule} tries to overwrite it"
-          end
-        else
-          unless mapping.key? map_word[0]
-            self.mapping[map_word[0]] =
-              SyntaxTrieNode.new({}, self.word + map_word[0], nil)
-          end
-          self.mapping[map_word[0]].map_word(map_word[1..], map_rule)
+        next_letter = word[0]
+        unless node.mapping.key? next_letter
+          node.mapping[next_letter] = SyntaxTrieNode.new({}, node.word + next_letter, nil)
+        end
+
+        set_next_node(node.mapping[next_letter], word[1..], rule)
+      end
+
+      def handle_rule_placement(node, rule)
+        set_rule node, rule if node.action.nil?
+
+        unless are_compatible? node.action, rule
+          raise "Mapping conflict: #{node.word} has action #{node.action}, but #{rule} tries to overwrite it" end
+
+        merge_rule node, rule
+      end
+
+      def are_compatible?(action, rule)
+        case rule
+        when MultilineRule then multilines_compatible? action, rule
+        when SimpleRule then single_lines_compatible? action, rule
         end
       end
 
-      def transform_rule(rule)
+      def multilines_compatible?(action, rule)
+        rule.is_a?(MultilineRule) && action.is_a?(Multi) && action.start_action == get_action_from(rule.start_rule)
+      end
+
+      def single_lines_compatible?(action, rule)
+        action == get_action_from(rule)
+      end
+
+      def set_rule(node, rule)
+        node.action = get_action_from(rule)
+      end
+
+      def merge_rule(node, rule)
+        # We only merge compatible multiline rules. Simple rules are only mergeable if they are the same
+        add_rule node.action.syntax_trie, rule.end_rule if node.action.is_a? Multi
+      end
+
+      def get_action_from(rule)
         case rule
-        when MultilineRule then Multi.new(transform_rule(rule.start_rule), SyntaxTrieFactory.([rule.end_rule]))
+        when MultilineRule then Multi.new(get_action_from(rule.start_rule), SyntaxTrieFactory.([rule.end_rule]))
         when SimpleRule
           if rule.skip_line?
             Line.new(rule.word)
@@ -66,9 +84,13 @@ module SnippetExtractor
       end
     end
 
+    # Trie nodes
+    SyntaxTrie = Struct.new(:root)
+    SyntaxTrieNode = Struct.new(:mapping, :word, :action)
+
     # Rules
     Just = Struct.new(:original_word)
     Line = Struct.new(:original_word)
-    Multi = Struct.new(:from_rule, :syntax_trie)
+    Multi = Struct.new(:start_action, :syntax_trie)
   end
 end

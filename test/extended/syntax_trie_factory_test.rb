@@ -14,7 +14,7 @@ module SnippetExtractor
         syntax_trie = SyntaxTrieFactory.(rules)
 
         # Then
-        assert_equal SyntaxTrie.new, syntax_trie
+        assert_equal SyntaxTrie.new(SyntaxTrieNode.new({}, "", nil)), syntax_trie
       end
 
       def test_even_simpler_word_rule_brings_trie_with_rule
@@ -196,15 +196,15 @@ module SnippetExtractor
       def test_multiple_multi_line
         # Given
         rules = [MultilineRule.new(SimpleRule.new('w', 'p'), SimpleRule.new('o', 'j')),
-                 MultilineRule.new(SimpleRule.new('word', 'p'), SimpleRule.new('other', ''))]
+                 MultilineRule.new(SimpleRule.new('wo', 'p'), SimpleRule.new('oth', ''))]
         expected = syntax_trie_maker({ 'w': [
-                                       { 'o': { 'r': { 'd': [{},
-                                                             Multi.new(Line.new('word'),
-                                                                       syntax_trie_maker({ ' ': { 'o': {
-                                                                                           't': { 'h': { 'e': { 'r': { ' ': [
-                                                                                             {}, Line.new('other')
-                                                                                           ] } } } }
-                                                                                         } } }))] } } },
+                                       { 'o': [{},
+                                               Multi.new(Line.new('word'),
+                                                         syntax_trie_maker({ ' ': { 'o': {
+                                                                             't': { 'h': { ' ': [
+                                                                               {}, Line.new('other')
+                                                                             ] } }
+                                                                           } } }))] },
                                        Multi.new(Line.new('w'),
                                                  syntax_trie_maker({ ' ': { 'o': { ' ': [{}, Just.new('o')] } } }))
                                      ] })
@@ -218,14 +218,14 @@ module SnippetExtractor
 
       def test_mix_up
         # Given
-        rules = [SimpleRule.new('w', 'p'), MultilineRule.new(SimpleRule.new('word', 'p'), SimpleRule.new('other', ''))]
+        rules = [SimpleRule.new('w', 'p'), MultilineRule.new(SimpleRule.new('word', 'p'), SimpleRule.new('oth', ''))]
         expected = syntax_trie_maker({ 'w': [
                                        { 'o': { 'r': { 'd': [{},
                                                              Multi.new(Line.new('word'),
                                                                        syntax_trie_maker({ ' ': { 'o': {
-                                                                                           't': { 'h': { 'e': { 'r': { ' ': [
+                                                                                           't': { 'h': { ' ': [
                                                                                              {}, Line.new('other')
-                                                                                           ] } } } }
+                                                                                           ] } }
                                                                                          } } }))] } } },
                                        Line.new('w')
                                      ] })
@@ -249,19 +249,19 @@ module SnippetExtractor
         # Given
         rules = [MultilineRule.new(SimpleRule.new('w', 'p'), SimpleRule.new('o', 'j')),
                  MultilineRule.new(SimpleRule.new('w', 'p'), SimpleRule.new('od', 'j'))]
-        expected = syntax_trie_maker({ 'w': [
-                                       {},
-                                       Multi.new(Line.new('w'),
-                                                 syntax_trie_maker({ ' ': { 'o': { ' ': [{}, Just.new('o')],
-                                                                                   'd': { ' ': [{},
-                                                                                                Just.new('od')] } } } }))
-                                     ] })
+        expect = syntax_trie_maker({ 'w': [
+                                     {},
+                                     Multi.new(Line.new('w'),
+                                               syntax_trie_maker({ ' ': { 'o': { ' ': [{}, Just.new('o')],
+                                                                                 'd': { ' ': [{},
+                                                                                              Just.new('od')] } } } }))
+                                   ] })
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
 
         # Then
-        assert_equal expected, syntax_trie
+        assert_equal expect, syntax_trie
       end
 
       def test_conflict_between_multirules_same_beginning_but_with_different_rule
@@ -281,6 +281,19 @@ module SnippetExtractor
         # Expect
         assert_raises { SyntaxTrieFactory.(rules) }
       end
+
+      # def test_single_repeated_letter_in_whole_word
+      #   # Given
+      #   rules = [SimpleRule.new('w+', '')]
+      #   expected = syntax_trie_maker({ ' ': { 'w':
+      #                                           RepeatedLetterNode.new("w", { ' ': [{}, Line.new('w+')] }) } })
+      #
+      #   # When
+      #   syntax_trie = SyntaxTrieFactory.(rules)
+      #
+      #   # Then
+      #   assert_equal expected, syntax_trie
+      # end
 
       # Object mothers
       def syntax_trie_maker(expected_hashes)
