@@ -86,12 +86,24 @@ On:
 
 Result: *empty* 
 
-### Current limitations
+### Current limitations 
 
 All of these are open to future improvements if a track needs it, until we have the representers to back this up.
 
-* There can only be one rule with the same first id. If there are more than one, an exception will occur when creating
-  the trie. Possible improvement if its really necessary.
+Not allowed rule combinations
+* As a rule of thumb, any rule clash will be not allowed unless there is a way to be totally sure of which one
+  should be picked.
+* For any rules whose actual id/start actual id coincide, they'll be allowed if:
+  * Simple rules: they need to use the same action (skip line, or skip just)
+  * Multiline rules, they need to have the same start action. Their end rules will then be merged into the multiline
+    end syntax tree
+* For repeat characters, it wont be allowed if there is any case where two rules have the same character at the same 
+  position, one with the `+` rule and the other without.
+  * Example: `word` and `wo+rd`
+  * Multiple rules with the repeat char rule but with different tails are allowed, or those whose actual id is different
+    * Example: `wo+rd` and `wo+rk`, or `wo+rd` and `word\p` (their actual ids are ` wo+rd ` and `word`)
+
+# Improvements
 * We are able to support arguments supplying them after the `!e` in the first line. For example, not limiting
   ourselves to 10 lines. It might be useful to add extra meta functionality for specific tracks.
 

@@ -5,8 +5,10 @@ module SnippetExtractor
 
       initialize_with :rules
 
+      REPEAT_NODE_CHARACTER = "+".freeze
+
       def call
-        trie = SyntaxTrie.new(SyntaxTrieNode.new({}, "", nil))
+        trie = SyntaxTrie.new(Node.new({}, "", nil))
         rules.each { |rule| add_rule(trie, rule) }
 
         trie
@@ -30,9 +32,19 @@ module SnippetExtractor
           return
         end
 
+        handle_next_node node, word, rule
+      end
+
+      def handle_next_node(node, word, rule)
         next_letter = word[0]
-        unless node.mapping.key? next_letter
-          node.mapping[next_letter] = SyntaxTrieNode.new({}, node.word + next_letter, nil)
+        next_node_type = next_letter == REPEAT_NODE_CHARACTER ? RepeatNode : Node
+
+        if node.mapping.key? next_letter
+          unless node.mapping[next_letter].instance_of? next_node_type
+            raise "Mapping conflict: #{node.word} and #{rule} have conflicting repeating rule on char #{next_letter}"
+          end
+        else
+          node.mapping[next_letter] = next_node_type.new({}, node.word + next_letter, nil)
         end
 
         set_next_node(node.mapping[next_letter], word[1..], rule)
@@ -89,7 +101,8 @@ module SnippetExtractor
 
     # Trie nodes
     SyntaxTrie = Struct.new(:root)
-    SyntaxTrieNode = Struct.new(:mapping, :word, :action)
+    Node = Struct.new(:mapping, :word, :action)
+    RepeatNode = Struct.new(:mapping, :word, :action)
 
     # Actions
     Just = Struct.new(:original_word)

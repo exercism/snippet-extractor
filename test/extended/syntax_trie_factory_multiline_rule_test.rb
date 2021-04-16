@@ -111,7 +111,7 @@ module SnippetExtractor
       def syntax_node_maker(content, current_word)
         sub_hash_trie = content.is_a?(Array) ? content[0] : content
         rule = content.is_a?(Array) ? content[1] : nil
-        SyntaxTrieNode.new(
+        Node.new(
           Hash[sub_hash_trie.map { |key, value| [key.to_s, syntax_node_maker(value, current_word + key.to_s)] }],
           current_word,
           rule
