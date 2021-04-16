@@ -36,11 +36,10 @@ module SnippetExtractor
       end
 
       def handle_next_node(node, word, rule)
-        next_letter = word[0]
-        next_node_type = next_letter == REPEAT_NODE_CHARACTER ? RepeatNode : Node
+        next_letter, next_node_type = get_info_for_next_node(word)
 
         if next_node_type == RepeatNode && node.word.strip.empty?
-          raise "Trying to map #{rule} which has a repeating character before any character"
+          raise "Mapping conflict: Trying to map #{rule} which has a repeating character before any character"
         end
 
         if node.mapping.key? next_letter
@@ -52,6 +51,21 @@ module SnippetExtractor
         end
 
         set_next_node(node.mapping[next_letter], word[1..], rule)
+      end
+
+      def get_info_for_next_node(word)
+        next_letter = word[0]
+        next_node_type = if next_letter == "+"
+                           if word[1..].empty?
+                             RepeatNodeFinish
+                           else
+                             RepeatNode
+                           end
+                         else
+                           Node
+                         end
+
+        [next_letter, next_node_type]
       end
 
       def handle_rule_placement(node, rule)
@@ -107,6 +121,7 @@ module SnippetExtractor
     SyntaxTrie = Struct.new(:root)
     Node = Struct.new(:mapping, :word, :action)
     RepeatNode = Struct.new(:mapping, :word, :action)
+    RepeatNodeFinish = Struct.new(:mapping, :word, :action)
 
     # Actions
     Just = Struct.new(:original_word)
