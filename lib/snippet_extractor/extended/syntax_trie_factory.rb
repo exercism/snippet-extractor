@@ -39,7 +39,10 @@ module SnippetExtractor
       end
 
       def handle_rule_placement(node, rule)
-        set_rule node, rule if node.action.nil?
+        if node.action.nil?
+          set_rule node, rule
+          return
+        end
 
         unless are_compatible? node.action, rule
           raise "Mapping conflict: #{node.word} has action #{node.action}, but #{rule} tries to overwrite it" end
@@ -88,7 +91,7 @@ module SnippetExtractor
     SyntaxTrie = Struct.new(:root)
     SyntaxTrieNode = Struct.new(:mapping, :word, :action)
 
-    # Rules
+    # Actions
     Just = Struct.new(:original_word)
     Line = Struct.new(:original_word)
     Multi = Struct.new(:start_action, :syntax_trie)
