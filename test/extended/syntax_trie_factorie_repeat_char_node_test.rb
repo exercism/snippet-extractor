@@ -24,6 +24,30 @@ module SnippetExtractor
         assert_equal expected, SyntaxTrieFactory.(rules)
       end
 
+      def test_single_repeated_letter_at_end
+        # Given
+        rules = [SimpleRule.new('w+', 'p')]
+        expected = SyntaxTrie.new(
+          Node.new(
+            { 'w': Node.new(
+              { '+': RepeatNode.new(
+                {}, 'w+', Line.new('w+')
+              ) }.transform_keys!(&:to_s), 'w', nil
+            ) }.transform_keys!(&:to_s), '', nil
+          )
+        )
+
+        # Expect
+        assert_equal expected, SyntaxTrieFactory.(rules)
+      end
+
+      def test_single_repeated_letter_at_beginning
+        # Given
+        rules = [SimpleRule.new('+w', 'p')]
+
+        # Expect
+        assert_raises { SyntaxTrieFactory.(rules) }
+      end
     end
   end
 end

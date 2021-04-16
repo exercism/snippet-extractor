@@ -102,6 +102,7 @@ Not allowed rule combinations
   * Example: `word` and `wo+rd`
   * Multiple rules with the repeat char rule but with different tails are allowed, or those whose actual id is different
     * Example: `wo+rd` and `wo+rk`, or `wo+rd` and `word\p` (their actual ids are ` wo+rd ` and `word`)
+* A token repeat character at the beginning will also throw an exception. There is nothing to repeat.
 
 # Improvements
 * We are able to support arguments supplying them after the `!e` in the first line. For example, not limiting

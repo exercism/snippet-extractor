@@ -39,6 +39,10 @@ module SnippetExtractor
         next_letter = word[0]
         next_node_type = next_letter == REPEAT_NODE_CHARACTER ? RepeatNode : Node
 
+        if next_node_type == RepeatNode && node.word.strip.empty?
+          raise "Trying to map #{rule} which has a repeating character before any character"
+        end
+
         if node.mapping.key? next_letter
           unless node.mapping[next_letter].instance_of? next_node_type
             raise "Mapping conflict: #{node.word} and #{rule} have conflicting repeating rule on char #{next_letter}"
