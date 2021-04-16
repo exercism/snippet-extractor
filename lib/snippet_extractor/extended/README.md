@@ -11,8 +11,9 @@ It will then retrieve the first 10 lines of remaining code.
 
 ### Syntax
 
-`id` means any string. The only reserved character is `+`. If for some language this gives any problems, please open an 
-issue so we can look into other options.
+`id` means any string. The strings are matched regardless of case. 
+The only reserved character is `+`. If for some language this gives any problems, please open an issue so we can look
+into other options.
 
 The txt file is divided in several rules, one for each line. Every rule has a different behaviour. Please see the below
 table for the different rules and what they'll match.
@@ -107,6 +108,7 @@ Not allowed rule combinations
 * A token repeat character at the beginning will also throw an exception. There is nothing to repeat.
 
 # Improvements
+
 * We are able to support arguments supplying them after the `!e` in the first line. For example, not limiting
   ourselves to 10 lines. It might be useful to add extra meta functionality for specific tracks.
 
