@@ -25,7 +25,7 @@ table for the different rules and what they'll match.
 
 |  Rule  |  Matches completely  |    Skips line   |  Example                               | Comment                                                                        |
 |--------|----------------------|-----------------|----------------------------------------|--------------------------------------------------------------------------------|
-|  `id`  |         Yes          |        Yes      | List [**id** lists 4 3 2 ;]            | The default                                                                    |
+|  `id`  |         Yes          |        Yes      | List [**id** lists 4 3 2 ;]            | The default. It matches to ` id ` with the spaces (spaces can be any `strip`able char).                                                                  |
 | `id\p` |         No           |        Yes      | var [**id**entifier car A car]         | For symbols that can be used without spaces like `/*a*/`                       |
 | `id\j` |         Yes          |        No       | var resume; List [**id**] lists 4 3 2 ;| For symbols that can be put mid sentence. Better used with multiline rule.     |
 | `id\pj`|         No           |        No       | var [**id**]entifier car A car         | Useful for cases like `/*This is an int*/int sum=0;`
@@ -38,6 +38,9 @@ for example: `\id\\` that will match with the string `\id\ `
 
 * Multiline rule -> Add -->> between two rules to mark the rule as multiline. All the text between the two rules will be skipped,
 plus all the text the end rule would skip normally.
+  
+* Rules precedence is by earliest match. This also means that whole word rules usually have higher precedence, because
+they start matching from the preceding space.
   
 Some examples:
 
