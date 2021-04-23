@@ -125,9 +125,7 @@ module SnippetExtractor
       end
 
       def get_match_node(character)
-        if self.mapping.key?('+') and character == self.word[-1, 1]
-          return self.mapping['+']
-        end
+        return self.mapping['+'] if self.mapping.key?('+') && (character == self.word[-1, 1])
 
         self.mapping[character]
       end
@@ -138,9 +136,7 @@ module SnippetExtractor
       end
 
       def get_match_node(character)
-        if character == self.word[-2, 1]
-          return self
-        end
+        return self if character == self.word[-2, 1]
 
         self.mapping[character]
       end
@@ -151,9 +147,7 @@ module SnippetExtractor
       end
 
       def get_match_node(character)
-        if character == self.word[-2, 1]
-          return self
-        end
+        self if character == self.word[-2, 1]
       end
     end
 

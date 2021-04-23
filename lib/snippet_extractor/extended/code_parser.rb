@@ -17,7 +17,7 @@ module SnippetExtractor
         action, skipped = try_match_first_word
         execute_action(action, skipped) unless action.nil?
 
-        follow_strategy while !is_finished?
+        follow_strategy until is_finished?
 
         save_current_line
 
@@ -32,7 +32,7 @@ module SnippetExtractor
         try_match(syntax_trie.root.get_match_node(' ')) if syntax_trie.root.has_match?(' ')
       end
 
-      def try_match(from_node=nil)
+      def try_match(from_node = nil)
         current_syntax_node = from_node || self.syntax_trie.root
         scan_lookahead = 0
 
@@ -45,23 +45,18 @@ module SnippetExtractor
       end
 
       def execute_action(action, skipped)
-        unless action.nil?
-          save_if_newline_reached(skipped)
-          self.scan_index += skipped
-          unless action.instance_of? Just
-            self.current_action = action
-          else
-            self.current_action = nil
-          end
+        return if action.nil?
 
-        end
+        save_if_newline_reached(skipped)
+        self.scan_index += skipped
+        self.current_action = (action unless action.instance_of? Just)
       end
 
-      def save_if_newline_reached(skipped=1)
-        if code[self.scan_index, skipped].include? "\n"
-          save_current_line
-          self.current_line = ""
-        end
+      def save_if_newline_reached(skipped = 1)
+        return unless code[self.scan_index, skipped].include? "\n"
+
+        save_current_line
+        self.current_line = ""
       end
 
       def follow_strategy
@@ -75,28 +70,28 @@ module SnippetExtractor
 
       def looking_for_match_strategy
         action, skipped = try_match
-        unless action.nil? then execute_action(action, skipped)
-        else
+        if action.nil?
           self.current_line = self.current_line + self.code[self.scan_index]
           save_if_newline_reached
           self.scan_index += 1
+        else
+          rubexecute_action(action, skipped)
         end
       end
 
       def line_strategy
-        if self.code[self.scan_index] == "\n"
-          self.current_action = nil
-        end
+        self.current_action = nil if self.code[self.scan_index] == "\n"
         save_if_newline_reached
         self.scan_index += 1
       end
 
       def multi_strategy
         action, skipped = try_match(self.current_action.syntax_trie.root)
-        unless action.nil? then execute_action(action, skipped)
-        else
+        if action.nil?
           save_if_newline_reached
           self.scan_index += 1
+        else
+          execute_action(action, skipped)
         end
       end
 
@@ -104,11 +99,11 @@ module SnippetExtractor
         self.current_syntax_node = self.current_syntax_node.mapping[' '] if self.current_syntax_node.mapping.key? ' '
       end
 
-      def is_finished?(lookahead=0)
+      def is_finished?(lookahead = 0)
         self.scan_index + lookahead >= self.code.length
       end
 
-      def scan_char(lookahead=0)
+      def scan_char(lookahead = 0)
         self.code[self.scan_index + lookahead]
       end
 
@@ -120,6 +115,5 @@ module SnippetExtractor
         self.current_line = ""
       end
     end
-
   end
 end

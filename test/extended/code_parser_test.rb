@@ -24,16 +24,17 @@ module SnippetExtractor
         # Given
         syntax_trie = SyntaxTrie.new(
           Node.new(
-            {' ': Node.new(
-              {'a': Node.new(
-                {'b': Node.new(
-                  {'1': Node.new(
-                    {' ': Node.new({}, ' ab1 ', Line.new('ab1'))}.transform_keys!(&:to_s)
-                  )}.transform_keys!(&:to_s)
-                )}.transform_keys!(&:to_s)
-              )}.transform_keys!(&:to_s)
-            )}.transform_keys!(&:to_s)
-          ))
+            { ' ': Node.new(
+              { 'a': Node.new(
+                { 'b': Node.new(
+                  { '1': Node.new(
+                    { ' ': Node.new({}, ' ab1 ', Line.new('ab1')) }.transform_keys!(&:to_s)
+                  ) }.transform_keys!(&:to_s)
+                ) }.transform_keys!(&:to_s)
+              ) }.transform_keys!(&:to_s)
+            ) }.transform_keys!(&:to_s)
+          )
+        )
         code = ""
         expected = ""
 
@@ -45,16 +46,17 @@ module SnippetExtractor
         # Given
         syntax_trie = SyntaxTrie.new(
           Node.new(
-            {' ': Node.new(
-              {'a': Node.new(
-                {'b': Node.new(
-                  {'1': Node.new(
-                    {' ': Node.new({}, ' ab1 ', Line.new('ab1'))}.transform_keys!(&:to_s)
-                  )}.transform_keys!(&:to_s)
-                )}.transform_keys!(&:to_s)
-              )}.transform_keys!(&:to_s)
-            )}.transform_keys!(&:to_s)
-          ))
+            { ' ': Node.new(
+              { 'a': Node.new(
+                { 'b': Node.new(
+                  { '1': Node.new(
+                    { ' ': Node.new({}, ' ab1 ', Line.new('ab1')) }.transform_keys!(&:to_s)
+                  ) }.transform_keys!(&:to_s)
+                ) }.transform_keys!(&:to_s)
+              ) }.transform_keys!(&:to_s)
+            ) }.transform_keys!(&:to_s)
+          )
+        )
         code =
           <<~CODE
             ab1 ad1 ae1
@@ -75,23 +77,24 @@ module SnippetExtractor
         # Given
         syntax_trie = SyntaxTrie.new(
           Node.new(
-              {'a': Node.new(
-                {'b': Node.new(
-                  {'1': Node.new({}, ' ab1 ', Line.new('ab1'))}.transform_keys!(&:to_s)
-                )}.transform_keys!(&:to_s)
-              )}.transform_keys!(&:to_s)
-          ))
+            { 'a': Node.new(
+              { 'b': Node.new(
+                { '1': Node.new({}, ' ab1 ', Line.new('ab1')) }.transform_keys!(&:to_s)
+              ) }.transform_keys!(&:to_s)
+            ) }.transform_keys!(&:to_s)
+          )
+        )
         code =
           <<~CODE
             ab1 ad1 ae1
             ac2 at2 an2
             cd3 cd3 sdf3
-        CODE
+          CODE
         expected =
           <<~CODE
             ac2 at2 an2
             cd3 cd3 sdf3
-        CODE
+          CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -101,28 +104,29 @@ module SnippetExtractor
         # Given
         syntax_trie = SyntaxTrie.new(
           Node.new(
-            {' ': Node.new(
-              {'a': Node.new(
-                {'b': Node.new(
-                  {'1': Node.new(
-                    {' ': Node.new({}, ' ab1 ', Just.new('ab1'))}.transform_keys!(&:to_s)
-                  )}.transform_keys!(&:to_s)
-                )}.transform_keys!(&:to_s)
-              )}.transform_keys!(&:to_s)
-            )}.transform_keys!(&:to_s)
-          ))
+            { ' ': Node.new(
+              { 'a': Node.new(
+                { 'b': Node.new(
+                  { '1': Node.new(
+                    { ' ': Node.new({}, ' ab1 ', Just.new('ab1')) }.transform_keys!(&:to_s)
+                  ) }.transform_keys!(&:to_s)
+                ) }.transform_keys!(&:to_s)
+              ) }.transform_keys!(&:to_s)
+            ) }.transform_keys!(&:to_s)
+          )
+        )
         code =
           <<~CODE
             ab1 ad1 ae1
             ac2 at2 an2
             cd3 cd3 sdf3
-        CODE
+          CODE
         expected =
           <<~CODE
             ad1 ae1
             ac2 at2 an2
             cd3 cd3 sdf3
-        CODE
+          CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -132,12 +136,13 @@ module SnippetExtractor
         # Given
         syntax_trie = SyntaxTrie.new(
           Node.new(
-            {'a': Node.new(
-              {'b': Node.new(
-                {'1': Node.new({}, ' ab1 ', Just.new('ab1'))}.transform_keys!(&:to_s)
-              )}.transform_keys!(&:to_s)
-            )}.transform_keys!(&:to_s)
-          ))
+            { 'a': Node.new(
+              { 'b': Node.new(
+                { '1': Node.new({}, ' ab1 ', Just.new('ab1')) }.transform_keys!(&:to_s)
+              ) }.transform_keys!(&:to_s)
+            ) }.transform_keys!(&:to_s)
+          )
+        )
         code =
           <<~CODE
             ab1 ad1 ae1
@@ -159,52 +164,20 @@ module SnippetExtractor
         # Given
         syntax_trie_final = SyntaxTrie.new(
           Node.new(
-            {'c': Node.new(
-              {'d': Node.new({}, 'cd', Just.new('cd'))}.transform_keys!(&:to_s)
-            )}.transform_keys!(&:to_s)
+            { 'c': Node.new(
+              { 'd': Node.new({}, 'cd', Just.new('cd')) }.transform_keys!(&:to_s)
+            ) }.transform_keys!(&:to_s)
           )
         )
         syntax_trie = SyntaxTrie.new(
           Node.new(
-            {'a': Node.new(
-              {'b': Node.new(
-                {'1': Node.new({}, ' ab1 ', Multi.new('ab1', syntax_trie_final))}.transform_keys!(&:to_s)
-              )}.transform_keys!(&:to_s)
-            )}.transform_keys!(&:to_s)
-          ))
-
-        code =
-          <<~CODE
-            ab1 ad1 ae1
-            ac2 at2 an2
-            cd3 cd3 sdf3
-        CODE
-        expected =
-          <<~CODE
-            3 cd3 sdf3
-        CODE
-
-        # Expect
-        assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
-      end
-
-      def test_multi_rule_with_line_final
-        # Given
-        syntax_trie_final = SyntaxTrie.new(
-          Node.new(
-            {'a': Node.new(
-              {'t': Node.new({}, 'at', Line.new('at'))}.transform_keys!(&:to_s)
-            )}.transform_keys!(&:to_s)
+            { 'a': Node.new(
+              { 'b': Node.new(
+                { '1': Node.new({}, ' ab1 ', Multi.new('ab1', syntax_trie_final)) }.transform_keys!(&:to_s)
+              ) }.transform_keys!(&:to_s)
+            ) }.transform_keys!(&:to_s)
           )
         )
-        syntax_trie = SyntaxTrie.new(
-          Node.new(
-            {'a': Node.new(
-              {'d': Node.new(
-                {'1': Node.new({}, ' ab1 ', Multi.new('ab1', syntax_trie_final))}.transform_keys!(&:to_s)
-              )}.transform_keys!(&:to_s)
-            )}.transform_keys!(&:to_s)
-          ))
 
         code =
           <<~CODE
@@ -214,7 +187,41 @@ module SnippetExtractor
           CODE
         expected =
           <<~CODE
-            ab1 
+            3 cd3 sdf3
+          CODE
+
+        # Expect
+        assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
+      end
+
+      def test_multi_rule_with_line_final
+        # Given
+        syntax_trie_final = SyntaxTrie.new(
+          Node.new(
+            { 'a': Node.new(
+              { 't': Node.new({}, 'at', Line.new('at')) }.transform_keys!(&:to_s)
+            ) }.transform_keys!(&:to_s)
+          )
+        )
+        syntax_trie = SyntaxTrie.new(
+          Node.new(
+            { 'a': Node.new(
+              { 'd': Node.new(
+                { '1': Node.new({}, ' ab1 ', Multi.new('ab1', syntax_trie_final)) }.transform_keys!(&:to_s)
+              ) }.transform_keys!(&:to_s)
+            ) }.transform_keys!(&:to_s)
+          )
+        )
+
+        code =
+          <<~CODE
+            ab1 ad1 ae1
+            ac2 at2 an2
+            cd3 cd3 sdf3
+          CODE
+        expected =
+          <<~CODE
+            ab1#{' '}
             cd3 cd3 sdf3
           CODE
 
@@ -226,19 +233,20 @@ module SnippetExtractor
         # Given
         syntax_trie_final = SyntaxTrie.new(
           Node.new(
-            {'a': Node.new(
-              {'e': Node.new({}, 'ae', Just.new('ae'))}.transform_keys!(&:to_s)
-            )}.transform_keys!(&:to_s)
+            { 'a': Node.new(
+              { 'e': Node.new({}, 'ae', Just.new('ae')) }.transform_keys!(&:to_s)
+            ) }.transform_keys!(&:to_s)
           )
         )
         syntax_trie = SyntaxTrie.new(
           Node.new(
-            {'a': Node.new(
-              {'b': Node.new(
-                {'1': Node.new({}, ' ab1 ', Multi.new('ab1', syntax_trie_final))}.transform_keys!(&:to_s)
-              )}.transform_keys!(&:to_s)
-            )}.transform_keys!(&:to_s)
-          ))
+            { 'a': Node.new(
+              { 'b': Node.new(
+                { '1': Node.new({}, ' ab1 ', Multi.new('ab1', syntax_trie_final)) }.transform_keys!(&:to_s)
+              ) }.transform_keys!(&:to_s)
+            ) }.transform_keys!(&:to_s)
+          )
+        )
 
         code =
           <<~CODE
@@ -261,26 +269,26 @@ module SnippetExtractor
         # Given
         syntax_trie = SyntaxTrie.new(
           Node.new(
-            {'a': Node.new(
-              {'b': Node.new(
-                {'1': Node.new({}, 'ab1', Just.new('ab1'))}.transform_keys!(&:to_s)
-              )}.transform_keys!(&:to_s)
+            { 'a': Node.new(
+              { 'b': Node.new(
+                { '1': Node.new({}, 'ab1', Just.new('ab1')) }.transform_keys!(&:to_s)
+              ) }.transform_keys!(&:to_s)
             ),
-             '1': Node.new({}, '1', Line.new('1'))
-            }.transform_keys!(&:to_s)
-          ))
+              '1': Node.new({}, '1', Line.new('1')) }.transform_keys!(&:to_s)
+          )
+        )
         code =
           <<~CODE
             ab1 ad2 ae2
             ac2 at2 an2
             cd3 cd3 sdf3
-        CODE
+          CODE
         expected =
           <<~CODE
              ad2 ae2
             ac2 at2 an2
             cd3 cd3 sdf3
-        CODE
+          CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -290,24 +298,25 @@ module SnippetExtractor
         # Given
         syntax_trie = SyntaxTrie.new(
           Node.new(
-            {'9': Node.new(
-              {}, '9', Multi.new('9', SyntaxTrie.new(Node.new({'5': Node.new({},'5',Just.new('5'))}
-                                                                .transform_keys!(&:to_s))))),
-             '1': Node.new({}, '1', Line.new('1'))
-            }.transform_keys!(&:to_s)
-          ))
+            { '9': Node.new(
+              {}, '9', Multi.new('9', SyntaxTrie.new(Node.new({ '5': Node.new({}, '5', Just.new('5')) }.
+                                                                transform_keys!(&:to_s))))
+            ),
+              '1': Node.new({}, '1', Line.new('1')) }.transform_keys!(&:to_s)
+          )
+        )
         code =
           <<~CODE
             ab1 ad9 ae2
             ac2 at2 an2
             cd3 cd5 sdf3
-        CODE
+          CODE
         expected =
           <<~CODE
             ab
             ac2 at2 an2
             cd3 cd5 sdf3
-        CODE
+          CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -317,25 +326,27 @@ module SnippetExtractor
         # Given
         syntax_trie = SyntaxTrie.new(
           Node.new(
-            {'3': Node.new(
-              {}, '3', Multi.new('3', SyntaxTrie.new(Node.new({'8': Node.new({},'8',Just.new('8'))}
-                                                                .transform_keys!(&:to_s))))),
-             '1': Node.new(
-               {}, '1', Multi.new('1', SyntaxTrie.new(Node.new({'5': Node.new({},'5',Just.new('5'))}
-                                                                 .transform_keys!(&:to_s)))))
-            }.transform_keys!(&:to_s)
-          ))
+            { '3': Node.new(
+              {}, '3', Multi.new('3', SyntaxTrie.new(Node.new({ '8': Node.new({}, '8', Just.new('8')) }.
+                                                                transform_keys!(&:to_s))))
+            ),
+              '1': Node.new(
+                {}, '1', Multi.new('1', SyntaxTrie.new(Node.new({ '5': Node.new({}, '5', Just.new('5')) }.
+                                                                 transform_keys!(&:to_s))))
+              ) }.transform_keys!(&:to_s)
+          )
+        )
         code =
           <<~CODE
             ab1 ad2 ae3
             ac4 at5 an6
             cd7 cd8 sdf9
-        CODE
+          CODE
         expected =
           <<~CODE
              an6
             cd7 cd8 sdf9
-        CODE
+          CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
