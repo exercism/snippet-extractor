@@ -119,9 +119,43 @@ module SnippetExtractor
 
     # Trie nodes
     SyntaxTrie = Struct.new(:root)
-    Node = Struct.new(:mapping, :word, :action)
-    RepeatNode = Struct.new(:mapping, :word, :action)
-    RepeatNodeFinish = Struct.new(:mapping, :word, :action)
+    Node = Struct.new(:mapping, :word, :action) do
+      def has_match?(character)
+        mapping.key? character or (self.mapping.key? '+' and character == self.word[-1, 1])
+      end
+
+      def get_match_node(character)
+        if self.mapping.key?('+') and character == self.word[-1, 1]
+          return self.mapping['+']
+        end
+
+        self.mapping[character]
+      end
+    end
+    RepeatNode = Struct.new(:mapping, :word, :action) do
+      def has_match?(character)
+        mapping.key? character or character == self.word[-2, 1]
+      end
+
+      def get_match_node(character)
+        if character == self.word[-2, 1]
+          return self
+        end
+
+        self.mapping[character]
+      end
+    end
+    RepeatNodeFinish = Struct.new(:mapping, :word, :action) do
+      def has_match?(character)
+        character == self.word[-2, 1]
+      end
+
+      def get_match_node(character)
+        if character == self.word[-2, 1]
+          return self
+        end
+      end
+    end
 
     # Actions
     Just = Struct.new(:original_word)

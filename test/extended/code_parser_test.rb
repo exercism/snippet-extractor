@@ -17,7 +17,7 @@ module SnippetExtractor
         expected = code
 
         # Expect
-        assert_equal expected, CodeParser.(code, syntax_trie)
+        assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
       end
 
       def test_parsing_no_code_returns_no_code
@@ -38,7 +38,7 @@ module SnippetExtractor
         expected = ""
 
         # Expect
-        assert_equal expected, CodeParser.(code, syntax_trie)
+        assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
       end
 
       def test_line_rule_whole_word_matches
@@ -68,7 +68,7 @@ module SnippetExtractor
           CODE
 
         # Expect
-        assert_equal expected, CodeParser.(code, syntax_trie)
+        assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
       end
     end
   end
