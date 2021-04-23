@@ -48,7 +48,12 @@ module SnippetExtractor
         unless action.nil?
           save_if_newline_reached(skipped)
           self.scan_index += skipped
-          self.current_action = action unless action.instance_of? Just
+          unless action.instance_of? Just
+            self.current_action = action
+          else
+            self.current_action = nil
+          end
+
         end
       end
 
@@ -87,7 +92,7 @@ module SnippetExtractor
       end
 
       def multi_strategy
-        action, skipped = try_match(self.action.syntax_trie.root)
+        action, skipped = try_match(self.current_action.syntax_trie.root)
         unless action.nil? then execute_action(action, skipped)
         else
           save_if_newline_reached
@@ -108,7 +113,10 @@ module SnippetExtractor
       end
 
       def save_current_line
-        self.saved_lines.append(self.current_line) unless self.current_line.strip.empty?
+        unless self.current_line.strip.empty?
+          self.current_line += "\n" if self.current_line[-1, 1] != "\n"
+          self.saved_lines.append(self.current_line)
+        end
         self.current_line = ""
       end
     end
