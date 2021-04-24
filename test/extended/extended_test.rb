@@ -17,7 +17,7 @@ module SnippetExtractor
         expected = code
 
         # Expect
-        assert_equal expected, Extended.(code, rules).join
+        assert_equal expected, ExtendedExtractor.(code, rules).join
       end
 
       def test_parsing_no_code_returns_no_code
@@ -27,7 +27,7 @@ module SnippetExtractor
         expected = ""
 
         # Expect
-        assert_equal expected, Extended.(code, rules).join
+        assert_equal expected, ExtendedExtractor.(code, rules).join
       end
 
       def test_line_rule_whole_word_matches
@@ -46,7 +46,7 @@ module SnippetExtractor
           CODE
 
         # Expect
-        assert_equal expected, Extended.(code, rules).join
+        assert_equal expected, ExtendedExtractor.(code, rules).join
       end
 
       def test_line_rule_partial_word_matches
@@ -66,7 +66,7 @@ module SnippetExtractor
           CODE
 
         # Expect
-        assert_equal expected, Extended.(code, rules).join
+        assert_equal expected, ExtendedExtractor.(code, rules).join
       end
 
       def test_just_rule_whole_word_matches
@@ -87,7 +87,7 @@ module SnippetExtractor
           CODE
 
         # Expect
-        assert_equal expected, Extended.(code, rules).join
+        assert_equal expected, ExtendedExtractor.(code, rules).join
       end
 
       def test_just_rule_partial_word_matches
@@ -108,7 +108,7 @@ module SnippetExtractor
           CODE
 
         # Expect
-        assert_equal expected, Extended.(code, rules).join
+        assert_equal expected, ExtendedExtractor.(code, rules).join
       end
 
       def test_multi_rule_with_just_final
@@ -127,7 +127,7 @@ module SnippetExtractor
           CODE
 
         # Expect
-        assert_equal expected, Extended.(code, rules).join
+        assert_equal expected, ExtendedExtractor.(code, rules).join
       end
 
       def test_multi_rule_with_line_final
@@ -147,7 +147,7 @@ module SnippetExtractor
           CODE
 
         # Expect
-        assert_equal expected, Extended.(code, rules).join
+        assert_equal expected, ExtendedExtractor.(code, rules).join
       end
 
       def test_multi_rule_in_one_line_just_start_action
@@ -168,7 +168,7 @@ module SnippetExtractor
           CODE
 
         # Expect
-        assert_equal expected, Extended.(code, rules).join
+        assert_equal expected, ExtendedExtractor.(code, rules).join
       end
 
       def test_multi_rule_in_one_line_line_start_action
@@ -188,7 +188,7 @@ module SnippetExtractor
           CODE
 
         # Expect
-        assert_equal expected, Extended.(code, rules).join
+        assert_equal expected, ExtendedExtractor.(code, rules).join
       end
 
       def test_slight_overlapping_in_rules
@@ -209,7 +209,7 @@ module SnippetExtractor
           CODE
 
         # Expect
-        assert_equal expected, Extended.(code, rules).join
+        assert_equal expected, ExtendedExtractor.(code, rules).join
       end
 
       def test_line_rule_skip_matches_inside_line
@@ -230,7 +230,7 @@ module SnippetExtractor
           CODE
 
         # Expect
-        assert_equal expected, Extended.(code, rules).join
+        assert_equal expected, ExtendedExtractor.(code, rules).join
       end
 
       def multi_line_rule_skip_matches_inside
@@ -250,7 +250,7 @@ module SnippetExtractor
           CODE
 
         # Expect
-        assert_equal expected, Extended.(code, rules).join
+        assert_equal expected, ExtendedExtractor.(code, rules).join
       end
     end
   end

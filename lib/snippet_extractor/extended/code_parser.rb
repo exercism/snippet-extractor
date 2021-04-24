@@ -20,7 +20,7 @@ module SnippetExtractor
 
         follow_strategy until is_finished?
 
-        save_current_line
+        save_last_line
 
         self.saved_lines
       end
@@ -97,8 +97,22 @@ module SnippetExtractor
           self.current_action = self.queued_multiline
           self.queued_multiline = nil
         end
-        save_if_newline_reached
-        self.scan_index += 1
+
+        # We have to check for matches even though the line was skipped.
+        # The newline could be the blank space of the next whole word keyword.
+        if self.current_action.nil?
+          action, skipped = try_match
+          if action.nil?
+            self.current_line = self.current_line + self.code[self.scan_index]
+            save_if_newline_reached
+            self.scan_index += 1
+          else
+            execute_action(action, skipped)
+          end
+        else
+          save_if_newline_reached
+          self.scan_index += 1
+        end
       end
 
       def multi_strategy
@@ -131,6 +145,10 @@ module SnippetExtractor
           self.saved_lines.append(self.current_line)
         end
         self.current_line = ""
+      end
+
+      def save_last_line
+        self.saved_lines.append(self.current_line) unless self.current_line.strip.empty?
       end
     end
   end

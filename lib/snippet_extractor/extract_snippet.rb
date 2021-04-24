@@ -1,11 +1,12 @@
 module SnippetExtractor
   class ExtractSnippet
     include Mandate
+    include Extended
 
     initialize_with :code, :language
 
     def call
-      return Extended.(code, ignore_list) if ignore_list[0].include? "!e"
+      return ExtendedExtractor.(code, ignore_list).join if ignore_list[0].include? "!e"
 
       lines.drop_while do |line|
         naked_line = line.strip
