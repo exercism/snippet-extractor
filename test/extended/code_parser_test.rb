@@ -289,12 +289,12 @@ module SnippetExtractor
             ab1 ad1 ae1
             ac2 at2 ae2
             cd3 cd3 sdf3
-        CODE
+          CODE
         expected =
           <<~CODE
             2
             cd3 cd3 sdf3
-        CODE
+          CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join

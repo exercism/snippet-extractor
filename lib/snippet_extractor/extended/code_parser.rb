@@ -57,11 +57,11 @@ module SnippetExtractor
         save_if_newline_reached(skipped)
         self.scan_index += skipped
 
-        unless action.instance_of? Just
-          self.current_action = action
-        else
+        if action.instance_of? Just
           self.current_action = self.queued_multiline
           self.queued_multiline = nil
+        else
+          self.current_action = action
         end
       end
 

@@ -6,6 +6,7 @@ module SnippetExtractor
 
     def call
       return Extended.(code, ignore_list) if ignore_list[0].include? "!e"
+
       lines.drop_while do |line|
         naked_line = line.strip
         next true if naked_line.empty?

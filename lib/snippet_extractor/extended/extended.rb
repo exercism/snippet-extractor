@@ -10,7 +10,6 @@ module SnippetExtractor
 
         CodeParser.new(code, SyntaxTrieFactory.(RuleParser.(rules[1..]))).parse[0..10]
       end
-
     end
   end
 end
