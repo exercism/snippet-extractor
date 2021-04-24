@@ -18,10 +18,10 @@ module SnippetExtractor
     class RuleParser
       include Mandate
 
-      initialize_with :rule_text
+      initialize_with :rule_lines
 
       def call
-        rule_text.lines.
+        rule_lines.
           reject { |line| line.strip.empty? }.
           map(&:downcase).
           map { |line| line.delete("\n") }.

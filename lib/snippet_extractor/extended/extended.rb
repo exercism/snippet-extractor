@@ -1,21 +1,16 @@
 module SnippetExtractor
   module Extended
-    class ExtractSnippetExtended
+    class Extended
       include Mandate
 
-      initialize_with :language
+      initialize_with :code, :rules
 
       def call
-        raise 'Given file is not a extended version rule text' if rule_text[0] != "!e"
+        raise 'Given file is not a extended version rule text' unless rules[0].include? "!e"
 
-        CodeParser.(code, SyntaxTrieFactory.(RuleParser.(rule_text)))[0..10]
+        CodeParser.new(code, SyntaxTrieFactory.(RuleParser.(rules[1..]))).parse[0..10]
       end
 
-      memoize
-      def rule_text
-        slug = language.to_s.gsub(/[^a-z0-9-]/, '')
-        File.read(File.expand_path("../../languages/#{slug}.txt", __FILE__)).lines.map(&:rstrip)
-      end
     end
   end
 end

@@ -9,6 +9,7 @@ module SnippetExtractor
 
         @current_line = ""
         @current_action = nil
+        @queued_multiline = nil
 
         @saved_lines = []
       end
@@ -26,7 +27,7 @@ module SnippetExtractor
 
       private
       attr_accessor :code, :syntax_trie, :scan_index, :current_syntax_node, :current_line, :current_line_skipped,
-                    :current_action, :saved_lines
+                    :current_action, :queued_multiline, :saved_lines
 
       def try_match_first_word
         try_match(syntax_trie.root.get_match_node(' ')) if syntax_trie.root.has_match?(' ')
@@ -47,9 +48,21 @@ module SnippetExtractor
       def execute_action(action, skipped)
         return if action.nil?
 
+        if action.instance_of? Multi
+          self.queued_multiline = action
+          execute_action(action.start_action, skipped)
+          return
+        end
+
         save_if_newline_reached(skipped)
         self.scan_index += skipped
-        self.current_action = (action unless action.instance_of? Just)
+
+        unless action.instance_of? Just
+          self.current_action = action
+        else
+          self.current_action = self.queued_multiline
+          self.queued_multiline = nil
+        end
       end
 
       def save_if_newline_reached(skipped = 1)
@@ -75,12 +88,15 @@ module SnippetExtractor
           save_if_newline_reached
           self.scan_index += 1
         else
-          rubexecute_action(action, skipped)
+          execute_action(action, skipped)
         end
       end
 
       def line_strategy
-        self.current_action = nil if self.code[self.scan_index] == "\n"
+        if self.code[self.scan_index] == "\n"
+          self.current_action = self.queued_multiline
+          self.queued_multiline = nil
+        end
         save_if_newline_reached
         self.scan_index += 1
       end
@@ -104,7 +120,9 @@ module SnippetExtractor
       end
 
       def scan_char(lookahead = 0)
-        self.code[self.scan_index + lookahead]
+        character = self.code[self.scan_index + lookahead]
+
+        character.strip.empty? ? ' ' : character
       end
 
       def save_current_line
