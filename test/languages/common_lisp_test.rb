@@ -31,6 +31,7 @@ module SnippetExtractor
       end
 
       def test_extended_example
+        # Code snippet taken from https://stackoverflow.com/a/6365579/7948842 by acelent
         code = <<~CODE
           ;;;; Math Utilities
 
