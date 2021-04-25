@@ -136,7 +136,7 @@ module SnippetExtractor
       def scan_char(lookahead = 0)
         character = self.code[self.scan_index + lookahead]
 
-        character.strip.empty? ? ' ' : character
+        character.strip.empty? ? ' ' : character.downcase
       end
 
       def save_current_line
