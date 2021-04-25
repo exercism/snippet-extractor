@@ -26,7 +26,7 @@ module SnippetExtractor
         assert_equal expected, ExtractSnippet.(code, :elixir)
       end
 
-      def test_full_example
+      def test_extended_example
         # Code snippet taken from https://culttt.com/2016/10/19/writing-comments-documentation-elixir/
         code = <<~CODE
           defmodule Maths do
