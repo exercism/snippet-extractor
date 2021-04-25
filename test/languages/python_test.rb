@@ -43,6 +43,11 @@ module SnippetExtractor
           # followed by code.
           WORDS = re.compile("[a-z0-9]+(['][a-z]+)?")#Is a regex
 
+          """
+          Another block comment
+          two lines
+          """
+          
           def count_words(text):
               '''
               Seriously it will count words

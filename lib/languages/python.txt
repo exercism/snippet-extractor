@@ -1,5 +1,6 @@
 !e
 #\p
 '''\pj-->>'''\pj
+"""\pj-->>"""\pj
 import
 from
