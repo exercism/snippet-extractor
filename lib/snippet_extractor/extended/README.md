@@ -33,8 +33,8 @@ table for the different rules and what they'll match.
 Note: `id\ ` is a valid rule and is the same as `id`. You can use that if you need a rule that needs to use `\ ` character,
 for example: `\id\\` that will match with the string `\id\ `
 
-* Character repeating rule -> Add + after a character to mark it for 1..n repetition. Useful for comment rules like
-`#+[` that will match `#[` and `#####[`
+* Character repeating rule -> Add + after a character to mark it for 2..n repetition. Useful for comment rules like
+`#+[` that will match `##[` and `#####[`. WILL NOT match `#[` so use another rule for that specific scenario
 
 * Multiline rule -> Add -->> between two rules to mark the rule as multiline. All the text between the two rules will be skipped,
 plus all the text the end rule would skip normally.
@@ -105,14 +105,7 @@ All of these are open to future improvements if a track needs it, until we have 
   * Simple rules: they need to use the same action (skip line, or skip just)
   * Multiline rules, they need to have the same start action. Their end rules will then be merged into the multiline
     end syntax tree
-* For repeat characters, it wont be allowed if there is any case where two rules have the same character at the same 
-  position, one with the `+` rule and the other without.
-  * Example: `word` and `wo+rd`
-  * Multiple rules with the repeat char rule but with different tails are allowed, or those whose actual id is different
-    * Example: `wo+rd` and `wo+rk`, or `wo+rd` and `word\p` (their actual ids are ` wo+rd ` and `word`)
-  * It wont be allowed if one of them doesn't have a tail, because you have no way to know which option to use.
-    * Example : `w+\p` and `w+` will give a conflict. Should he look for a space, or any other character?
-* A token repeat character at the beginning will also throw an exception. There is nothing to repeat.
+* A token repeat character at the beginning will throw an exception. There is nothing to repeat.
 
 # Improvements
 

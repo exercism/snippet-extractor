@@ -49,6 +49,26 @@ module SnippetExtractor
         assert_equal expected, ExtendedExtractor.(code, rules).join
       end
 
+      def test_matches_ignore_case
+        # Given
+        rules = ["!e", "Ab1"]
+        code =
+          <<~CODE
+            aB1 ad1 ae1
+            ac2 at2 an2
+            cd3 cd3 sdf3
+        CODE
+        expected =
+          <<~CODE
+            ac2 at2 an2
+            cd3 cd3 sdf3
+        CODE
+
+        # Expect
+        assert_equal expected, ExtendedExtractor.(code, rules).join
+      end
+
+
       def test_line_rule_partial_word_matches
         # Given
         rules = ["!e", 'ab1\p']

@@ -56,11 +56,7 @@ module SnippetExtractor
       def get_info_for_next_node(word)
         next_letter = word[0]
         next_node_type = if next_letter == "+"
-                           if word[1..].empty?
-                             RepeatNodeFinish
-                           else
-                             RepeatNode
-                           end
+                           RepeatNode
                          else
                            Node
                          end
