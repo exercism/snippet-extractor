@@ -116,6 +116,10 @@ All of these are open to future improvements if a track needs it, until we have 
 * Should we rstrip all saved lines of code? Right now I wanted to be safe and save them. It also had as a bonus that I
   could correctly asses matches and skipped in what I was expecting of. In the site they will be invisible, but I dunno.
   Opinions?
+* Adding optional token syntax. It should avoid having to deal with many options for declaring something.
+  Something like `@moduledoc [''',"""]\pj-->>[''',"""]\pj` but finding suitable and not conflicting delimiters could be 
+  hard. Implementation would be simple enough, just explode the options into all possible rules and then flat map the
+  result of the rule parser on it. Which characters would make it easy and not conflicting to implement this?
 
 **If you find something missing, please open an issue so we can check its inclusion**
 
