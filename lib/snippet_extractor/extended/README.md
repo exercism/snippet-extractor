@@ -120,6 +120,7 @@ All of these are open to future improvements if a track needs it, until we have 
   Something like `@moduledoc [''',"""]\pj-->>[''',"""]\pj` but finding suitable and not conflicting delimiters could be 
   hard. Implementation would be simple enough, just explode the options into all possible rules and then flat map the
   result of the rule parser on it. Which characters would make it easy and not conflicting to implement this?
+* Add an option to specify an unmatchable rule that can be used to skip until the end of file in multiline rules.
 
 **If you find something missing, please open an issue so we can check its inclusion**
 

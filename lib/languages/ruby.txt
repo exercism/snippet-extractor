@@ -1,3 +1,5 @@
 !e
 #\p
 require
+=begin-->>=end
+__END__-->>[toTheEndOfFilemaksklnlkjanmelnjlknSomethingUnmatchable]//Not the best I know
