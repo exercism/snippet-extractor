@@ -94,7 +94,11 @@ Result: *empty*
 
 All of these are open to future improvements if a track needs it, until we have the representers to back this up.
 
-Not allowed rule combinations
+* Tabs are quirky. If you use a multiline comment which ends before a line which has actual code, the tabs will
+  be ignored and the line will seem like wrongly indented. Is QUITE hard to fix without clotting a lot more the code
+  and I don't think is something that will happen often, if at all.
+
+####Not allowed rule combinations
 * As a rule of thumb, any rule clash will be not allowed unless there is a way to be totally sure of which one
   should be picked.
 * For any rules whose actual id/start actual id coincide, they'll be allowed if:
@@ -114,6 +118,11 @@ Not allowed rule combinations
 
 * We are able to support arguments supplying them after the `!e` in the first line. For example, not limiting
   ourselves to 10 lines. It might be useful to add extra meta functionality for specific tracks.
+* Repeat character rule is quirky. Is the most painful in the code, but is needed for some languages. Leave it at is? 
+  Not? Disable it? Yada yada? Open to suggestions.
+* Should we rstrip all saved lines of code? Right now I wanted to be safe and save them. It also had as a bonus that I
+  could correctly asses matches and skipped in what I was expecting of. In the site they will be invisible, but I dunno.
+  Opinions?
 
 **If you find something missing, please open an issue so we can check its inclusion**
 
