@@ -253,9 +253,9 @@ module SnippetExtractor
         assert_equal expected, ExtendedExtractor.(code, rules).join
       end
 
-      def multi_line_rule_skip_matches_inside
+      def test_multi_line_rule_skip_matches_inside
         # Given
-        rules = ["!e", '3\jp-->>`8\jp`', '1\jp-->>`5\jp']
+        rules = ["!e", '3\jp-->>8\jp', '1\jp-->>5\jp']
 
         code =
           <<~CODE
@@ -265,9 +265,63 @@ module SnippetExtractor
           CODE
         expected =
           <<~CODE
+            ab
              an6
             cd7 cd8 sdf9
           CODE
+
+        # Expect
+        assert_equal expected, ExtendedExtractor.(code, rules).join
+      end
+
+      def test_repeat_char_wont_match_1_char
+        # Given
+        rules= ['!e','a+\p']
+        syntax_trie = SyntaxTrie.new(
+          Node.new(
+            { "a": Node.new(
+              { "+": Node.new(
+                {}, "a+", Line.new("a+")
+              ) }.transform_keys!(&:to_s), "a", nil
+            ) }.transform_keys!(&:to_s), "", nil
+          )
+        )
+        code =
+          <<~CODE
+            a1 cdefgh2
+            aa1 cdefgh2
+            a cdefgh2
+            aa cdefgh2
+        CODE
+
+        expected =
+          <<~CODE
+            a1 cdefgh2
+            a cdefgh2
+        CODE
+
+        # Expect
+        assert_equal expected, ExtendedExtractor.(code, rules).join
+      end
+
+      def test_repeat_char_default_is_tailless
+        # Given
+        rules=['!e','a+\p', 'a+1\pj']
+
+        code =
+          <<~CODE
+            a1 cdefgh2
+            aa1 cdefgh2
+            a cdefgh2
+            aa cdefgh2
+        CODE
+
+        expected =
+          <<~CODE
+            a1 cdefgh2
+             cdefgh2
+            a cdefgh2
+        CODE
 
         # Expect
         assert_equal expected, ExtendedExtractor.(code, rules).join

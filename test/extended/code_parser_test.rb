@@ -420,7 +420,7 @@ module SnippetExtractor
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
       end
 
-      def multi_line_rule_skip_matches_inside
+      def test_multi_line_rule_skip_matches_inside
         # Given
         syntax_trie = SyntaxTrie.new(
           Node.new(
@@ -442,9 +442,71 @@ module SnippetExtractor
           CODE
         expected =
           <<~CODE
+            ab
              an6
             cd7 cd8 sdf9
           CODE
+
+        # Expect
+        assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
+      end
+
+      def test_repeat_char_wont_match_1_char
+        # Given
+        syntax_trie = SyntaxTrie.new(
+          Node.new(
+            { "a": Node.new(
+              { "+": Node.new(
+                {}, "a+", Line.new("a+")
+              ) }.transform_keys!(&:to_s), "a", nil
+            ) }.transform_keys!(&:to_s), "", nil
+          )
+        )
+        code =
+          <<~CODE
+            a1 cdefgh2
+            aa1 cdefgh2
+            a cdefgh2
+            aa cdefgh2
+          CODE
+
+        expected =
+          <<~CODE
+            a1 cdefgh2
+            a cdefgh2
+          CODE
+
+        # Expect
+        assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
+      end
+
+      def test_repeat_char_default_is_tailless
+        # Given
+        syntax_trie = SyntaxTrie.new(
+          Node.new(
+            { "a": Node.new(
+              { "+": Node.new(
+                { "1": Node.new(
+                  {}, "a+1", Just.new("a+1")
+                ) }.transform_keys!(&:to_s), "a+", Line.new("a+")
+              ) }.transform_keys!(&:to_s), "a", nil
+            ) }.transform_keys!(&:to_s), "", nil
+          )
+        )
+        code =
+          <<~CODE
+            a1 cdefgh2
+            aa1 cdefgh2
+            a cdefgh2
+            aa cdefgh2
+        CODE
+
+        expected =
+          <<~CODE
+            a1 cdefgh2
+             cdefgh2
+            a cdefgh2
+        CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
