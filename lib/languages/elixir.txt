@@ -1,4 +1,23 @@
 !e
 #\p
 @moduledoc """-->>"""
+@moduledoc '''-->>'''
+@moduledoc ~s"""-->>"""
+@moduledoc ~s'''-->>'''
+@moduledoc ~S"""-->>"""
+@moduledoc ~S'''-->>'''
+@moduledoc "\p
 @doc """-->>"""
+@doc '''-->>'''
+@doc ~s"""-->>"""
+@doc ~s'''-->>'''
+@doc ~S"""-->>"""
+@doc ~S'''-->>'''
+@doc "\p
+@typedoc '''-->>'''
+@typedoc """-->>"""
+@typedoc ~s'''-->>'''
+@typedoc ~s"""-->>"""
+@typedoc ~S'''-->>'''
+@typedoc ~S"""-->>"""
+@typedoc "\p

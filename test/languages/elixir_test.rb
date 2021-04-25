@@ -26,14 +26,30 @@ module SnippetExtractor
         assert_equal expected, ExtractSnippet.(code, :elixir)
       end
 
-      def test_extended_example
+      def test_documentation_heredoc_double_quote
         # Code snippet taken from https://culttt.com/2016/10/19/writing-comments-documentation-elixir/
         code = <<~CODE
           defmodule Maths do
             @moduledoc """
             A module that implements functions for performing simple
             mathematic calculations
+
+            ```elixir
+              @doc "Add two numbers together"
+              def add(left, right) do
+                # Add two numbers together
+                left + right
+              end
+            end
+            ```
             """
+
+            @typedoc """
+                iex> 1 + * 1
+                1
+            """
+
+            @type t :: any()
 
             @doc """
             Add two numbers together
@@ -47,6 +63,150 @@ module SnippetExtractor
 
         expected = <<~CODE
           defmodule Maths do
+            @type t :: any()
+            def add(left, right) do
+              left + right
+            end
+          end
+        CODE
+
+        assert_equal expected, ExtractSnippet.(code, :elixir)
+      end
+
+      def test_documentation_heredoc_single_quote
+        # Code snippet taken from https://culttt.com/2016/10/19/writing-comments-documentation-elixir/
+        code = <<~CODE
+          defmodule Maths do
+            @moduledoc '''
+            A module that implements functions for performing simple
+            mathematic calculations
+            '''
+
+            @typedoc '''
+                iex> 1 + * 1
+                1
+            '''
+
+            @type t :: any()
+
+            @doc '''
+            Add two numbers together
+            '''
+            def add(left, right) do
+              # Add two numbers together
+              left + right
+            end
+          end
+        CODE
+
+        expected = <<~CODE
+          defmodule Maths do
+            @type t :: any()
+            def add(left, right) do
+              left + right
+            end
+          end
+        CODE
+
+        assert_equal expected, ExtractSnippet.(code, :elixir)
+      end
+
+      def test_documentation_sigil_heredoc_double_quote
+        # Code snippet taken from https://culttt.com/2016/10/19/writing-comments-documentation-elixir/
+        code = <<~CODE
+          defmodule Maths do
+            @moduledoc ~S'''
+            A module that implements functions for performing simple
+            mathematic calculations
+            '''
+
+            @typedoc ~S'''
+                iex> 1 + * 1
+                1
+            '''
+
+            @type t :: any()
+
+            @doc ~S'''
+            Add two numbers together
+            '''
+            def add(left, right) do
+              # Add two numbers together
+              left + right
+            end
+          end
+        CODE
+
+        expected = <<~CODE
+          defmodule Maths do
+            @type t :: any()
+            def add(left, right) do
+              left + right
+            end
+          end
+        CODE
+
+        assert_equal expected, ExtractSnippet.(code, :elixir)
+      end
+
+      def test_documentation_sigil_heredoc_single_quote
+        # Code snippet taken from https://culttt.com/2016/10/19/writing-comments-documentation-elixir/
+        code = <<~CODE
+          defmodule Maths do
+            @moduledoc ~S'''
+            A module that implements functions for performing simple
+            mathematic calculations
+            '''
+
+            @typedoc ~S'''
+                iex> 1 + * 1
+                1
+            '''
+
+            @type t :: any()
+
+            @doc ~S'''
+            Add two numbers together
+            '''
+            def add(left, right) do
+              # Add two numbers together
+              left + right
+            end
+          end
+        CODE
+
+        expected = <<~CODE
+          defmodule Maths do
+            @type t :: any()
+            def add(left, right) do
+              left + right
+            end
+          end
+        CODE
+
+        assert_equal expected, ExtractSnippet.(code, :elixir)
+      end
+
+      def test_single_line_docs
+        # Code snippet taken from https://culttt.com/2016/10/19/writing-comments-documentation-elixir/
+        code = <<~CODE
+          defmodule Maths do
+            @moduledoc "A module that implements functions for performing simple mathematic calculations"
+
+            @typedoc "anything..."
+            @type t :: any()
+
+            @doc "Add two numbers together"
+            def add(left, right) do
+              # Add two numbers together
+              left + right
+            end
+          end
+        CODE
+
+        expected = <<~CODE
+          defmodule Maths do
+            @type t :: any()
             def add(left, right) do
               left + right
             end
