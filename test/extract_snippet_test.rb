@@ -3,6 +3,38 @@ require "test_helper"
 module SnippetExtractor
   module Languages
     class RubyTest < Minitest::Test
+      def test_returns_first_10_loc_on_missing_language
+        code = <<~CODE
+          Loc 1
+          Loc 2
+          Loc 3
+          Loc 4
+          Loc 5
+          Loc 6
+          Loc 6
+          Loc 8
+          Loc 9
+          Loc 10
+          Loc 11
+          Loc 12
+        CODE
+
+        expected = <<~CODE
+          Loc 1
+          Loc 2
+          Loc 3
+          Loc 4
+          Loc 5
+          Loc 6
+          Loc 6
+          Loc 8
+          Loc 9
+          Loc 10
+        CODE
+
+        assert_equal expected, ExtractSnippet.(code, :foobar)
+      end
+
       def test_strips_correctly
         code = <<~CODE
           # This is a file

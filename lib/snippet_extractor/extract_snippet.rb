@@ -6,15 +6,22 @@ module SnippetExtractor
     initialize_with :code, :language
 
     def call
-      return ExtendedExtractor.(code, ignore_list).join if ignore_list[0].include? "!e"
+      processed_lines[0...10].join
+    end
 
+    private
+    def processed_lines
+      return ExtendedExtractor.(code, ignore_list).join if ignore_list[0].include? "!e"
+      
       lines.drop_while do |line|
         naked_line = line.strip
         next true if naked_line.empty?
         next true if ignore_list.any? { |ignore| naked_line.start_with?(ignore) }
 
         false
-      end[0...10].join
+      end
+    rescue Errno::ENOENT
+      lines
     end
 
     def lines
