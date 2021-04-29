@@ -9,6 +9,11 @@ using multiline and partial line rules.
 
 It will then retrieve the first 10 lines of remaining code.
 
+### Extended flags
+
+Add these flags after !e separated by spaces to modify the behaviour of the extractor
+* stop_at_first_loc -> Everything after the first line of code will be included.
+
 ### Syntax
 
 `id` means any string. The strings are matched regardless of case. 

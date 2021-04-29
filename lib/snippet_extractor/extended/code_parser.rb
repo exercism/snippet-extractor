@@ -1,9 +1,10 @@
 module SnippetExtractor
   module Extended
     class CodeParser
-      def initialize(code, syntax_trie)
+      def initialize(code, syntax_trie, arguments=[])
         @code = code
         @syntax_trie = syntax_trie
+        @arguments = arguments
 
         @scan_index = 0
 
@@ -13,6 +14,8 @@ module SnippetExtractor
 
         @saved_lines = []
       end
+
+      STOP_AT_FIRST_LINE_OF_CODE = "stop_at_first_loc".freeze
 
       def parse
         action, skipped = try_match_first_word
@@ -27,13 +30,15 @@ module SnippetExtractor
 
       private
       attr_accessor :code, :syntax_trie, :scan_index, :current_syntax_node, :current_line, :current_line_skipped,
-                    :current_action, :queued_multiline, :saved_lines
+                    :current_action, :queued_multiline, :saved_lines, :arguments
 
       def try_match_first_word
         try_match(syntax_trie.root.get_match_node(' ')) if syntax_trie.root.has_match?(' ')
       end
 
       def try_match(from_node = nil)
+        return [nil, 0] if self.arguments.include?(STOP_AT_FIRST_LINE_OF_CODE) && !(self.saved_lines.empty? && self.current_line.empty?)
+
         current_syntax_node = from_node || self.syntax_trie.root
         scan_lookahead = 0
 

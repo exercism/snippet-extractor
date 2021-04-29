@@ -325,6 +325,26 @@ module SnippetExtractor
         # Expect
         assert_equal expected, ExtendedExtractor.(code, rules).join
       end
+
+      def test_first_loc_argument
+        # Given
+        rules = ['!e stop_at_first_loc', 'ab1']
+
+        code =
+          <<~CODE
+            ab1 ad1 ae1
+            ac2 ab1 ad1 ae1
+            ab1 ad1 ae1
+        CODE
+        expected =
+          <<~CODE
+            ac2 ab1 ad1 ae1
+            ab1 ad1 ae1
+        CODE
+
+        # Expect
+        assert_equal expected, ExtendedExtractor.(code, rules).join
+      end
     end
   end
 end

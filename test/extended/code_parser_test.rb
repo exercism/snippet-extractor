@@ -511,6 +511,37 @@ module SnippetExtractor
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
       end
+
+      def test_first_loc_argument
+        # Given
+        syntax_trie = SyntaxTrie.new(
+          Node.new(
+            { ' ': Node.new(
+              { 'a': Node.new(
+                { 'b': Node.new(
+                  { '1': Node.new(
+                    { ' ': Node.new({}, ' ab1 ', Line.new('ab1')) }.transform_keys!(&:to_s)
+                  ) }.transform_keys!(&:to_s)
+                ) }.transform_keys!(&:to_s)
+              ) }.transform_keys!(&:to_s)
+            ) }.transform_keys!(&:to_s)
+          )
+        )
+        code =
+          <<~CODE
+            ab1 ad1 ae1
+            ac2 ab1 ad1 ae1
+            ab1 ad1 ae1
+        CODE
+        expected =
+          <<~CODE
+            ac2 ab1 ad1 ae1
+            ab1 ad1 ae1
+        CODE
+
+        # Expect
+        assert_equal expected, CodeParser.new(code, syntax_trie, ['stop_at_first_loc']).parse.join
+      end
     end
   end
 end

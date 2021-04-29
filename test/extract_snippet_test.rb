@@ -104,15 +104,16 @@ module SnippetExtractor
           require 'json'
 
           # And then eventually the code
-          class TwoFer#Comment will be ignored
-            ...#This too
-          # :D
+          class TwoFer#Comment will not be ignored because of flag
+            ...#This neither
+          # Comment
           end
         CODE
 
         expected = <<~CODE
-          class TwoFer
-            ...
+          class TwoFer#Comment will not be ignored because of flag
+            ...#This neither
+          # Comment
           end
         CODE
 
