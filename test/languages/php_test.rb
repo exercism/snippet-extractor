@@ -69,7 +69,7 @@ module SnippetExtractor
           public class Grains
           {//comments
             //Comments
-            /* More 
+            /* More#{' '}
               comments*/
               function square($n/*Even more comments*/)
               {

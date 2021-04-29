@@ -57,17 +57,16 @@ module SnippetExtractor
             aB1 ad1 ae1
             ac2 at2 an2
             cd3 cd3 sdf3
-        CODE
+          CODE
         expected =
           <<~CODE
             ac2 at2 an2
             cd3 cd3 sdf3
-        CODE
+          CODE
 
         # Expect
         assert_equal expected, ExtendedExtractor.(code, rules).join
       end
-
 
       def test_line_rule_partial_word_matches
         # Given
@@ -276,7 +275,7 @@ module SnippetExtractor
 
       def test_repeat_char_wont_match_1_char
         # Given
-        rules= ['!e','a+\p']
+        rules = ['!e', 'a+\p']
         syntax_trie = SyntaxTrie.new(
           Node.new(
             { "a": Node.new(
@@ -292,13 +291,13 @@ module SnippetExtractor
             aa1 cdefgh2
             a cdefgh2
             aa cdefgh2
-        CODE
+          CODE
 
         expected =
           <<~CODE
             a1 cdefgh2
             a cdefgh2
-        CODE
+          CODE
 
         # Expect
         assert_equal expected, ExtendedExtractor.(code, rules).join
@@ -306,7 +305,7 @@ module SnippetExtractor
 
       def test_repeat_char_default_is_tailless
         # Given
-        rules=['!e','a+\p', 'a+1\pj']
+        rules = ['!e', 'a+\p', 'a+1\pj']
 
         code =
           <<~CODE
@@ -314,14 +313,14 @@ module SnippetExtractor
             aa1 cdefgh2
             a cdefgh2
             aa cdefgh2
-        CODE
+          CODE
 
         expected =
           <<~CODE
             a1 cdefgh2
              cdefgh2
             a cdefgh2
-        CODE
+          CODE
 
         # Expect
         assert_equal expected, ExtendedExtractor.(code, rules).join
