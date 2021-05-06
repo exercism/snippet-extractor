@@ -2,19 +2,17 @@ require "test_helper"
 
 module SnippetExtractor
   module Extended
-    # Not ideal but adding the class identifier will worse legibility and break rubocop length rule
-    SyntaxTrieFactory
-    RuleParser
-
     class SyntaxTrieFactoryMultilineRuleTest < Minitest::Test
       def test_simple_multiline_rule
         # Given
         rules = [MultilineRule.new(SimpleRule.new('w', 'p'), SimpleRule.new('o', 'j'))]
-        expected = syntax_trie_maker({ 'w': [
-                                       {},
-                                       Multi.new(Line.new('w'),
-                                                 syntax_trie_maker({ ' ': { 'o': { ' ': [{}, Just.new('o')] } } }))
-                                     ] })
+        expected = syntax_trie_maker(
+          { 'w': [
+            {},
+            Multi.new(Line.new('w'),
+                      syntax_trie_maker({ ' ': { 'o': { ' ': [{}, Just.new('o')] } } }))
+          ] }
+        )
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
@@ -26,16 +24,18 @@ module SnippetExtractor
       def test_mix_up
         # Given
         rules = [SimpleRule.new('w', 'p'), MultilineRule.new(SimpleRule.new('word', 'p'), SimpleRule.new('oth', ''))]
-        expected = syntax_trie_maker({ 'w': [
-                                       { 'o': { 'r': { 'd': [{},
-                                                             Multi.new(Line.new('word'),
-                                                                       syntax_trie_maker({ ' ': { 'o': {
-                                                                                           't': { 'h': { ' ': [
-                                                                                             {}, Line.new('oth')
-                                                                                           ] } }
-                                                                                         } } }))] } } },
-                                       Line.new('w')
-                                     ] })
+        expected = syntax_trie_maker(
+          { 'w': [
+            { 'o': { 'r': { 'd': [{},
+                                  Multi.new(Line.new('word'),
+                                            syntax_trie_maker({ ' ': { 'o': {
+                                                                't': { 'h': { ' ': [
+                                                                  {}, Line.new('oth')
+                                                                ] } }
+                                                              } } }))] } } },
+            Line.new('w')
+          ] }
+        )
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)
@@ -56,13 +56,15 @@ module SnippetExtractor
         # Given
         rules = [MultilineRule.new(SimpleRule.new('w', 'p'), SimpleRule.new('o', 'j')),
                  MultilineRule.new(SimpleRule.new('w', 'p'), SimpleRule.new('od', 'j'))]
-        expect = syntax_trie_maker({ 'w': [
-                                     {},
-                                     Multi.new(Line.new('w'),
-                                               syntax_trie_maker({ ' ': { 'o': { ' ': [{}, Just.new('o')],
-                                                                                 'd': { ' ': [{},
-                                                                                              Just.new('od')] } } } }))
-                                   ] })
+        expect = syntax_trie_maker(
+          { 'w': [
+            {},
+            Multi.new(Line.new('w'),
+                      syntax_trie_maker({ ' ': { 'o': { ' ': [{}, Just.new('o')],
+                                                        'd': { ' ': [{},
+                                                                     Just.new('od')] } } } }))
+          ] }
+        )
 
         # When
         syntax_trie = SyntaxTrieFactory.(rules)

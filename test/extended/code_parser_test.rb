@@ -2,18 +2,14 @@ require "test_helper"
 
 module SnippetExtractor
   module Extended
-    SyntaxTrieFactory
-    CodeParser
-
     class CodeParserTest < Minitest::Test
       def test_empty_syntax_trie_return_rules
         # Given
         syntax_trie = SyntaxTrie.new(Node.new({}, "", nil))
-        code =
-          <<~CODE
-            line1
-            line2
-          CODE
+        code = <<~CODE
+          line1
+          line2
+        CODE
         expected = code
 
         # Expect
@@ -57,17 +53,15 @@ module SnippetExtractor
             ) }.transform_keys!(&:to_s)
           )
         )
-        code =
-          <<~CODE
-            ab1 ad1 ae1
-            ac2 at2 an2
-            cd3 cd3 sdf3
-          CODE
-        expected =
-          <<~CODE
-            ac2 at2 an2
-            cd3 cd3 sdf3
-          CODE
+        code = <<~CODE
+          ab1 ad1 ae1
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
+        expected = <<~CODE
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -88,17 +82,15 @@ module SnippetExtractor
             ) }.transform_keys!(&:to_s)
           )
         )
-        code =
-          <<~CODE
-            aB1 ad1 ae1
-            ac2 at2 an2
-            cd3 cd3 sdf3
-          CODE
-        expected =
-          <<~CODE
-            ac2 at2 an2
-            cd3 cd3 sdf3
-          CODE
+        code = <<~CODE
+          aB1 ad1 ae1
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
+        expected = <<~CODE
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -119,18 +111,16 @@ module SnippetExtractor
             ) }.transform_keys!(&:to_s)
           )
         )
-        code =
-          <<~CODE
-            ab1 ad1 ae1
-            ac2 at2 an2
-            cd3 cd3 sdf3
-          CODE
-        expected =
-          <<~CODE
-            ab1 ad1
-            ac2 at2 an2
-            cd3 cd3 sdf3
-          CODE
+        code = <<~CODE
+          ab1 ad1 ae1
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
+        expected = <<~CODE
+          ab1 ad1
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -147,17 +137,15 @@ module SnippetExtractor
             ) }.transform_keys!(&:to_s)
           )
         )
-        code =
-          <<~CODE
-            ab1 ad1 ae1
-            ac2 at2 an2
-            cd3 cd3 sdf3
-          CODE
-        expected =
-          <<~CODE
-            ac2 at2 an2
-            cd3 cd3 sdf3
-          CODE
+        code = <<~CODE
+          ab1 ad1 ae1
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
+        expected = <<~CODE
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -178,18 +166,16 @@ module SnippetExtractor
             ) }.transform_keys!(&:to_s)
           )
         )
-        code =
-          <<~CODE
-            ab1 ad1 ae1
-            ac2 at2 an2
-            cd3 cd3 sdf3
-          CODE
-        expected =
-          <<~CODE
-            ad1 ae1
-            ac2 at2 an2
-            cd3 cd3 sdf3
-          CODE
+        code = <<~CODE
+          ab1 ad1 ae1
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
+        expected = <<~CODE
+          ad1 ae1
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -206,18 +192,16 @@ module SnippetExtractor
             ) }.transform_keys!(&:to_s)
           )
         )
-        code =
-          <<~CODE
-            ab1 ad1 ae1
-            ac2 at2 an2
-            cd3 cd3 sdf3
-          CODE
-        expected =
-          <<~CODE
-             ad1 ae1
-            ac2 at2 an2
-            cd3 cd3 sdf3
-          CODE
+        code = <<~CODE
+          ab1 ad1 ae1
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
+        expected = <<~CODE
+           ad1 ae1
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -242,16 +226,14 @@ module SnippetExtractor
           )
         )
 
-        code =
-          <<~CODE
-            ab1 ad1 ae1
-            ac2 at2 an2
-            cd3 cd3 sdf3
-          CODE
-        expected =
-          <<~CODE
-            3 cd3 sdf3
-          CODE
+        code = <<~CODE
+          ab1 ad1 ae1
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
+        expected = <<~CODE
+          3 cd3 sdf3
+        CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -276,17 +258,15 @@ module SnippetExtractor
           )
         )
 
-        code =
-          <<~CODE
-            ab1 ad1 ae1
-            ac2 at2 an2
-            cd3 cd3 sdf3
-          CODE
-        expected =
-          <<~CODE
-            ab1#{' '}
-            cd3 cd3 sdf3
-          CODE
+        code = <<~CODE
+          ab1 ad1 ae1
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
+        expected = <<~CODE
+          ab1#{' '}
+          cd3 cd3 sdf3
+        CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -311,18 +291,16 @@ module SnippetExtractor
           )
         )
 
-        code =
-          <<~CODE
-            ab1 ad1 ae1
-            ac2 at2 ae2
-            cd3 cd3 sdf3
-          CODE
-        expected =
-          <<~CODE
-            1
-            ac2 at2 ae2
-            cd3 cd3 sdf3
-          CODE
+        code = <<~CODE
+          ab1 ad1 ae1
+          ac2 at2 ae2
+          cd3 cd3 sdf3
+        CODE
+        expected = <<~CODE
+          1
+          ac2 at2 ae2
+          cd3 cd3 sdf3
+        CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -347,17 +325,15 @@ module SnippetExtractor
           )
         )
 
-        code =
-          <<~CODE
-            ab1 ad1 ae1
-            ac2 at2 ae2
-            cd3 cd3 sdf3
-          CODE
-        expected =
-          <<~CODE
-            2
-            cd3 cd3 sdf3
-          CODE
+        code = <<~CODE
+          ab1 ad1 ae1
+          ac2 at2 ae2
+          cd3 cd3 sdf3
+        CODE
+        expected = <<~CODE
+          2
+          cd3 cd3 sdf3
+        CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -375,18 +351,16 @@ module SnippetExtractor
               '1': Node.new({}, '1', Line.new('1')) }.transform_keys!(&:to_s)
           )
         )
-        code =
-          <<~CODE
-            ab1 ad2 ae2
-            ac2 at2 an2
-            cd3 cd3 sdf3
-          CODE
-        expected =
-          <<~CODE
-             ad2 ae2
-            ac2 at2 an2
-            cd3 cd3 sdf3
-          CODE
+        code = <<~CODE
+          ab1 ad2 ae2
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
+        expected = <<~CODE
+           ad2 ae2
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -403,18 +377,16 @@ module SnippetExtractor
               '1': Node.new({}, '1', Line.new('1')) }.transform_keys!(&:to_s)
           )
         )
-        code =
-          <<~CODE
-            ab1 ad9 ae2
-            ac2 at2 an2
-            cd3 cd5 sdf3
-          CODE
-        expected =
-          <<~CODE
-            ab
-            ac2 at2 an2
-            cd3 cd5 sdf3
-          CODE
+        code = <<~CODE
+          ab1 ad9 ae2
+          ac2 at2 an2
+          cd3 cd5 sdf3
+        CODE
+        expected = <<~CODE
+          ab
+          ac2 at2 an2
+          cd3 cd5 sdf3
+        CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -434,18 +406,16 @@ module SnippetExtractor
               ) }.transform_keys!(&:to_s)
           )
         )
-        code =
-          <<~CODE
-            ab1 ad2 ae3
-            ac4 at5 an6
-            cd7 cd8 sdf9
-          CODE
-        expected =
-          <<~CODE
-            ab
-             an6
-            cd7 cd8 sdf9
-          CODE
+        code = <<~CODE
+          ab1 ad2 ae3
+          ac4 at5 an6
+          cd7 cd8 sdf9
+        CODE
+        expected = <<~CODE
+          ab
+           an6
+          cd7 cd8 sdf9
+        CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -462,19 +432,17 @@ module SnippetExtractor
             ) }.transform_keys!(&:to_s), "", nil
           )
         )
-        code =
-          <<~CODE
-            a1 cdefgh2
-            aa1 cdefgh2
-            a cdefgh2
-            aa cdefgh2
-          CODE
+        code = <<~CODE
+          a1 cdefgh2
+          aa1 cdefgh2
+          a cdefgh2
+          aa cdefgh2
+        CODE
 
-        expected =
-          <<~CODE
-            a1 cdefgh2
-            a cdefgh2
-          CODE
+        expected = <<~CODE
+          a1 cdefgh2
+          a cdefgh2
+        CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -493,20 +461,18 @@ module SnippetExtractor
             ) }.transform_keys!(&:to_s), "", nil
           )
         )
-        code =
-          <<~CODE
-            a1 cdefgh2
-            aa1 cdefgh2
-            a cdefgh2
-            aa cdefgh2
-          CODE
+        code = <<~CODE
+          a1 cdefgh2
+          aa1 cdefgh2
+          a cdefgh2
+          aa cdefgh2
+        CODE
 
-        expected =
-          <<~CODE
-            a1 cdefgh2
-             cdefgh2
-            a cdefgh2
-          CODE
+        expected = <<~CODE
+          a1 cdefgh2
+           cdefgh2
+          a cdefgh2
+        CODE
 
         # Expect
         assert_equal expected, CodeParser.new(code, syntax_trie).parse.join
@@ -527,16 +493,14 @@ module SnippetExtractor
             ) }.transform_keys!(&:to_s)
           )
         )
-        code =
-          <<~CODE
-            ab1 ad1 ae1
-            ac2 ab1 ad1 ae1
-            ab1 ad1 ae1
+        code = <<~CODE
+          ab1 ad1 ae1
+          ac2 ab1 ad1 ae1
+          ab1 ad1 ae1
         CODE
-        expected =
-          <<~CODE
-            ac2 ab1 ad1 ae1
-            ab1 ad1 ae1
+        expected = <<~CODE
+          ac2 ab1 ad1 ae1
+          ab1 ad1 ae1
         CODE
 
         # Expect

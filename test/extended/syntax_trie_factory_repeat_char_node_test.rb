@@ -2,10 +2,6 @@ require "test_helper"
 
 module SnippetExtractor
   module Extended
-    # Not ideal but adding the class identifier will worse legibility and break rubocop length rule
-    SyntaxTrieFactory
-    RuleParser
-
     class SyntaxTrieFactoryRepeatCharNodeTest < Minitest::Test
       def test_single_repeated_letter
         # Given

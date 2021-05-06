@@ -2,9 +2,6 @@ require "test_helper"
 
 module SnippetExtractor
   module Extended
-    SyntaxTrieFactory
-    RuleParser
-
     class SyntaxTrieFactorySimpleRuleTest < Minitest::Test
       def test_empty_rules_bring_empty_trie
         # Given
