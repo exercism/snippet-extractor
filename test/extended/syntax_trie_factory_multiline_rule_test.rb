@@ -2,7 +2,7 @@ require "test_helper"
 
 module SnippetExtractor
   module Extended
-    class SyntaxTrieFactoryMultilineRuleTest < Minitest::Test
+    class BuildSyntaxTrieMultilineRuleTest < Minitest::Test
       def test_simple_multiline_rule
         # Given
         rules = [MultilineRule.new(SimpleRule.new('w', 'p'), SimpleRule.new('o', 'j'))]
@@ -15,7 +15,7 @@ module SnippetExtractor
         )
 
         # When
-        syntax_trie = SyntaxTrieFactory.(rules)
+        syntax_trie = BuildSyntaxTrie.(rules)
 
         # Then
         assert_equal expected, syntax_trie
@@ -38,7 +38,7 @@ module SnippetExtractor
         )
 
         # When
-        syntax_trie = SyntaxTrieFactory.(rules)
+        syntax_trie = BuildSyntaxTrie.(rules)
 
         # Then
         assert_equal expected, syntax_trie
@@ -49,7 +49,7 @@ module SnippetExtractor
         rules = [SimpleRule.new('word', ''), MultilineRule.new(SimpleRule.new('word', ''), SimpleRule.new('asdf', ''))]
 
         # Expect
-        assert_raises { SyntaxTrieFactory.(rules) }
+        assert_raises { BuildSyntaxTrie.(rules) }
       end
 
       def test_multi_rules_with_same_start_rule_merge_end_rule_tries
@@ -67,7 +67,7 @@ module SnippetExtractor
         )
 
         # When
-        syntax_trie = SyntaxTrieFactory.(rules)
+        syntax_trie = BuildSyntaxTrie.(rules)
 
         # Then
         assert_equal expect, syntax_trie
@@ -79,7 +79,7 @@ module SnippetExtractor
                  MultilineRule.new(SimpleRule.new('w', 'pj'), SimpleRule.new('od', 'j'))]
 
         # Expect
-        assert_raises { SyntaxTrieFactory.(rules) }
+        assert_raises { BuildSyntaxTrie.(rules) }
       end
 
       def test_conflict_between_multirules_same_end_with_different_rules
@@ -88,7 +88,7 @@ module SnippetExtractor
                  MultilineRule.new(SimpleRule.new('w', 'p'), SimpleRule.new('o', ''))]
 
         # Expect
-        assert_raises { SyntaxTrieFactory.(rules) }
+        assert_raises { BuildSyntaxTrie.(rules) }
       end
 
       # def test_single_repeated_letter_in_whole_word
@@ -98,7 +98,7 @@ module SnippetExtractor
       #                                           RepeatedLetterNode.new("w", { ' ': [{}, Line.new('w+')] }) } })
       #
       #   # When
-      #   syntax_trie = SyntaxTrieFactory.(rules)
+      #   syntax_trie = BuildSyntaxTrie.(rules)
       #
       #   # Then
       #   assert_equal expected, syntax_trie

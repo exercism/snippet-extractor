@@ -13,7 +13,7 @@ module SnippetExtractor
 
     private
     def processed_lines
-      return ExtendedExtractor.(code, ignore_list).join if ignore_list[0].include? "!e"
+      return Extended::Extract.(code, ignore_list).join if ignore_list[0].include? "!e"
 
       extracted_lines = lines.drop_while do |line|
         naked_line = line.strip

@@ -1,6 +1,6 @@
 module SnippetExtractor
   module Extended
-    class SyntaxTrieFactory
+    class BuildSyntaxTrie
       include Mandate
 
       initialize_with :rules
@@ -102,7 +102,7 @@ module SnippetExtractor
 
       def get_action_from(rule)
         case rule
-        when MultilineRule then Multi.new(get_action_from(rule.start_rule), SyntaxTrieFactory.([rule.end_rule]))
+        when MultilineRule then Multi.new(get_action_from(rule.start_rule), BuildSyntaxTrie.([rule.end_rule]))
         when SimpleRule
           if rule.skip_line?
             Line.new(rule.word)
@@ -112,44 +112,5 @@ module SnippetExtractor
         end
       end
     end
-
-    # Trie nodes
-    SyntaxTrie = Struct.new(:root)
-    Node = Struct.new(:mapping, :word, :action) do
-      def has_match?(character)
-        mapping.key? character or (self.mapping.key? '+' and character == self.word[-1, 1])
-      end
-
-      def get_match_node(character)
-        return self.mapping['+'] if self.mapping.key?('+') && (character == self.word[-1, 1])
-
-        self.mapping[character]
-      end
-    end
-    RepeatNode = Struct.new(:mapping, :word, :action) do
-      def has_match?(character)
-        mapping.key? character or character == self.word[-2, 1]
-      end
-
-      def get_match_node(character)
-        return self if character == self.word[-2, 1]
-
-        self.mapping[character]
-      end
-    end
-    RepeatNodeFinish = Struct.new(:mapping, :word, :action) do
-      def has_match?(character)
-        character == self.word[-2, 1]
-      end
-
-      def get_match_node(character)
-        self if character == self.word[-2, 1]
-      end
-    end
-
-    # Actions
-    Just = Struct.new(:original_word)
-    Line = Struct.new(:original_word)
-    Multi = Struct.new(:start_action, :syntax_trie)
   end
 end

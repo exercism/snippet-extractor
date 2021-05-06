@@ -2,7 +2,7 @@ require "test_helper"
 
 module SnippetExtractor
   module Extended
-    class SyntaxTrieFactoryRepeatCharNodeTest < Minitest::Test
+    class BuildSyntaxTrieRepeatCharNodeTest < Minitest::Test
       def test_single_repeated_letter
         # Given
         rules = [SimpleRule.new('w+', '')]
@@ -17,7 +17,7 @@ module SnippetExtractor
         )
 
         # Expect
-        assert_equal expected, SyntaxTrieFactory.(rules)
+        assert_equal expected, BuildSyntaxTrie.(rules)
       end
 
       def test_single_repeated_letter_at_beginning
@@ -25,7 +25,7 @@ module SnippetExtractor
         rules = [SimpleRule.new('+w', 'p')]
 
         # Expect
-        assert_raises { SyntaxTrieFactory.(rules) }
+        assert_raises { BuildSyntaxTrie.(rules) }
       end
 
       def test_single_repeated_letter_at_end
@@ -42,7 +42,7 @@ module SnippetExtractor
         )
 
         # Expect
-        assert_equal expected, SyntaxTrieFactory.(rules)
+        assert_equal expected, BuildSyntaxTrie.(rules)
       end
 
       def test_two_repeated_chars_different_tail
@@ -60,7 +60,7 @@ module SnippetExtractor
         )
 
         # Expect
-        assert_equal expected, SyntaxTrieFactory.(rules)
+        assert_equal expected, BuildSyntaxTrie.(rules)
       end
 
       def test_two_repeated_chars_one_with_tail_other_is_finish
@@ -77,7 +77,7 @@ module SnippetExtractor
         )
 
         # Expect
-        assert_equal expected, SyntaxTrieFactory.(rules)
+        assert_equal expected, BuildSyntaxTrie.(rules)
       end
     end
   end

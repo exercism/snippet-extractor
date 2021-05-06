@@ -1,6 +1,10 @@
 module SnippetExtractor
   module Extended
-    class CodeParser
+    class ParseCode
+      include Mandate
+
+      STOP_AT_FIRST_LINE_OF_CODE = "stop_at_first_loc".freeze
+
       def initialize(code, syntax_trie, arguments = [])
         @code = code
         @syntax_trie = syntax_trie
@@ -15,9 +19,7 @@ module SnippetExtractor
         @saved_lines = []
       end
 
-      STOP_AT_FIRST_LINE_OF_CODE = "stop_at_first_loc".freeze
-
-      def parse
+      def call
         action, skipped = try_match_first_word
         execute_action(action, skipped) unless action.nil?
 
@@ -38,8 +40,7 @@ module SnippetExtractor
 
       def try_match(from_node = nil)
         if self.arguments.include?(STOP_AT_FIRST_LINE_OF_CODE) && !(self.saved_lines.empty? && self.current_line.empty?)
-          return [nil,
-                  0]
+          return [nil, 0]
         end
 
         current_syntax_node = from_node || self.syntax_trie.root

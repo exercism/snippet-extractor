@@ -2,14 +2,14 @@ require "test_helper"
 
 module SnippetExtractor
   module Extended
-    class SyntaxTrieFactorySimpleRuleTest < Minitest::Test
+    class BuildSyntaxTrieSimpleRuleTest < Minitest::Test
       def test_empty_rules_bring_empty_trie
         # Given
         rules = []
         expected = SyntaxTrie.new(Node.new({}, "", nil))
 
         # Then
-        assert_equal expected, SyntaxTrieFactory.(rules)
+        assert_equal expected, BuildSyntaxTrie.(rules)
       end
 
       def test_even_simpler_word_rule_brings_trie_with_rule
@@ -18,7 +18,7 @@ module SnippetExtractor
         expected = syntax_trie_maker({ ' ': { 'w': { ' ': [{}, Line.new('w')] } } })
 
         # Expect
-        assert_equal expected, SyntaxTrieFactory.(rules)
+        assert_equal expected, BuildSyntaxTrie.(rules)
       end
 
       def test_simple_word_rule_brings_trie_with_rule
@@ -27,7 +27,7 @@ module SnippetExtractor
         expected = syntax_trie_maker({ ' ': { 'w': { 'o': { 'r': { 'd': { ' ': [{},
                                                                                 Line.new('word')] } } } } } })
         # Expect
-        assert_equal expected, SyntaxTrieFactory.(rules)
+        assert_equal expected, BuildSyntaxTrie.(rules)
       end
 
       def test_two_words_with_different_roots
@@ -43,7 +43,7 @@ module SnippetExtractor
         )
 
         # Expect
-        assert_equal expected, SyntaxTrieFactory.(rules)
+        assert_equal expected, BuildSyntaxTrie.(rules)
       end
 
       def test_two_words_with_same_root
@@ -61,7 +61,7 @@ module SnippetExtractor
         )
 
         # Expect
-        assert_equal expected, SyntaxTrieFactory.(rules)
+        assert_equal expected, BuildSyntaxTrie.(rules)
       end
 
       def test_two_conflicting_rules
@@ -69,7 +69,7 @@ module SnippetExtractor
         rules = [SimpleRule.new('word', ''), SimpleRule.new('word', 'j')]
 
         # Expect
-        assert_raises { SyntaxTrieFactory.(rules) }
+        assert_raises { BuildSyntaxTrie.(rules) }
       end
 
       def test_two_same_rules_doesnt_conflict
@@ -78,7 +78,7 @@ module SnippetExtractor
         expected = syntax_trie_maker({ ' ': { 'w': { ' ': [{}, Line.new("w")] } } })
 
         # Expect
-        assert_equal expected, SyntaxTrieFactory.(rules)
+        assert_equal expected, BuildSyntaxTrie.(rules)
       end
 
       def test_single_partial_word_rule
@@ -87,7 +87,7 @@ module SnippetExtractor
         expected = syntax_trie_maker({ 'w': { 'o': { 'r': { 'd': [{}, Line.new('word')] } } } })
 
         # Expect
-        assert_equal expected, SyntaxTrieFactory.(rules)
+        assert_equal expected, BuildSyntaxTrie.(rules)
       end
 
       def test_two_partial_words_with_same_root
@@ -103,7 +103,7 @@ module SnippetExtractor
         )
 
         # Expect
-        assert_equal expected, SyntaxTrieFactory.(rules)
+        assert_equal expected, BuildSyntaxTrie.(rules)
       end
 
       def mixing_partial_non_partial_word_with_mixed_roots
@@ -126,7 +126,7 @@ module SnippetExtractor
         )
 
         # Expect
-        assert_equal expected, SyntaxTrieFactory.(rules)
+        assert_equal expected, BuildSyntaxTrie.(rules)
       end
 
       # Object mothers

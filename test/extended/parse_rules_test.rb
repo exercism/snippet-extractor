@@ -2,14 +2,14 @@ require "test_helper"
 
 module SnippetExtractor
   module Extended
-    class RuleParserTest < Minitest::Test
+    class ParseRulesTest < Minitest::Test
       def test_empty_file_brings_empty_rule_list
         # Given
         rule_text =
           %()
 
         # When
-        rule_list = RuleParser.(rule_text.lines)
+        rule_list = ParseRules.(rule_text.lines)
 
         # Then
         assert_empty rule_list
@@ -22,7 +22,7 @@ module SnippetExtractor
           '
 
         # When
-        rule_list = RuleParser.(rule_text.lines)
+        rule_list = ParseRules.(rule_text.lines)
 
         # Then
         assert_equal [SimpleRule.new('word', '')], rule_list
@@ -35,7 +35,7 @@ module SnippetExtractor
           '
 
         # When
-        rule_list = RuleParser.(rule_text.lines)
+        rule_list = ParseRules.(rule_text.lines)
 
         # Then
         assert_equal [SimpleRule.new('word', '')], rule_list
@@ -48,7 +48,7 @@ module SnippetExtractor
           )
 
         # When
-        rule_list = RuleParser.(rule_text.lines)
+        rule_list = ParseRules.(rule_text.lines)
 
         # Then
         assert_equal [SimpleRule.new('word', 'p')], rule_list
@@ -61,7 +61,7 @@ module SnippetExtractor
           )
 
         # When
-        rule_list = RuleParser.(rule_text.lines)
+        rule_list = ParseRules.(rule_text.lines)
 
         # Then
         assert_equal [SimpleRule.new('word', 'j')], rule_list
@@ -74,7 +74,7 @@ module SnippetExtractor
           )
 
         # When
-        rule_list = RuleParser.(rule_text.lines)
+        rule_list = ParseRules.(rule_text.lines)
 
         # Then
         assert_equal [SimpleRule.new('word', 'pj')], rule_list
@@ -87,7 +87,7 @@ module SnippetExtractor
           )
 
         # When
-        rule_list = RuleParser.(rule_text.lines)
+        rule_list = ParseRules.(rule_text.lines)
 
         # Then
         assert_equal [SimpleRule.new('wo+rd', 'pj')], rule_list
@@ -100,7 +100,7 @@ module SnippetExtractor
           '
 
         # When
-        rule_list = RuleParser.(rule_text.lines)
+        rule_list = ParseRules.(rule_text.lines)
 
         # Then
         assert_equal [SimpleRule.new(' word  ', '')], rule_list
@@ -114,7 +114,7 @@ module SnippetExtractor
           "
 
         # When
-        rule_list = RuleParser.(rule_text.lines)
+        rule_list = ParseRules.(rule_text.lines)
 
         # Then
         assert_equal [SimpleRule.new("\t\t\tword", '')], rule_list
@@ -127,7 +127,7 @@ module SnippetExtractor
           )
 
         # When
-        rule_list = RuleParser.(rule_text.lines)
+        rule_list = ParseRules.(rule_text.lines)
 
         # Then
         assert_equal [MultilineRule.new(SimpleRule.new('word', ''), SimpleRule.new('other word', 'j'))], rule_list
@@ -144,7 +144,7 @@ module SnippetExtractor
           TEXT
 
         # When
-        rule_list = RuleParser.(rule_text.lines)
+        rule_list = ParseRules.(rule_text.lines)
 
         # Then
         assert_equal [
