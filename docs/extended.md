@@ -224,15 +224,15 @@ Each example has three blocks:
 
 ```
 !e
-`/_\p-->>?\*/\pj`
+/_\p-->>?\*/\pj
 ```
 
-```
+```javascript
 /*Some comment I wanted to add in case
 that someone wants to read it*/def solve(data):
 ```
 
-```
+```javascript
 def solve(data):
 ```
 
@@ -240,10 +240,10 @@ def solve(data):
 
 ```
 !e
-`import-->>from`
+import-->>from
 ```
 
-```
+```javascript
 import {
  a,
  b,
@@ -254,18 +254,18 @@ from 'example';
 class Foobar...
 ```
 
-```
+```javascript
 class Foobar...
 ```
 
-### Example 2
+### Example 3
 
 ```
 !e
-`#+[-->>]#+`
+#+[-->>]#+
 ```
 
-```
+```nim
 #[
  Doc
 ]#
@@ -274,7 +274,7 @@ class Foobar...
 class Foobar...
 ```
 
-```
+```nim
 class Foobar...
 ```
 
