@@ -93,6 +93,32 @@ module SnippetExtractor
 
         assert_equal expected, ExtractSnippet.(code, :ruby)
       end
+
+      def test_strips_correctly_with_extended_syntax
+        code = <<~CODE
+          # This is a file
+          # With some comments in it
+
+          # And a blank line ⬆️
+          # It has some requires like this:
+          require 'json'
+
+          # And then eventually the code
+          class TwoFer#Comment will not be ignored because of flag
+            ...#This neither
+          # Comment
+          end
+        CODE
+
+        expected = <<~CODE
+          class TwoFer#Comment will not be ignored because of flag
+            ...#This neither
+          # Comment
+          end
+        CODE
+
+        assert_equal expected, ExtractSnippet.(code, :ruby)
+      end
     end
   end
 end

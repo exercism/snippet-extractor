@@ -1,2 +1,5 @@
-# 
-require 
+!e stop_at_first_loc
+#\p
+require
+=begin-->>=end
+__END__-->>[toTheEndOfFilemaksklnlkjanmelnjlknSomethingUnmatchable]//Not the best I know

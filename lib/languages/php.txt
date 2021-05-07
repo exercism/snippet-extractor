@@ -1,8 +1,7 @@
+!e
 <?php
 namespace
 use
 ?>
-//
-/*
-*
-*/
+//\p
+/*\pj-->>*/\pj

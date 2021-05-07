@@ -5,24 +5,18 @@ module SnippetExtractor
     initialize_with :code, :language
 
     def call
-      processed_lines[0...10].join
+      processed_lines
+    rescue Errno::ENOENT
+      code.lines[0...10].join
     end
 
     private
     def processed_lines
-      lines.drop_while do |line|
-        naked_line = line.strip
-        next true if naked_line.empty?
-        next true if ignore_list.any? { |ignore| naked_line.start_with?(ignore) }
-
-        false
+      if ignore_list[0].include? "!e"
+        Extended::Extract.(code, ignore_list).join
+      else
+        Basic::Extract.(code, ignore_list).join
       end
-    rescue Errno::ENOENT
-      lines
-    end
-
-    def lines
-      code.lines
     end
 
     memoize

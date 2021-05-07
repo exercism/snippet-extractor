@@ -7,11 +7,10 @@ It takes an exercism submission and extracts the first ten "interesting" lines o
 
 ## Add your language
 
-Each language has a file inside `lib/languages` with the filename `$slug.txt` - for example: `lib/languages/ruby.txt`.
+Each language has a config file inside `lib/languages` with the filename `$slug.txt` - for example: `lib/languages/ruby.txt`.
 
-A language file contains a list of the beginnings of lines that can be ignored.
-The extractor skips over all lines of code that start with a line on the `$lang.txt` file, until it finds the first non-matching, at which point it takes the next 10 lines.
-Things like HEREDOC and block comments where there is not some marker on each line are not currently supported.
+Each file can be in [Basic Mode](docs/basic.md) or [Extended Mode](docs/extended.md).
+Please read those docs to choose which to use for your language.
 
 Along with each language file is a test file in `test/languages/$slug_test.rb`.
 When adding or making changes to a language file, please add or update the corresponding language file, copying `ruby_test.rb` as your basis.
@@ -45,3 +44,12 @@ To only run the tests in a single test file, add `TEST=<relative-path-to-test-fi
 ```bash
 bundle exec rake test TEST=test/languages/csharp_test.rb
 ```
+
+## Credit
+
+This repo is built and maintained by Exercism.
+
+The initial spike of this was written by [Jeremy Walker](https://github.com/ihid).
+The extended version was written by [José Ráez Rodríguez](https://github.com/joshiraez).
+
+Contributions are welcome!
