@@ -280,7 +280,7 @@ class Foobar...
 
 ## FAQs
 
-### Can I use a literal `\`
+### Can I use a literal `\`?
 
 Yes. `'\` is a valid rule and is the same as `'`.
 For example: `\'\\` that will match with the string `\'\`
