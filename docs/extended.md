@@ -1,6 +1,6 @@
 # Extended Mode
 
-This allows for more complex pattern and rules than the basic functionality.
+This allows for more complex pattern and rules than the [Basic Mode](./basic.md).
 It adds support for multiline and partial line rules.
 
 It can be configured to only make modifications before the first non-matching code, or throughout the code.
