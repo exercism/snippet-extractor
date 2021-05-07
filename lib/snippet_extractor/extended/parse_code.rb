@@ -160,9 +160,7 @@ module SnippetExtractor
           add_newline_and_save_line
         end
         self.current_line = ""
-        unless current_action.instance_of? Multi || queued_multiline.nil?
-          self.current_line_has_skip = false
-        end
+        self.current_line_has_skip = false unless current_action.instance_of? Multi || queued_multiline.nil?
       end
 
       def add_newline_and_save_line

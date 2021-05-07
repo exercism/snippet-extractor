@@ -641,7 +641,6 @@ module SnippetExtractor
         # Expect
         assert_equal expected, ParseCode.(code, syntax_trie).join
       end
-
     end
   end
 end
