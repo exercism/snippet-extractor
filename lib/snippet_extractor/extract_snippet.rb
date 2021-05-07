@@ -1,34 +1,22 @@
 module SnippetExtractor
   class ExtractSnippet
     include Mandate
-    include Extended
 
     initialize_with :code, :language
 
     def call
       processed_lines
     rescue Errno::ENOENT
-      lines[0...10].join
+      code.lines[0...10].join
     end
 
     private
     def processed_lines
-      return Extended::Extract.(code, ignore_list).join if ignore_list[0].include? "!e"
-
-      extracted_lines = lines.drop_while do |line|
-        naked_line = line.strip
-
-        next true if naked_line.empty?
-        next true if ignore_list.any? { |ignore| naked_line.start_with?(ignore) }
-
-        false
+      if ignore_list[0].include? "!e"
+        Extended::Extract.(code, ignore_list).join
+      else
+        Basic::Extract.(code, ignore_list).join
       end
-
-      extracted_lines[0...10].join
-    end
-
-    def lines
-      code.lines
     end
 
     memoize
