@@ -7,4 +7,4 @@ The extractor skips over all lines of code that start with a line in the config 
 Once the extract finds the first non-matching, it returns the next 10 lines, regardless of if they match the config file or not.
 
 Things like HEREDOC and block comments where there is not some marker on each line are not supported.
-Use the Extended Mode for those.
+Use the [Extended Mode](./extended.md) for those.

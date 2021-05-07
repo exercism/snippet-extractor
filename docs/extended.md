@@ -59,7 +59,7 @@ Some
 
 This can be problematic (consider that `#` is used for interpolation in Ruby), which is why you may want to use the `stop_at_first_loc` flag explained above.
 
-#### "Simple" rules
+### Basic Modifiers
 
 The first set of rules handle how a token is found and dealt with.
 
@@ -143,7 +143,7 @@ This table summarises the examples above:
 | `'\j`  | Yes                 | No                       |
 | `'\pj` | No                  | No                       |
 
-### Repeating
+### Repeating Modifier
 
 You can use an `+` after a character to mark it for `2..n` repetition.
 This is useful for comment rules where a certain amount of symbols are allowed before another.
@@ -164,7 +164,7 @@ Or in nim, if you wanted to match `###[...` you could use
 
 These rules do **not** match the single version (they are `2..n`, not `1..n`) so please specify an extra explicit rule for the single scenario if needed.
 
-### Multiline Magic
+### Multiline Magic Modifier
 
 The real power of all these rules comes when the multiline modifer is added.
 
@@ -212,7 +212,7 @@ const n = 15;
 Rules precedence is calculated by earliest match.
 This means that whole word rules usually have higher precedence, because they start matching from the preceding space.
 
-### Other Examples
+## Examples
 
 Each example has three blocks:
 
@@ -220,7 +220,7 @@ Each example has three blocks:
 - Input
 - Ouput
 
-#### Example 1
+### Example 1
 
 ```
 !e
@@ -236,7 +236,7 @@ that someone wants to read it*/def solve(data):
 def solve(data):
 ```
 
-#### Example 2
+### Example 2
 
 ```
 !e
@@ -258,7 +258,7 @@ class Foobar...
 class Foobar...
 ```
 
-#### Example 2
+### Example 2
 
 ```
 !e
@@ -278,14 +278,14 @@ class Foobar...
 class Foobar...
 ```
 
-### FAQs
+## FAQs
 
-#### Can I use a literal `\`
+### Can I use a literal `\`
 
 Yes. `'\` is a valid rule and is the same as `'`.
 For example: `\'\\` that will match with the string `\'\`
 
-### Current limitations
+## Current limitations
 
 All of these are open to future improvements if a track needs it, until we have the representers to back this up.
 
