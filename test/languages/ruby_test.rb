@@ -6,7 +6,7 @@ module SnippetExtractor
       def test_full_example
         code = <<~CODE
           # This is a file
-          # With some comments in it
+          # With some comments in it
 
           # And a blank line ⬆️
           # It has some requires like this:
@@ -28,6 +28,7 @@ module SnippetExtractor
       end
 
       def test_extended_example
+        skip
         code = <<~CODE
           # This is a file
           # With some comments in it

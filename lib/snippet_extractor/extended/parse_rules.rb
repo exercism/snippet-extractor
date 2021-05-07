@@ -6,28 +6,24 @@ module SnippetExtractor
       initialize_with :rule_lines
 
       def call
-        rule_lines.
+        parsed_lines = rule_lines.
           reject { |line| line.strip.empty? }.
           map(&:downcase).
-          map { |line| line.delete("\n") }.
-          map do |line|
-            if line.include? MULTILINE_TOKEN
-              multiline_rule line
-            else
-              simple_rule line
-            end
-          end
+          map(&:rstrip)
+
+        parsed_lines.map do |line|
+          line.include?(MULTILINE_TOKEN) ? multiline_rule(line) : simple_rule(line)
+        end
       end
 
       def simple_rule(line)
         word, modifiers = line.split('\\')
-        modifiers = '' if modifiers.nil?
 
-        SimpleRule.new(word, modifiers)
+        SimpleRule.new(word, modifiers || '')
       end
 
       def multiline_rule(line)
-        start_rule, end_rule = line.split('-->>').map { |rule| simple_rule rule }
+        start_rule, end_rule = line.split('-->>').map { |rule| simple_rule(rule) }
 
         MultilineRule.new(start_rule, end_rule)
       end

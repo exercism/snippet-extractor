@@ -75,7 +75,7 @@ module SnippetExtractor
       end
 
       def save_if_newline_reached(skipped = 1)
-        return unless code[self.scan_index, skipped].include? "\n"
+        return unless code[self.scan_index, skipped].include?("\n")
 
         save_current_line
         self.current_line = ""

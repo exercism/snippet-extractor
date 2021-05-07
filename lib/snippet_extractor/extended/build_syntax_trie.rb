@@ -5,8 +5,6 @@ module SnippetExtractor
 
       initialize_with :rules
 
-      REPEAT_NODE_CHARACTER = "+".freeze
-
       def call
         trie = SyntaxTrie.new(Node.new({}, "", nil))
         rules.each { |rule| add_rule(trie, rule) }
@@ -28,11 +26,11 @@ module SnippetExtractor
 
       def set_next_node(node, word, rule)
         if word.empty?
-          handle_rule_placement node, rule
+          handle_rule_placement(node, rule)
           return
         end
 
-        handle_next_node node, word, rule
+        handle_next_node(node, word, rule)
       end
 
       def handle_next_node(node, word, rule)
@@ -55,25 +53,22 @@ module SnippetExtractor
 
       def get_info_for_next_node(word)
         next_letter = word[0]
-        next_node_type = if next_letter == "+"
-                           RepeatNode
-                         else
-                           Node
-                         end
+        next_node_type = next_letter == REPITITION_MODIFIER ? RepeatNode : Node
 
         [next_letter, next_node_type]
       end
 
       def handle_rule_placement(node, rule)
         if node.action.nil?
-          set_rule node, rule
+          set_rule(node, rule)
           return
         end
 
-        unless are_compatible? node.action, rule
-          raise "Mapping conflict: #{node.word} has action #{node.action}, but #{rule} tries to overwrite it" end
+        unless are_compatible?(node.action, rule)
+          raise "Mapping conflict: #{node.word} has action #{node.action}, but #{rule} tries to overwrite it"
+        end
 
-        merge_rule node, rule
+        merge_rule(node, rule)
       end
 
       def are_compatible?(action, rule)
@@ -97,7 +92,7 @@ module SnippetExtractor
 
       def merge_rule(node, rule)
         # We only merge compatible multiline rules. Simple rules are only mergeable if they are the same
-        add_rule node.action.syntax_trie, rule.end_rule if node.action.is_a? Multi
+        add_rule(node.action.syntax_trie, rule.end_rule) if node.action.is_a?(Multi)
       end
 
       def get_action_from(rule)

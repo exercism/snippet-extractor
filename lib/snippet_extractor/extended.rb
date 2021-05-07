@@ -1,52 +1,56 @@
 module SnippetExtractor
   module Extended
-    MULTILINE_TOKEN = '-->>'.freeze
-    PARTIAL_MODIFIER  = "p".freeze
-    JUST_MODIFIER     = "j".freeze
+    MULTILINE_TOKEN     = '-->>'.freeze
+    PARTIAL_MODIFIER    = "p".freeze
+    JUST_MODIFIER       = "j".freeze
+    REPITITION_MODIFIER = "+".freeze
 
     # Rules
     SimpleRule = Struct.new(:word, :modifiers) do
       def whole_word?
-        !modifiers.include? PARTIAL_MODIFIER
+        !modifiers.include?(PARTIAL_MODIFIER)
       end
 
       def skip_line?
-        !modifiers.include? JUST_MODIFIER
+        !modifiers.include?(JUST_MODIFIER)
       end
     end
     MultilineRule = Struct.new(:start_rule, :end_rule)
 
     # Trie nodes
     SyntaxTrie = Struct.new(:root)
+
     Node = Struct.new(:mapping, :word, :action) do
       def has_match?(character)
-        mapping.key? character or (self.mapping.key? '+' and character == self.word[-1, 1])
+        mapping.key?(character) or (mapping.key? REPITITION_MODIFIER and character == word[-1, 1])
       end
 
       def get_match_node(character)
-        return self.mapping['+'] if self.mapping.key?('+') && (character == self.word[-1, 1])
+        return mapping[REPITITION_MODIFIER] if mapping.key?(REPITITION_MODIFIER) && (character == word[-1, 1])
 
-        self.mapping[character]
+        mapping[character]
       end
     end
+
     RepeatNode = Struct.new(:mapping, :word, :action) do
       def has_match?(character)
-        mapping.key? character or character == self.word[-2, 1]
+        mapping.key? character or character == word[-2, 1]
       end
 
       def get_match_node(character)
-        return self if character == self.word[-2, 1]
+        return self if character == word[-2, 1]
 
-        self.mapping[character]
+        mapping[character]
       end
     end
+
     RepeatNodeFinish = Struct.new(:mapping, :word, :action) do
       def has_match?(character)
-        character == self.word[-2, 1]
+        character == word[-2, 1]
       end
 
       def get_match_node(character)
-        self if character == self.word[-2, 1]
+        self if character == word[-2, 1]
       end
     end
 
