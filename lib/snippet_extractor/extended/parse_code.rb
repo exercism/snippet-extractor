@@ -13,6 +13,7 @@ module SnippetExtractor
         @scan_index = 0
 
         @current_line = ""
+        @current_line_has_skip = false
         @current_action = nil
         @queued_multiline = nil
 
@@ -32,7 +33,7 @@ module SnippetExtractor
 
       protected
       attr_accessor :code, :syntax_trie, :scan_index, :current_syntax_node, :current_line, :current_line_skipped,
-                    :current_action, :queued_multiline, :saved_lines, :arguments
+                    :current_action, :queued_multiline, :saved_lines, :arguments, :current_line_has_skip
 
       def try_match_first_word
         try_match(syntax_trie.root.get_match_node(' ')) if syntax_trie.root.has_match?(' ')
@@ -65,6 +66,7 @@ module SnippetExtractor
 
         save_if_newline_reached(skipped)
         self.scan_index += skipped
+        self.current_line_has_skip = true
 
         if action.instance_of?(Just) || (action.instance_of?(Line) && code[self.scan_index - 1].include?("\n"))
           self.current_action = self.queued_multiline
@@ -149,11 +151,23 @@ module SnippetExtractor
       end
 
       def save_current_line
-        unless self.current_line.strip.empty?
-          self.current_line += "\n" if self.current_line[-1, 1] != "\n"
-          self.saved_lines.append(self.current_line)
+        if self.current_line.strip.empty?
+          unless self.current_line_has_skip || self.saved_lines.empty? || self.saved_lines.last.strip.empty?
+            self.current_line.strip!
+            add_newline_and_save_line
+          end
+        else
+          add_newline_and_save_line
         end
         self.current_line = ""
+        unless current_action.instance_of? Multi || queued_multiline.nil?
+          self.current_line_has_skip = false
+        end
+      end
+
+      def add_newline_and_save_line
+        self.current_line += "\n" if self.current_line[-1, 1] != "\n"
+        self.saved_lines.append(self.current_line)
       end
 
       def save_last_line

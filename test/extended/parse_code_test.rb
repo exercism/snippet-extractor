@@ -506,6 +506,142 @@ module SnippetExtractor
         # Expect
         assert_equal expected, ParseCode.(code, syntax_trie, ['stop_at_first_loc']).join
       end
+
+      def test_empty_lines_at_beginning_are_ignored
+        # Given
+        syntax_trie = SyntaxTrie.new(
+          Node.new({}, "", nil)
+        )
+        code = <<~CODE
+          ab1 ad1 ae1
+
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
+        expected = <<~CODE
+          ab1 ad1 ae1
+
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
+
+        # Expect
+        assert_equal expected, ParseCode.(code, syntax_trie).join
+      end
+
+      def test_one_empty_line_is_stored
+        # Given
+        syntax_trie = SyntaxTrie.new(
+          Node.new({}, "", nil)
+        )
+        code = <<~CODE
+          ab1 ad1 ae1
+
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
+        expected = <<~CODE
+          ab1 ad1 ae1
+
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
+
+        # Expect
+        assert_equal expected, ParseCode.(code, syntax_trie).join
+      end
+
+      def test_two_empty_lines_skips_the_second_one
+        # Given
+        syntax_trie = SyntaxTrie.new(
+          Node.new({}, "", nil)
+        )
+        code = <<~CODE
+          ab1 ad1 ae1
+
+
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
+        expected = <<~CODE
+          ab1 ad1 ae1
+
+          ac2 at2 an2
+          cd3 cd3 sdf3
+        CODE
+
+        # Expect
+        assert_equal expected, ParseCode.(code, syntax_trie).join
+      end
+
+      def test_skips_dont_interfere_with_emptyline_logic
+        # Given
+        syntax_trie = SyntaxTrie.new(
+          Node.new(
+            { ' ': Node.new(
+              { 'a': Node.new(
+                { 'b': Node.new(
+                  { '1': Node.new(
+                    { ' ': Node.new({}, ' ab1 ', Line.new('ab1')) }.transform_keys!(&:to_s)
+                  ) }.transform_keys!(&:to_s)
+                ) }.transform_keys!(&:to_s)
+              ) }.transform_keys!(&:to_s)
+            ) }.transform_keys!(&:to_s)
+          )
+        )
+        code = <<~CODE
+          ac2 at2 an2
+
+          ab1 ad1 ae1
+
+          cd3 cd3 sdf3
+        CODE
+        expected = <<~CODE
+          ac2 at2 an2
+
+          cd3 cd3 sdf3
+        CODE
+
+        # Expect
+        assert_equal expected, ParseCode.(code, syntax_trie).join
+      end
+
+      def test_multi_rule_skips_dont_add_lines_neither_remove_lines_just_after
+        # Given
+        syntax_trie_final = SyntaxTrie.new(
+          Node.new(
+            { 'a': Node.new(
+              { 't': Node.new({}, 'at', Line.new('at')) }.transform_keys!(&:to_s)
+            ) }.transform_keys!(&:to_s)
+          )
+        )
+        syntax_trie = SyntaxTrie.new(
+          Node.new(
+            { 'a': Node.new(
+              { 'd': Node.new(
+                { '1': Node.new({}, 'ad1', Multi.new(Just.new('ad1'), syntax_trie_final)) }.transform_keys!(&:to_s)
+              ) }.transform_keys!(&:to_s)
+            ) }.transform_keys!(&:to_s)
+          )
+        )
+
+        code = <<~CODE
+          ab1 ad1 ae1
+
+          ac2 at2 an2
+
+          cd3 cd3 sdf3
+        CODE
+        expected = <<~CODE
+          ab1#{' '}
+
+          cd3 cd3 sdf3
+        CODE
+
+        # Expect
+        assert_equal expected, ParseCode.(code, syntax_trie).join
+      end
+
     end
   end
 end

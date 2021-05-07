@@ -63,7 +63,9 @@ module SnippetExtractor
 
         expected = <<~CODE
           defmodule Maths do
+
             @type t :: any()
+
             def add(left, right) do
               left + right
             end
@@ -101,7 +103,9 @@ module SnippetExtractor
 
         expected = <<~CODE
           defmodule Maths do
+
             @type t :: any()
+
             def add(left, right) do
               left + right
             end
@@ -139,7 +143,9 @@ module SnippetExtractor
 
         expected = <<~CODE
           defmodule Maths do
+
             @type t :: any()
+
             def add(left, right) do
               left + right
             end
@@ -177,7 +183,9 @@ module SnippetExtractor
 
         expected = <<~CODE
           defmodule Maths do
+
             @type t :: any()
+
             def add(left, right) do
               left + right
             end
@@ -215,7 +223,9 @@ module SnippetExtractor
 
         expected = <<~CODE
           defmodule Maths do
+
             @type t :: any()
+
             def add(left, right) do
               left + right
             end
@@ -253,7 +263,9 @@ module SnippetExtractor
 
         expected = <<~CODE
           defmodule Maths do
+
             @type t :: any()
+
             def add(left, right) do
               left + right
             end
@@ -282,7 +294,9 @@ module SnippetExtractor
 
         expected = <<~CODE
           defmodule Maths do
+
             @type t :: any()
+
             def add(left, right) do
               left + right
             end
@@ -311,7 +325,9 @@ module SnippetExtractor
 
         expected = <<~CODE
           defmodule Maths do
+
             @type t :: any()
+
             def add(left, right) do
               left + right
             end
@@ -340,7 +356,9 @@ module SnippetExtractor
 
         expected = <<~CODE
           defmodule Maths do
+
             @type t :: any()
+
             def add(left, right) do
               left + right
             end
