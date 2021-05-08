@@ -28,7 +28,6 @@ module SnippetExtractor
       end
 
       def test_extended_example
-        skip
         code = <<~CODE
           # This is a file
           # With some comments in it

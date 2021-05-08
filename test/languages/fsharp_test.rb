@@ -18,6 +18,7 @@ module SnippetExtractor
 
         expected = <<~CODE
           module Grasses
+
           let square x = x * x
         CODE
 
@@ -41,6 +42,7 @@ module SnippetExtractor
 
         expected = <<~CODE
           module Grasses
+
           let square x = x * x
         CODE
 

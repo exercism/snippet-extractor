@@ -46,7 +46,7 @@ module SnippetExtractor
                   }
                   return pow(2, $n - 1);
               }
-              function total()
+
         CODE
 
         assert_equal expected, ExtractSnippet.(code, :php)
@@ -98,7 +98,7 @@ module SnippetExtractor
                   }
                   return pow(2, $n - 1);
               }
-              function total()
+
         CODE
 
         assert_equal expected, ExtractSnippet.(code, :php)

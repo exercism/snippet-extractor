@@ -44,16 +44,6 @@ module SnippetExtractor
       end
     end
 
-    RepeatNodeFinish = Struct.new(:mapping, :word, :action) do
-      def has_match?(character)
-        character == word[-2, 1]
-      end
-
-      def get_match_node(character)
-        self if character == word[-2, 1]
-      end
-    end
-
     # Actions
     Just = Struct.new(:original_word)
     Line = Struct.new(:original_word)

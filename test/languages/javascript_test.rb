@@ -85,6 +85,7 @@ module SnippetExtractor
             xhr.onload = function () {
               callback(this.responseText)
             };
+
             xhr.open('GET', url, true);
             xhr.send();
           }
