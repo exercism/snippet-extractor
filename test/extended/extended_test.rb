@@ -309,6 +309,7 @@ module SnippetExtractor
         rules = ['!e']
 
         code = <<~CODE
+
           ab1 ad1 ae1
 
           ac2 at2 an2
