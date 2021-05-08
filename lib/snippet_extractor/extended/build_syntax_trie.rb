@@ -21,14 +21,11 @@ module SnippetExtractor
       def get_word_from_rule(rule)
         rule = rule.start_rule if rule.is_a? MultilineRule
 
-        !rule.whole_word? ? rule.word : " #{rule.word} "
+        rule.whole_word? ? " #{rule.word} " : rule.word
       end
 
       def set_next_node(node, word, rule)
-        if word.empty?
-          handle_rule_placement(node, rule)
-          return
-        end
+        return handle_rule_placement(node, rule) if word.empty?
 
         handle_next_node(node, word, rule)
       end
@@ -40,8 +37,8 @@ module SnippetExtractor
           raise "Mapping conflict: Trying to map #{rule} which has a repeating character before any character"
         end
 
-        if node.mapping.key? next_letter
-          unless node.mapping[next_letter].instance_of? next_node_type
+        if node.mapping.key?(next_letter)
+          unless node.mapping[next_letter].instance_of?(next_node_type)
             raise "Mapping conflict: #{node.word} and #{rule} have conflicting repeating rule on char #{next_letter}"
           end
         else
@@ -59,10 +56,7 @@ module SnippetExtractor
       end
 
       def handle_rule_placement(node, rule)
-        if node.action.nil?
-          set_rule(node, rule)
-          return
-        end
+        return set_rule(node, rule) unless node.action
 
         unless are_compatible?(node.action, rule)
           raise "Mapping conflict: #{node.word} has action #{node.action}, but #{rule} tries to overwrite it"
@@ -73,8 +67,8 @@ module SnippetExtractor
 
       def are_compatible?(action, rule)
         case rule
-        when MultilineRule then multilines_compatible? action, rule
-        when SimpleRule then single_lines_compatible? action, rule
+        when MultilineRule then multilines_compatible?(action, rule)
+        when SimpleRule then single_lines_compatible?(action, rule)
         end
       end
 
