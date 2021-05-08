@@ -1,8 +1,8 @@
-# Exercism's Generic Snippet Extractor
+# Exercism's Snippet Extractor
 
-![Tests](https://github.com/exercism/generic-snippet-extractor/workflows/Tests/badge.svg)
+![Tests](https://github.com/exercism/snippet-extractor/workflows/Tests/badge.svg)
 
-This is Exercism's generic snippet extractor.
+This is Exercism's snippet extractor.
 It takes an exercism submission and extracts the first ten "interesting" lines of code.
 
 ## Add your language
