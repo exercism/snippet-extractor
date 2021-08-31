@@ -6,7 +6,7 @@ module SnippetExtractor
       def test_full_example
         code = <<~CODE
           # This is a file
-          # With some comments in it
+          # With some comments in it
 
           # And a blank line ⬆️
           # It has some requires like this:
@@ -368,6 +368,22 @@ module SnippetExtractor
         assert_equal expected, ExtractSnippet.(code, :elixir)
       end
 
+      def test_comment_after_code
+        code = <<~CODE
+          defmodule Car do
+            def name, do: "Car" # TODO: customize
+          end
+        CODE
+
+        expected = <<~CODE
+          defmodule Car do
+            def name, do: "Car"
+          end
+        CODE
+
+        assert_equal expected, ExtractSnippet.(code, :elixir)
+      end
+
       def test_hash_not_a_comment
         code = <<~CODE
           defmodule Car do
@@ -402,6 +418,7 @@ module SnippetExtractor
 
         expected = <<~CODE
           defmodule TwoFer do
+
             @spec two_fer(String.t()) :: String.t()
             def two_fer(name \\ "you") when is_binary(name) do
               "One for \#{name}, one for me"
