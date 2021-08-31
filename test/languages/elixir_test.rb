@@ -6,7 +6,7 @@ module SnippetExtractor
       def test_full_example
         code = <<~CODE
           # This is a file
-          # With some comments in it
+          # With some comments in it
 
           # And a blank line ⬆️
           # It has some requires like this:
@@ -361,6 +361,67 @@ module SnippetExtractor
 
             def add(left, right) do
               left + right
+            end
+          end
+        CODE
+
+        assert_equal expected, ExtractSnippet.(code, :elixir)
+      end
+
+      def test_comment_after_code
+        code = <<~CODE
+          defmodule Car do
+            def name, do: "Car" # TODO: customize
+          end
+        CODE
+
+        expected = <<~CODE
+          defmodule Car do
+            def name, do: "Car"
+          end
+        CODE
+
+        assert_equal expected, ExtractSnippet.(code, :elixir)
+      end
+
+      def test_hash_not_a_comment
+        code = <<~CODE
+          defmodule Car do
+            def name, do: "Car #1"
+            def name(n), do: "Car \#{n}"
+          end
+        CODE
+
+        expected = <<~CODE
+          defmodule Car do
+            def name, do: "Car #1"
+            def name(n), do: "Car \#{n}"
+          end
+        CODE
+
+        assert_equal expected, ExtractSnippet.(code, :elixir)
+      end
+
+      def test_two_fer
+        code = <<~CODE
+          defmodule TwoFer do
+            @doc """
+            Two-fer or 2-fer is short for two for one. One for you and one for me.
+            """
+
+            @spec two_fer(String.t()) :: String.t()
+            def two_fer(name \\ "you") when is_binary(name) do
+              "One for \#{name}, one for me"
+            end
+          end
+        CODE
+
+        expected = <<~CODE
+          defmodule TwoFer do
+
+            @spec two_fer(String.t()) :: String.t()
+            def two_fer(name \\ "you") when is_binary(name) do
+              "One for \#{name}, one for me"
             end
           end
         CODE
