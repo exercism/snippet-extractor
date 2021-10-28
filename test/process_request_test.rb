@@ -22,6 +22,7 @@ module SnippetExtractor
 
       expected = {
         statusCode: 200,
+        statusDescription: "200 OK",
         headers: {
           'Content-Length': 9,
           'Content-Type': 'application/plain; charset=utf-8'

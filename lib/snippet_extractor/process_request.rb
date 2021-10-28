@@ -9,6 +9,7 @@ module SnippetExtractor
 
       {
         statusCode: 200,
+        statusDescription: "200 OK",
         headers: {
           'Content-Length': snippet.bytesize,
           'Content-Type': 'application/plain; charset=utf-8'
