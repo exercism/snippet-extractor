@@ -1,0 +1,4 @@
+!e
+*
+"\p
+class-->>endclass\p
