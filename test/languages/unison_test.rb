@@ -25,12 +25,11 @@ module SnippetExtractor
             solutionPrefix = io.getEnv "solution_dir"
             testAnnotationFilePath = FilePath (solutionPrefix Text.++ "/.meta/testAnnotation.json")
             annotations = !(parseAnnotationFile testAnnotationFilePath)
-            testRunner.checkAnnotationFile annotations tests
             json = toV2TestFile tests annotations |> toJson
+            testRunner.checkAnnotationFile annotations tests
             jsonString = json |> compact
             envFilePath = io.getEnv "results_file"
             filePath = FilePath ( envFilePath )
-            writeFile filePath jsonString
         CODE
 
         expected = <<~CODE
@@ -39,12 +38,11 @@ module SnippetExtractor
             solutionPrefix = io.getEnv "solution_dir"
             testAnnotationFilePath = FilePath (solutionPrefix Text.++ "/.meta/testAnnotation.json")
             annotations = !(parseAnnotationFile testAnnotationFilePath)
-            testRunner.checkAnnotationFile annotations tests
             json = toV2TestFile tests annotations |> toJson
+            testRunner.checkAnnotationFile annotations tests
             jsonString = json |> compact
             envFilePath = io.getEnv "results_file"
             filePath = FilePath ( envFilePath )
-            writeFile filePath jsonString
         CODE
 
         assert_equal expected, ExtractSnippet.(code, :unison)
@@ -83,12 +81,12 @@ module SnippetExtractor
             jsonString = json |> compact
             envFilePath = io.getEnv "results_file"
             filePath = FilePath ( envFilePath )
-            writeFile filePath jsonString
         CODE
 
         expected = <<~CODE
           usefulTestRunner.main : '{IO,Exception}()
           usefulTestRunner.main _ =
+            solutionPrefix = io.getEnv "solution_dir"
             testAnnotationFilePath = FilePath (solutionPrefix Text.++ "/.meta/testAnnotation.json")
             annotations = !(parseAnnotationFile testAnnotationFilePath)
             testRunner.checkAnnotationFile annotations tests
@@ -96,7 +94,6 @@ module SnippetExtractor
             jsonString = json |> compact
             envFilePath = io.getEnv "results_file"
             filePath = FilePath ( envFilePath )
-            writeFile filePath jsonString
         CODE
 
         assert_equal expected, ExtractSnippet.(code, :unison)
