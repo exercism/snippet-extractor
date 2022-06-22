@@ -34,7 +34,6 @@ module SnippetExtractor
           }
         CODE
 
-
         expected = <<~CODE
           BEGIN {
               RS = "^$"
