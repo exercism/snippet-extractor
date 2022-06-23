@@ -4,6 +4,7 @@ module SnippetExtractor
   module Languages
     class AwkTest < Minitest::Test
       def test_full_example
+        #rubocop:disable Layout/TrailingWhitespace
         code = <<~CODE
           #!/usr/bin/env gawk -f
 
@@ -46,6 +47,7 @@ module SnippetExtractor
               else {
                   yelling = /[A-Z]/ && !/[a-z]/
         CODE
+        #rubocop:enable Layout/TrailingWhitespace
 
         assert_equal expected, ExtractSnippet.(code, :awk)
       end
