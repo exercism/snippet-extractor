@@ -3,10 +3,10 @@ require "test_helper"
 module SnippetExtractor
   module Languages
     class RakuTest < Minitest::Test
-      def test_single_line
+      def test_single
         code = <<~CODE
-          # Comment
-          sub foo {
+          # Single line comment, single line
+          sub foo { # Single line comment, partial line
             say 'baz';
           }
         CODE
@@ -20,215 +20,67 @@ module SnippetExtractor
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
 
-      def test_single_line_partial
+      def test_multi_round
         code = <<~CODE
-          sub foo { # Comment
-            say 'baz';
+          #`( Multi-line comment, round parentheses, single line )
+          #`(( Multi-line comment, double round parentheses, single line ))
+          sub foo { #`( Multi-
+            line comment, single round parentheses, multiple lines )  say #`(( Multi-
+            line comment, double round parentheses, multiple lines ))  'baz';
           }
         CODE
 
         expected = <<~CODE
           sub foo {
-            say 'baz';
+            say
+            'baz';
           }
         CODE
 
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
 
-      def test_multi_line_parentheses_A
+      def test_multi_code
         code = <<~CODE
-          sub foo { #`( Comment )
-            say 'baz';
+          #`{ Multi-line comment, code parentheses, single line }
+          #`{{ Multi-line comment, double code parentheses, single line }}
+          sub foo { #`{ Multi-
+            line comment, code parentheses, multiple lines }  say #`{{ Multi-
+            line comment, double code parentheses, multiple lines }}  'baz';
           }
         CODE
 
         expected = <<~CODE
           sub foo {
-            say 'baz';
+            say
+            'baz';
           }
         CODE
 
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
 
-      def test_multi_line_parentheses_A_partial
+      def test_multi_square
         code = <<~CODE
-          sub foo { #`( Com-
-            ment )  say 'baz';
+          #`[ Multi-line comment, square parentheses, single line ]
+          #`[[ Multi-line comment, double square parentheses, single line ]]
+          sub foo { #`[ Multi-
+            line comment, square parentheses, multiple lines ]  say #`[[ Multi-
+            line comment, double square parentheses, multiple lines ]]  'baz';
           }
         CODE
 
         expected = <<~CODE
           sub foo {
-            say 'baz';
+            say
+            'baz';
           }
         CODE
 
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
 
-      def test_multi_line_parentheses_B
-        code = <<~CODE
-          sub foo { #`{ Comment }
-            say 'baz';
-          }
-        CODE
-
-        expected = <<~CODE
-          sub foo {
-            say 'baz';
-          }
-        CODE
-
-        assert_equal expected, ExtractSnippet.(code, :raku)
-      end
-
-      def test_multi_line_parentheses_B_partial
-        code = <<~CODE
-          sub foo { #`{ Com-
-            ment }  say 'baz';
-          }
-        CODE
-
-        expected = <<~CODE
-          sub foo {
-            say 'baz';
-          }
-        CODE
-
-        assert_equal expected, ExtractSnippet.(code, :raku)
-      end
-
-      def test_multi_line_parentheses_C
-        code = <<~CODE
-          sub foo { #`[ Comment ]
-            say 'baz';
-          }
-        CODE
-
-        expected = <<~CODE
-          sub foo {
-            say 'baz';
-          }
-        CODE
-
-        assert_equal expected, ExtractSnippet.(code, :raku)
-      end
-
-      def test_multi_line_parentheses_C_partial
-        code = <<~CODE
-          sub foo { #`[ Com-
-            ment ]  say 'baz';
-          }
-        CODE
-
-        expected = <<~CODE
-          sub foo {
-            say 'baz';
-          }
-        CODE
-
-        assert_equal expected, ExtractSnippet.(code, :raku)
-      end
-
-      def test_multi_line_parentheses_AA
-        code = <<~CODE
-          sub foo { #`(( Comment ))
-            say 'baz';
-          }
-        CODE
-
-        expected = <<~CODE
-          sub foo {
-            say 'baz';
-          }
-        CODE
-
-        assert_equal expected, ExtractSnippet.(code, :raku)
-      end
-
-      def test_multi_line_parentheses_AA_partial
-        code = <<~CODE
-          sub foo { #`(( Com-
-            ment ))  say 'baz';
-          }
-        CODE
-
-        expected = <<~CODE
-          sub foo {
-            say 'baz';
-          }
-        CODE
-
-        assert_equal expected, ExtractSnippet.(code, :raku)
-      end
-
-      def test_multi_line_parentheses_BB
-        code = <<~CODE
-          sub foo { #`{{ Comment }}
-            say 'baz';
-          }
-        CODE
-
-        expected = <<~CODE
-          sub foo {
-            say 'baz';
-          }
-        CODE
-
-        assert_equal expected, ExtractSnippet.(code, :raku)
-      end
-
-      def test_multi_line_parentheses_BB_partial
-        code = <<~CODE
-          sub foo { #`{{ Com-
-            ment }}  say 'baz';
-          }
-        CODE
-
-        expected = <<~CODE
-          sub foo {
-            say 'baz';
-          }
-        CODE
-
-        assert_equal expected, ExtractSnippet.(code, :raku)
-      end
-
-      def test_multi_line_parentheses_CC
-        code = <<~CODE
-          sub foo { #`[[ Comment ]]
-            say 'baz';
-          }
-        CODE
-
-        expected = <<~CODE
-          sub foo {
-            say 'baz';
-          }
-        CODE
-
-        assert_equal expected, ExtractSnippet.(code, :raku)
-      end
-
-      def test_multi_line_parentheses_CC_partial
-        code = <<~CODE
-          sub foo { #`[[ Com-
-            ment ]]  say 'baz';
-          }
-        CODE
-
-        expected = <<~CODE
-          sub foo {
-            say 'baz';
-          }
-        CODE
-
-        assert_equal expected, ExtractSnippet.(code, :raku)
-      end
-
-      def test_begin_end
+      def test_pod
         code = <<~CODE
           =begin comment
             Hello,
