@@ -7,8 +7,9 @@ module SnippetExtractor
       def test_simple_example
         code = <<~CODE
           method run.
-          * delete
+          * delete me
             write 'Hello World!'.
+            "another comment
           endmethod.
         CODE
 
@@ -29,10 +30,12 @@ module SnippetExtractor
             private section.
               data stuff type standard table of string.
           endclass.
-
+            
           class foo implementation. 
             method run.
+          * comment1
               write 'Hello world!'.
+              "comment2
             endmethod.
           endclass.
         CODE

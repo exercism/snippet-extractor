@@ -1,4 +1,4 @@
 !e
-*
+*\p
 "\p
-class-->>implementation.\p
+class-->>IMPLEMENTATION.\p
