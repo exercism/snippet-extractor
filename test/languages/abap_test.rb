@@ -4,7 +4,6 @@ module SnippetExtractor
   module Languages
     class AbapTest < Minitest::Test
 
-      # This fails with stop_at_first_loc
       def test_simple_example
         code = <<~CODE
           method run.
@@ -22,7 +21,6 @@ module SnippetExtractor
         assert_equal expected, ExtractSnippet.(code, :abap)
       end
 
-      # This fails with or without stop_at_first_loc as both sections will always match
       def test_strip_definition
         code = <<~CODE
           class foo definition. 
@@ -40,7 +38,6 @@ module SnippetExtractor
         CODE
 
         expected = <<~CODE
-          class foo implementation. 
             method run.
               write 'Hello world!'.
             endmethod.

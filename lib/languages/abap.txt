@@ -1,4 +1,4 @@
 !e
 *
 "\p
-class-->>endclass\p
+class-->>implementation.\p
