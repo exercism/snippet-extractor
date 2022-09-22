@@ -224,7 +224,7 @@ Each example has three blocks:
 
 ```
 !e
-/_\p-->>?\*/\pj
+/*\p-->>?\*/\pj
 ```
 
 ```javascript
