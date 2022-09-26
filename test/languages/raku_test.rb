@@ -19,7 +19,6 @@ module SnippetExtractor
 
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
-
       def test_multi_round
         code = <<~CODE
           #`( Multi-line comment, round parentheses, single line )
@@ -39,7 +38,6 @@ module SnippetExtractor
 
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
-
       def test_multi_code
         code = <<~CODE
           #`{ Multi-line comment, code parentheses, single line }
@@ -59,7 +57,6 @@ module SnippetExtractor
 
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
-
       def test_multi_square
         code = <<~CODE
           #`[ Multi-line comment, square parentheses, single line ]
@@ -79,7 +76,6 @@ module SnippetExtractor
 
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
-
       def test_multi_angle
         code = <<~CODE
           #`< Multi-line comment, angle parentheses, single line >
@@ -99,7 +95,6 @@ module SnippetExtractor
 
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
-
       def test_pod
         code = <<~CODE
           =begin comment
@@ -119,7 +114,6 @@ module SnippetExtractor
 
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
-
     end
   end
 end
