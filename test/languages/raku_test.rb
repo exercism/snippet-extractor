@@ -120,22 +120,6 @@ module SnippetExtractor
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
 
-      def test_unit_module
-        code = <<~CODE
-          unit module HelloWorld;
-          sub foo {
-            say 'baz';
-          }
-        CODE
-
-        expected = <<~CODE
-          sub foo {
-            say 'baz';
-          }
-        CODE
-
-        assert_equal expected, ExtractSnippet.(code, :raku)
-      end
     end
   end
 end
