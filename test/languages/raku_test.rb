@@ -1,5 +1,4 @@
 require "test_helper"
-
 module SnippetExtractor
   module Languages
     class RakuTest < Minitest::Test
@@ -7,16 +6,12 @@ module SnippetExtractor
         code = <<~CODE
           # Single line comment, single line
           sub foo { # Single line comment, partial line
-            say 'baz';
-          }
+            say 'baz'; }
         CODE
-
         expected = <<~CODE
           sub foo {
-            say 'baz';
-          }
+            say 'baz'; }
         CODE
-
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
       def test_multi_round
@@ -28,14 +23,12 @@ module SnippetExtractor
             line comment, double round parentheses, multiple lines ))  'baz';
           }
         CODE
-
         expected = <<~CODE
           sub foo {
             say
             'baz';
           }
         CODE
-
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
       def test_multi_code
@@ -47,14 +40,12 @@ module SnippetExtractor
             line comment, double code parentheses, multiple lines }}  'baz';
           }
         CODE
-
         expected = <<~CODE
           sub foo {
             say
             'baz';
           }
         CODE
-
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
       def test_multi_square
@@ -66,14 +57,12 @@ module SnippetExtractor
             line comment, double square parentheses, multiple lines ]]  'baz';
           }
         CODE
-
         expected = <<~CODE
           sub foo {
             say
             'baz';
           }
         CODE
-
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
       def test_multi_angle
@@ -85,33 +74,24 @@ module SnippetExtractor
             line comment, double angle parentheses, multiple lines >>  'baz';
           }
         CODE
-
         expected = <<~CODE
           sub foo {
             say
             'baz';
           }
         CODE
-
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
       def test_pod
         code = <<~CODE
           =begin comment
-            Hello,
-            World!
+            Hello, World!
           =end comment
-          sub foo {
-            say 'baz';
-          }
+          sub foo { say 'baz'; }
         CODE
-
         expected = <<~CODE
-          sub foo {
-            say 'baz';
-          }
+          sub foo { say 'baz'; }
         CODE
-
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
     end
