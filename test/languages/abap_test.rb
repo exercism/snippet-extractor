@@ -3,7 +3,6 @@ require "test_helper"
 module SnippetExtractor
   module Languages
     class AbapTest < Minitest::Test
-
       def test_simple_example
         code = <<~CODE
           method run.
@@ -30,8 +29,8 @@ module SnippetExtractor
             private section.
               data stuff type standard table of string.
           endclass.
-            
-          class foo implementation. 
+
+          class foo implementation.
             method run.
           * comment1
               write 'Hello world!'.
@@ -49,7 +48,6 @@ module SnippetExtractor
 
         assert_equal expected, ExtractSnippet.(code, :abap)
       end
-
     end
   end
 end
