@@ -1,0 +1,4 @@
+!e
+*\p
+"\p
+class-->>IMPLEMENTATION.\p
