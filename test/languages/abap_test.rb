@@ -23,7 +23,7 @@ module SnippetExtractor
 
       def test_strip_definition
         code = <<~CODE
-          class foo definition. 
+          class foo definition.
             public section.
               methods run.
             private section.
