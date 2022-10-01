@@ -87,7 +87,18 @@ module SnippetExtractor
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
 
-      def test_pod
+      def test_single_pod
+        code = <<~CODE
+          =comment Hello, World!
+          sub foo { say 'baz'; }
+        CODE
+        expected = <<~CODE
+          sub foo { say 'baz'; }
+        CODE
+        assert_equal expected, ExtractSnippet.(code, :raku)
+      end
+
+      def test_multi_pod
         code = <<~CODE
           =begin comment
             Hello, World!
