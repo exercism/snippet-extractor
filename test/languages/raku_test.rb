@@ -87,6 +87,24 @@ module SnippetExtractor
         assert_equal expected, ExtractSnippet.(code, :raku)
       end
 
+      def test_multi_quote
+        code = <<~CODE
+          #`｢ Multi-line comment, code parentheses, single line ｣
+          #`｢｢ Multi-line comment, double code parentheses, single line ｣｣
+          sub foo { #`｢ Multi-
+            line comment, code parentheses, multiple lines ｣  say #`｢｢ Multi-
+            line comment, double code parentheses, multiple lines ｣｣  'baz';
+          }
+        CODE
+        expected = <<~CODE
+          sub foo {
+            say
+            'baz';
+          }
+        CODE
+        assert_equal expected, ExtractSnippet.(code, :raku)
+      end
+
       def test_single_pod
         code = <<~CODE
           =comment Hello, World!
