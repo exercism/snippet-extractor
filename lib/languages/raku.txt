@@ -3,9 +3,12 @@
 #`{+\j-->>}+\pj
 #`[+\j-->>]+\pj
 #`<+\j-->>>+\pj
+#`｢+\j-->>｣+\pj
 #`(\j-->>)\pj
 #`{\j-->>}\pj
 #`[\j-->>]\pj
 #`<\j-->>>\pj
+#`｢\j-->>｣\pj
 #
-=begin-->>=end
+=begin comment-->>=end comment
+=comment
