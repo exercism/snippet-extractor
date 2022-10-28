@@ -23,7 +23,7 @@ module SnippetExtractor
               return 'Hello, World!';
           }
         CODE
-        assert_equal expected, ExtractSnippet.(code, :perl5)
+        assert_equal expected, ExtractSnippet.(code, 'perl5')
       end
     end
   end
