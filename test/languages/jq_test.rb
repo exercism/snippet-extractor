@@ -24,13 +24,13 @@ module SnippetExtractor
 
           # And then eventually the code
           def afunc: 42 ;
-          
+
           afunc
         CODE
 
         expected = <<~CODE
           def afunc: 42 ;
-          
+
           afunc
         CODE
 
@@ -51,7 +51,6 @@ module SnippetExtractor
 
         assert_equal expected, ExtractSnippet.(code, :ruby)
       end
-
     end
   end
 end
