@@ -19,9 +19,9 @@ module SnippetExtractor
           	as well}
 
           function add100 [x [integer!]] [
-          	"; this should not count as comment "
-          	{ comment [and neither
-          	 this] }
+          	" this should not count as comment "
+          	{ and neither
+          	 this }
           ]
         CODE
 
@@ -30,9 +30,9 @@ module SnippetExtractor
           x: 2
           x: 3
           function add100 [x [integer!]] [
-          	"; this should not count as comment "
-          	{ comment [and neither
-          	 this] }
+          	" this should not count as comment "
+          	{ and neither
+          	 this }
           ]
         CODE
 
