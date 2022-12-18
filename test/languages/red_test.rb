@@ -5,16 +5,20 @@ module SnippetExtractor
     class RedTest < Minitest::Test
       def test_full_example
         code = <<~CODE
-          Red [] ; a comment
+          Red [a-header] ; a comment
 
           ; single line comment
           x: 1 ; line comment 1
+          y: 11
           x: 2   ;-- line comment 2
           x: 3		;@@ line comment 3
 
           comment ['this
           	'is 'multiline
           	'comment]
+
+          print "no comments!"
+
           comment   {and this
           	as well}
 
@@ -26,9 +30,13 @@ module SnippetExtractor
         CODE
 
         expected = <<~CODE
-          x: 1
-          x: 2
-          x: 3
+          x: 1 
+          y: 11
+          x: 2   
+          x: 3		
+
+          print "no comments!"
+
           function add100 [x [integer!]] [
           	" this should not count as comment "
           	{ and neither

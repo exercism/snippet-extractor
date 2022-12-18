@@ -1,8 +1,8 @@
 !e
 ;\p
-Red [\p-->>]\pj
-Red +[\p-->>]\pj
-comment [\p-->>]\pj
-comment +[\p-->>]\pj
-comment {\p-->>}\pj
-comment +{\p-->>}\pj
+Red [\pj-->>]\pj
+Red +[\pj-->>]\pj
+comment [\pj-->>]\pj
+comment +[\pj-->>]\pj
+comment {\pj-->>}\pj
+comment +{\pj-->>}\pj
