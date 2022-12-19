@@ -40,8 +40,6 @@ module SnippetExtractor
           function add100 [x [integer!]] [
           	" this should not count as comment "
           	{ and neither
-          	 this }
-          ]
         CODE
 
         assert_equal expected, ExtractSnippet.(code, :red)
