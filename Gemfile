@@ -11,10 +11,10 @@ gem 'rake'
 gem 'zeitwerk'
 
 group :test do
-  gem 'minitest', '~> 5.10', '!= 5.10.2'
+  gem 'minitest', '~> 5.17'
   gem 'minitest-stub-const'
   gem 'mocha'
-  gem 'simplecov', '~> 0.17.0'
+  gem 'simplecov', '~> 0.22.0'
   gem 'rubocop', require: false
   gem 'rubocop-minitest', require: false
   gem 'rubocop-performance', require: false

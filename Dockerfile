@@ -4,7 +4,7 @@ RUN yum install -y make gcc
 
 WORKDIR /var/task
 
-RUN gem install json -v '2.3.1' 
+RUN gem install json -v '2.6.3'
 
 COPY Gemfile Gemfile.lock ./
 
