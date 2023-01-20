@@ -1,3 +1,3 @@
-!e
+!e stop_at_first_loc
 ;\p
 (require\p
