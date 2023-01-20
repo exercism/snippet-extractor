@@ -26,7 +26,7 @@ For slugs with hyphens, check out `common-lisp` as your example.
 
 You can run the tests locally or rely on the CI to test things for you (it's fast).
 
-The repo relies on Ruby 2.6.6.
+The repo relies on Ruby 3.2.0.
 Before running the tests, first install the dependencies:
 
 ```bash
