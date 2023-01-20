@@ -1,6 +1,8 @@
 # This must happen above the env require below
 if ENV["CAPTURE_CODE_COVERAGE"]
   require 'simplecov'
+  require 'simplecov_json_formatter'
+  SimpleCov.formatter = SimpleCov::Formatter::JSONFormatter
   SimpleCov.start
 end
 
