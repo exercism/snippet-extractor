@@ -73,13 +73,13 @@ module SnippetExtractor
         CODE
 
         expected = <<~CODE
-        WORDS = ["abc", def]
-        
-        module
-          def count_words(text)
-            WORDS[0]
+          WORDS = ["abc", def]
+
+          module
+            def count_words(text)
+              WORDS[0]
+            end
           end
-        end
         CODE
 
         assert_equal expected, ExtractSnippet.(code, :crystal)
