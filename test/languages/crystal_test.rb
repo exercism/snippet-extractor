@@ -73,7 +73,6 @@ module SnippetExtractor
         CODE
 
         expected = <<~CODE
-        require "json"
         WORDS = ["abc", def]
         module
           def count_words(text)
