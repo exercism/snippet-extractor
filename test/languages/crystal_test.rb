@@ -24,7 +24,7 @@ module SnippetExtractor
           end
         CODE
 
-        assert_equal expected, ExtractSnippet.(code, :ruby)
+        assert_equal expected, ExtractSnippet.(code, :crystal)
       end
 
       def test_extended_example
@@ -39,22 +39,50 @@ module SnippetExtractor
           class TwoFer
             ...#And comments
           end
-          __END__
-          More data after end of source file
-          and more
-          moooore but this is over 10 lines so it wont appear
         CODE
 
         expected = <<~CODE
           class TwoFer
             ...#And comments
           end
-          __END__
-          More data after end of source file
-          and more
         CODE
 
-        assert_equal expected, ExtractSnippet.(code, :ruby)
+        assert_equal expected, ExtractSnippet.(code, :crystal)
+      end
+
+      def test_full_example_extended
+        code = <<~CODE
+          #!/usr/bin/env python3
+
+          # The above is sometimes used to note
+          # where the python interpreter is located.
+
+          # And after this comes the import statements, if any:
+          require "json"
+
+          # And then any constants or globals,
+          # followed by code.
+          WORDS = ["abc", def]
+
+          module
+            def count_words(text)
+              #This counts words
+              WORDS[0]
+            end
+          end
+        CODE
+
+        expected = <<~CODE
+        require "json"
+        WORDS = ["abc", def]
+        module
+          def count_words(text)
+            WORDS[0]
+          end
+        end
+        CODE
+
+        assert_equal expected, ExtractSnippet.(code, :crystal)
       end
     end
   end
