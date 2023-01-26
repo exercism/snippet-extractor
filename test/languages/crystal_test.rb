@@ -74,6 +74,7 @@ module SnippetExtractor
 
         expected = <<~CODE
         WORDS = ["abc", def]
+        
         module
           def count_words(text)
             WORDS[0]
