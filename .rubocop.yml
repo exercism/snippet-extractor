@@ -24,6 +24,9 @@ Layout/MultilineMethodCallIndentation:
 Layout/EmptyLinesAroundAccessModifier:
   EnforcedStyle: only_before
 
+Layout/TrailingWhitespace:
+  Enabled: false
+
 Lint/SuppressedException:
   Exclude:
     - "test/**/*"
