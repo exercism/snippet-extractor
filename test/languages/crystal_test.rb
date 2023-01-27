@@ -2,7 +2,7 @@ require "test_helper"
 
 module SnippetExtractor
   module Languages
-    class RubyTest < Minitest::Test
+    class CrystalTest < Minitest::Test
       def test_full_example
         code = <<~CODE
           # This is a file
