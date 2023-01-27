@@ -42,7 +42,7 @@ module SnippetExtractor
           pub fn two_fer(name: String) -> String {
             todo// with comments
           }
-          
+
           // Here is a comment
           /// And a documentation comment
           pub type TwoFer {
@@ -58,7 +58,7 @@ module SnippetExtractor
           pub fn two_fer(name: String) -> String {
             todo
           }
-          
+
           pub type TwoFer {
             TwoFer(name: String)
           }
