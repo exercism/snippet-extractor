@@ -43,7 +43,7 @@ module SnippetExtractor
 
         expected = <<~CODE
           class TwoFer
-            ...#And comments
+            ...
           end
         CODE
 
