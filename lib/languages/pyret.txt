@@ -1,0 +1,6 @@
+!e
+#|\p-->>|#\p
+#\p
+provide: \p
+import \p
+include \p
