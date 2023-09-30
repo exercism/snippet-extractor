@@ -1,6 +1,6 @@
 !e
 #|\pj-->>|#\pj
-#\p
+#lang\p
 ;\p
-(provide-->>\)\p
-(require-->>\)\p
+(provide\p
+(require\p
