@@ -43,7 +43,7 @@ module SnippetExtractor
 
         expected = <<~CODE
           class TwoFer
-            ...
+            ...#And comments
           end
         CODE
 
@@ -77,6 +77,7 @@ module SnippetExtractor
 
           module
             def count_words(text)
+              #This counts words
               WORDS[0]
             end
           end
