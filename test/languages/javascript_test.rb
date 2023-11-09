@@ -1,98 +1,94 @@
 require "test_helper"
 
-module SnippetExtractor
-  module Languages
-    class JavascriptTest < Minitest::Test
-      def test_full_example
-        code = <<~CODE
+class SnippetExtractor::Languages::JavascriptTest < Minitest::Test
+  def test_full_example
+    code = <<~CODE
 
-          // Skipping imports
-          import * as example from 'example.js'
-          import *
-            as example
-            from 'example.js'
+      // Skipping imports
+      import * as example from 'example.js'
+      import *
+        as example
+        from 'example.js'
 
-          import { get_data, get_data2 } from 'example.js'
+      import { get_data, get_data2 } from 'example.js'
 
-          /// Saying things over
-          /// multiple lines of code
+      /// Saying things over
+      /// multiple lines of code
 
-          /* Multiline comments */
-          /**
-           * Multiline comments 2
-           *
-           */
+      /* Multiline comments */
+      /**
+       * Multiline comments 2
+       *
+       */
 
-          function getJSON(url, callback) {
-            let xhr = new XMLHttpRequest();
-            xhr.onload = function () {
-              callback(this.responseText)
-            };
-            xhr.open('GET', url, true);
-            xhr.send();
-          }
-        CODE
+      function getJSON(url, callback) {
+        let xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          callback(this.responseText)
+        };
+        xhr.open('GET', url, true);
+        xhr.send();
+      }
+    CODE
 
-        expected = <<~CODE
-          function getJSON(url, callback) {
-            let xhr = new XMLHttpRequest();
-            xhr.onload = function () {
-              callback(this.responseText)
-            };
-            xhr.open('GET', url, true);
-            xhr.send();
-          }
-        CODE
+    expected = <<~CODE
+      function getJSON(url, callback) {
+        let xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          callback(this.responseText)
+        };
+        xhr.open('GET', url, true);
+        xhr.send();
+      }
+    CODE
 
-        assert_equal expected, ExtractSnippet.(code, :javascript)
-      end
+    assert_equal expected, SnippetExtractor::ExtractSnippet.(code, :javascript)
+  end
 
-      def test_extended_example
-        code = <<~CODE
+  def test_extended_example
+    code = <<~CODE
 
-          // Skipping imports
-          import * as example from 'example.js'
-          import *
-            as example
-            from 'example.js'
+      // Skipping imports
+      import * as example from 'example.js'
+      import *
+        as example
+        from 'example.js'
 
-          import { get_data, get_data2 } from 'example.js'
+      import { get_data, get_data2 } from 'example.js'
 
-          function getJSON(url, callback) {
-            let xhr = new XMLHttpRequest();
-            xhr.onload = function () {
-              callback(this.responseText)
-            };
+      function getJSON(url, callback) {
+        let xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          callback(this.responseText)
+        };
 
 
-          /// Saying things over
-          /// multiple lines of code
+      /// Saying things over
+      /// multiple lines of code
 
-          /* Multiline comments */
-          /**
-           * Multiline comments 2
-           *
-           */
+      /* Multiline comments */
+      /**
+       * Multiline comments 2
+       *
+       */
 
-            xhr.open('GET', /*hi*/url, true);
-            xhr.send();//Sending
-          }//:O
-        CODE
+        xhr.open('GET', /*hi*/url, true);
+        xhr.send();//Sending
+      }//:O
+    CODE
 
-        expected = <<~CODE
-          function getJSON(url, callback) {
-            let xhr = new XMLHttpRequest();
-            xhr.onload = function () {
-              callback(this.responseText)
-            };
+    expected = <<~CODE
+      function getJSON(url, callback) {
+        let xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          callback(this.responseText)
+        };
 
-            xhr.open('GET', url, true);
-            xhr.send();
-          }
-        CODE
+        xhr.open('GET', url, true);
+        xhr.send();
+      }
+    CODE
 
-        assert_equal expected, ExtractSnippet.(code, :javascript)
-      end
-    end
+    assert_equal expected, SnippetExtractor::ExtractSnippet.(code, :javascript)
   end
 end
