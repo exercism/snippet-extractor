@@ -34,7 +34,6 @@ class SnippetExtractor::Languages::VimscriptTest < Minitest::Test
     CODE
 
     expected = <<~'CODE'
-
       function! AtbashDecode(cipher) abort
           let str = tolower(substitute(a:cipher, '[^[:alnum:]]', '', 'g'))
           let str = tr(str, 'abcdefghijklmnopqrstuvwxyz', 'zyxwvutsrqponmlkjihgfedcba')
@@ -44,6 +43,7 @@ class SnippetExtractor::Languages::VimscriptTest < Minitest::Test
       function! AtbashEncode(plaintext) abort
           let str = AtbashDecode(a:plaintext)
           " let str = substitute(str, '.\{5\}', '& ', 'g')
+          " return substitute(str, ' $', '', '')
     CODE
     assert_equal expected, SnippetExtractor::ExtractSnippet.(code, :vimscript)
   end
