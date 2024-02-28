@@ -2,7 +2,7 @@ require "test_helper"
 
 module SnippetExtractor
   class LanguagesTest < Minitest::Test
-    Dir.glob(File.join(__dir__, '..', 'tests', '*', '*')).each do |test_dir|
+    Dir.glob(File.join(__dir__, '..', 'tests', ENV.fetch('LANGUAGE', '*'), '*')).each do |test_dir|
       track = File.basename(File.dirname(test_dir))
       test_name = File.basename(test_dir)
       code = File.read(Dir.glob(File.join(test_dir, 'code.*')).first)
