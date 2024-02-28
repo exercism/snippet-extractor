@@ -1,4 +1,4 @@
-FROM amazon/aws-lambda-ruby
+FROM public.ecr.aws/lambda/ruby:3.2 AS build
 
 RUN yum install -y make gcc
 
