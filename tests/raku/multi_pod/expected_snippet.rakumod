@@ -1,0 +1,1 @@
+sub foo { say 'baz'; }

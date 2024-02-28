@@ -1,0 +1,17 @@
+# General comment
+#
+# $a0 - input
+
+.globl binary_convert
+
+.data
+
+.text
+
+binary_convert:
+        li      $v0, 0 # line comment
+
+# Another line comment
+end:
+        jr $ra
+

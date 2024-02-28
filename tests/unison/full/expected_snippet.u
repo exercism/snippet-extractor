@@ -1,0 +1,10 @@
+testRunner.main : '{IO,Exception}()
+testRunner.main _ =
+  solutionPrefix = io.getEnv "solution_dir"
+  testAnnotationFilePath = FilePath (solutionPrefix Text.++ "/.meta/testAnnotation.json")
+  annotations = !(parseAnnotationFile testAnnotationFilePath)
+  json = toV2TestFile tests annotations |> toJson
+  testRunner.checkAnnotationFile annotations tests
+  jsonString = json |> compact
+  envFilePath = io.getEnv "results_file"
+  filePath = FilePath ( envFilePath )

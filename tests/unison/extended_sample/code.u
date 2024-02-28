@@ -1,0 +1,31 @@
+use base.Text
+use base.List map
+
+{-
+Multiline comment
+-}
+
+-- Inline comment
+
+{{
+  This is documentation for a function
+  It is very important content
+
+  ```1+2```
+}}
+usefulTestRunner.main : '{IO,Exception}()
+usefulTestRunner.main _ =
+  use base.Text join ++
+  solutionPrefix = io.getEnv "solution_dir"
+  {{I am a doc block in the middle}}
+  -- I am a comment hanging out here
+  {-
+    multi line comment in block
+  -}
+  testAnnotationFilePath = FilePath (solutionPrefix Text.++ "/.meta/testAnnotation.json")
+  annotations = !(parseAnnotationFile testAnnotationFilePath)
+  testRunner.checkAnnotationFile annotations tests
+  json = toV2TestFile tests annotations |> toJson
+  jsonString = json |> compact
+  envFilePath = io.getEnv "results_file"
+  filePath = FilePath ( envFilePath )

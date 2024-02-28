@@ -1,0 +1,7 @@
+(defun fib (n)
+  (check-type n integer)
+  (cond ((< n 0)
+         (error "FIB got ~D as an argument." n))
+        ((< n 2) n)             
+        (t (+ (fib (- n 1))     
+              (fib (- n 2)))))) 

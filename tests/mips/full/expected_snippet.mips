@@ -1,0 +1,6 @@
+binary_convert:
+        li      $v0, 0 
+
+end:
+        jr $ra
+
