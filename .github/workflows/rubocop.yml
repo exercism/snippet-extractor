@@ -5,24 +5,29 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   rubocop:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
 
       - name: Set up Ruby
-        uses: ruby/setup-ruby@a699edbce608a2c128dedad88e3b6a0e28687b3c
+        uses: ruby/setup-ruby@d4526a55538b775af234ba4af27118ed6f8f6677
         with:
-          ruby-version: 2.6.6
+          ruby-version: .ruby-version
 
       - name: Install gems
         run: |
-          gem install rubocop -v 1.7.0
-          gem install rubocop-minitest -v 0.11.0
-          gem install rubocop-performance -v 1.10.1
+          # Extract the exact versions of the rubocop gems from Gemfile.lock
+          rubocop_version=$(sed -n -E 's/^    rubocop \((.+)\)/\1/p' Gemfile.lock)
+          rubocop_performance_version=$(sed -n -E 's/^    rubocop-performance \((.+)\)/\1/p' Gemfile.lock)
+
+          gem install rubocop -v $rubocop_version
+          gem install rubocop-performance -v $rubocop_performance_version
 
       - name: Run Rubocop
         run: rubocop --except Metrics
