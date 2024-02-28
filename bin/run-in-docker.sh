@@ -56,7 +56,7 @@ else
     extension="${source_code_file##*.}"
     snippet_file="${output_dir}/snippet.${extension}"
     curl -XPOST "${function_url}" --data "${event_json}" --silent > "${response_file}"
-    jq -r '.body' "${response_file}" > "${snippet_file}"
+    jq -j -r '.body' "${response_file}" > "${snippet_file}"
 fi
 
 echo "${track_slug}: done"

@@ -1,10 +1,11 @@
-name: Tests
+name: Test
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   test:
@@ -14,31 +15,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@d4526a55538b775af234ba4af27118ed6f8f6677
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@0d103c3126aa41d772a8362f6aa67afac040f80c
         with:
-          ruby-version: .ruby-version
-          bundler-cache: true
+          install: true
 
-      # Setup code climate
-      - name: Setup Code Climate test-reporter
-        run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-          chmod +x ./cc-test-reporter
-          ./cc-test-reporter before-build
+      - name: Build Docker image and store in cache
+        uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56
+        with:
+          context: .
+          push: false
+          load: true
+          tags: exercism/snippet-extractor
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-      # Run the tests
-      - name: Run Ruby tests
-        env:
-          CAPTURE_CODE_COVERAGE: true
-        run: |
-          bundle exec rake test
-          ./cc-test-reporter format-coverage -t simplecov -o codeclimate.backend.json coverage/backend/.resultset.json
-      # Publish the coverage to CodeClimate
-      # - name: Publish code coverage
-      #   if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-      #   env:
-      #     GIT_BRANCH: ${GITHUB_REF/refs\/heads\//}
-      #     CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-      #   run: |
-      #     ./cc-test-reporter upload-coverage -i codeclimate.*.json
+      - name: Run Tests in Docker
+        run: bin/run-tests-in-docker.sh
