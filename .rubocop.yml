@@ -6,6 +6,7 @@ AllCops:
   NewCops: disable
   Exclude:
     - "bin/**/*"
+    - "tests/**/*"
     - "Gemfile"
     - "Gemfile.lock"
 

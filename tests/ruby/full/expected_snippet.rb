@@ -1,0 +1,3 @@
+class TwoFer
+  ...
+end
