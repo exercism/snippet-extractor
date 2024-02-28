@@ -18,9 +18,7 @@ module SnippetExtractor
         extracted_lines[0...10]
       end
 
-      def lines
-        code.lines
-      end
+      def lines = code.lines
     end
   end
 end
