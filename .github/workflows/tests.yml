@@ -8,18 +8,16 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
-      # Checkout using GitHub's checkout action
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
 
-      # Setup Ruby - this needs to match the version in the Gemfile
       - name: Set up Ruby
-        uses: ruby/setup-ruby@a699edbce608a2c128dedad88e3b6a0e28687b3c
+        uses: ruby/setup-ruby@d4526a55538b775af234ba4af27118ed6f8f6677
         with:
-          ruby-version: 2.6.6
-          bundler-cache: true
+          ruby-version: .ruby-version
 
       # Setup code climate
       - name: Setup Code Climate test-reporter
