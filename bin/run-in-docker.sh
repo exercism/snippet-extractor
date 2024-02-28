@@ -25,7 +25,8 @@ if [[ $# -lt 2 ]]; then
 fi
 
 track_slug="${1}"
-source_code=$(cat "${2}")
+source_code_file="${2}"
+source_code=$(cat "${source_code_file}")
 container_port=9876
 
 # Build the Docker image, unless SKIP_BUILD is set
@@ -51,7 +52,11 @@ if [ -z "${3}" ]; then
     echo ""
 else
     output_dir=$(realpath "${3%/}")
-    curl -XPOST "${function_url}" --data "${event_json}" --silent > "${output_dir}/snippet.txt"    
+    response_file="${output_dir}/response.json"
+    extension="${source_code_file##*.}"
+    snippet_file="${output_dir}/snippet.${extension}"
+    curl -XPOST "${function_url}" --data "${event_json}" --silent > "${response_file}"
+    jq -r '.body' "${response_file}" > "${snippet_file}"
 fi
 
 echo "${track_slug}: done"
