@@ -3,30 +3,62 @@
 ![Tests](https://github.com/exercism/snippet-extractor/workflows/Tests/badge.svg)
 
 This is Exercism's snippet extractor.
-It takes an exercism submission and extracts the first ten "interesting" lines of code.
+It takes the code of an Exercism submission and creates a snippet for it (shown on various places on the website).
 
-## Add your language
+## Customizing snippet extraction
 
-Each language has a config file inside `lib/languages` with the filename `$slug.txt` - for example: `lib/languages/ruby.txt`.
+By default, the snippet extractor extracts the first ten "interesting" (non-empty) lines of code.
+Whilst the default behavior is useful, we recommend customing snippet generation for most languages.
 
-Each file can be in [Basic Mode](docs/basic.md) or [Extended Mode](docs/extended.md).
-Please read those docs to choose which to use for your language.
+### Customization
 
-Along with each language file is a test file in `test/languages/$slug_test.rb`.
-When adding or making changes to a language file, please add or update the corresponding language file, copying `ruby_test.rb` as your basis.
-At a minimum all references to "ruby" (case insensitive) should be changed to the slug of your language - searching for these is a good way to start.
+The most common customization is to ignore comments, but you might also want to ignore:
 
-Ruby, PHP and C# all contain good examples of different of different things that could be skipped and are good files to look at.
+- Imports/exports
+- Namespace/module declarations
 
-### Slugs with hyphens
+### Add configuration
 
-For slugs with hyphens, check out `common-lisp` as your example.
+To customize snippet extraction, start by creating a config file for your language at `lib/languages/<slug>.txt` (e.g. `lib/languages/ruby.txt`).
+This file will define the rules used by the snippet extractor to select the lines of code included in generated snippets.
+
+Your configuration file can be in two modes, which influence what you can do in your config file:
+
+- [Basic Mode](docs/basic.md)
+- [Extended Mode](docs/extended.md).
+
+Please read those docs to determine which to use for your language.
+
+### Add golden tests
+
+To verify the configuration, one or more [golden tests][golden] should be added to `tests/<slug>`.
+Each test is defined in its own directory (e.g. `tests/ruby/full`) and must contain two files:
+
+- `code.<extension>`: the code to create the snippet from
+- `expected_snippet.<extension>`: the expected snippet
+
+You can then run the tests for your language via:
+
+```shell
+LANGUAGE=<slug> bundle exec rake test TEST=test/languages_test.rb
+```
+
+As an example, here's how to run the tests for ruby:
+
+```shell
+LANGUAGE=ruby bundle exec rake test TEST=test/languages_test.rb
+```
+
+### Inspiration
+
+We recommend looking at how existing languages have defined their config and tests, which you could probably use as a starting point.
+Ruby, PHP and C# all contain good starting points.
 
 ## Running the tests
 
 You can run the tests locally or rely on the CI to test things for you (it's fast).
 
-The repo relies on Ruby 2.6.6.
+The repo relies on Ruby 3.2.0.
 Before running the tests, first install the dependencies:
 
 ```bash
@@ -39,12 +71,6 @@ Then, run the following command to run the tests:
 bundle exec rake test
 ```
 
-To only run the tests in a single test file, add `TEST=<relative-path-to-test-file>`:
-
-```bash
-bundle exec rake test TEST=test/languages/csharp_test.rb
-```
-
 ## Credit
 
 This repo is built and maintained by Exercism.
@@ -53,3 +79,5 @@ The initial spike of this was written by [Jeremy Walker](https://github.com/ihid
 The extended version was written by [José Ráez Rodríguez](https://github.com/joshiraez).
 
 Contributions are welcome!
+
+[golden]: https://ro-che.info/articles/2017-12-04-golden-tests
