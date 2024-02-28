@@ -18,6 +18,7 @@ jobs:
         uses: ruby/setup-ruby@d4526a55538b775af234ba4af27118ed6f8f6677
         with:
           ruby-version: .ruby-version
+          bundler-cache: true
 
       # Setup code climate
       - name: Setup Code Climate test-reporter
