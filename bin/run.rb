@@ -1,6 +1,7 @@
-require "zeitwerk"
-load File.expand_path('../../lib/snippet_extractor.rb', __FILE__)
+#!/usr/bin/env ruby
 
-def run(event:, context:)
-  SnippetExtractor.process_request(event: event, context: context)
-end
+require(File.expand_path(File.join("..", "lib", "snippet_extractor")))
+
+event = JSON.parse(ARGV[0])
+response = SnippetExtractor.process(event:, context: {})
+puts response.to_json
