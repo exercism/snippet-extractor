@@ -1,17 +1,21 @@
 FROM public.ecr.aws/lambda/ruby:3.2 AS build
 
-RUN yum install -y make gcc
+RUN yum install gcc make -y
 
-WORKDIR /var/task
-
-RUN gem install json -v '2.3.1' 
-
+ENV GEM_HOME=${LAMBDA_TASK_ROOT}
+WORKDIR ${LAMBDA_TASK_ROOT}
 COPY Gemfile Gemfile.lock ./
 
 RUN bundle config set deployment 'true' && \
     bundle config set without 'development test' && \
     bundle install
 
+FROM public.ecr.aws/lambda/ruby:3.2 AS runtime
+
+ENV GEM_HOME=${LAMBDA_TASK_ROOT}
+WORKDIR ${LAMBDA_TASK_ROOT}
+
+COPY --from=build ${LAMBDA_TASK_ROOT}/ ${LAMBDA_TASK_ROOT}/
 COPY . .
 
-CMD ["bin/run.run"]
+CMD [ "lib/snippet_extractor.SnippetExtractor.process" ]
