@@ -22,7 +22,7 @@ module SnippetExtractor
     memoize
     def ignore_list
       slug = language.to_s.gsub(/[^a-z0-9-]/, '')
-      File.read(File.expand_path("../../languages/#{slug}.txt", __FILE__)).lines.map(&:rstrip)
+      File.read(File.expand_path("../../languages/#{slug}.txt", __FILE__), encoding: 'UTF-8').lines.map(&:rstrip)
     end
   end
 end
