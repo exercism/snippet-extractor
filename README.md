@@ -8,7 +8,7 @@ It takes the code of an Exercism submission and creates a snippet for it (shown 
 ## Customizing snippet extraction
 
 By default, the snippet extractor extracts the first ten "interesting" (non-empty) lines of code.
-Whilst the default behavior is useful, we recommend customing snippet generation for most languages.
+Whilst the default behavior is useful, we recommend customizing snippet generation for most languages.
 
 ### Customization
 
