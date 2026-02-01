@@ -30,9 +30,7 @@ inductive TestType
 
 def wouldItRemain? (test : TestType) : TestType :=
   -- a sorry is in order!
-  sorry/- what about a multiline to the right?
-
-  -/
+  sorry
 
 /-
   I think it is time to end this test file, right?
