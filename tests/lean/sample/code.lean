@@ -29,8 +29,9 @@ inductive TestType
 --and without space?
 
 def wouldItRemain? (test : TestType) : TestType :=
-  -- a sorry is in order!
-  sorry
+  match test with
+  | .here => .here
+  | _     => .go
 
 /-
   I think it is time to end this test file, right?
