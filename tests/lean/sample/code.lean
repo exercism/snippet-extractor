@@ -25,7 +25,7 @@ namespace TestModule
   Let us see!
 -/
 inductive TestType
-/- and this multiline to the left? -/  | here | I | go
+  | here | I | go
 --and without space?
 
 def wouldItRemain? (test : TestType) : TestType :=
