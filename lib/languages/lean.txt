@@ -1,0 +1,7 @@
+!e
+/-\pj-->>-/\pj
+--\p
+import
+open
+namespace
+end
