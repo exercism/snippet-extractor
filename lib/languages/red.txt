@@ -1,0 +1,4 @@
+!e stop_at_first_loc
+;\p
+Red [\p-->>]\p
+comment {\p-->>}\p
