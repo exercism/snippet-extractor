@@ -2,5 +2,6 @@
 #\p
 '''\pj-->>'''\pj
 """\pj-->>"""\pj
-import
-from
+class_name\p
+extends\p
+breakpoint\p
