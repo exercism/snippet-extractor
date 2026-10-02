@@ -40,6 +40,8 @@ container_id=$(docker run \
     --publish ${container_port}:8080 \
     exercism/snippet-extractor)
 
+trap 'docker stop "$container_id" > /dev/null' EXIT
+
 echo "${track_slug}: extracting snippet..."
 
 #  the function with the correct JSON event payload
@@ -60,5 +62,3 @@ else
 fi
 
 echo "${track_slug}: done"
-
-docker stop $container_id > /dev/null
