@@ -1,4 +1,5 @@
-FROM public.ecr.aws/lambda/ruby:3.3.2024.04.17.17 AS build
+ARG tag=3.3.2026.09.27.12-x86_64
+FROM public.ecr.aws/lambda/ruby:${tag} AS build
 
 RUN dnf install gcc make -y
 
@@ -10,7 +11,7 @@ RUN bundle config set deployment 'true' && \
     bundle config set without 'development test' && \
     bundle install
 
-FROM public.ecr.aws/lambda/ruby:3.3.2024.04.17.17 AS runtime
+FROM public.ecr.aws/lambda/ruby:${tag} AS runtime
 
 ENV GEM_HOME=${LAMBDA_TASK_ROOT}
 WORKDIR ${LAMBDA_TASK_ROOT}
