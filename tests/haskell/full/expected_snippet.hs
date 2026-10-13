@@ -1,0 +1,8 @@
+module Main (main) where
+import Web.Scotty
+
+main = scotty 3000 $
+  get "/:who" $ do
+    who <- param "who"
+    text $
+      "Beam " <> who <> " up, Scotty!"
