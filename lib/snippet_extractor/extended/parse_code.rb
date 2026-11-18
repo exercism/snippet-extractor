@@ -4,6 +4,7 @@ module SnippetExtractor
       include Mandate
 
       STOP_AT_FIRST_LINE_OF_CODE = "stop_at_first_loc".freeze
+      MAX_LINES = 10
 
       def initialize(code, syntax_trie, arguments = [])
         @code = code
@@ -24,7 +25,7 @@ module SnippetExtractor
         action, skipped = try_match_first_word
         execute_action(action, skipped) unless action.nil?
 
-        follow_strategy until is_finished?
+        follow_strategy until is_finished? || enough_lines_saved?
 
         save_last_line
 
@@ -138,6 +139,12 @@ module SnippetExtractor
 
       def start_at_new_word
         self.current_syntax_node = self.current_syntax_node.mapping[' '] if self.current_syntax_node.mapping.key? ' '
+      end
+
+      # Saved lines are never changed later, so once we have enough
+      # for the snippet there is no need to read the rest of the code.
+      def enough_lines_saved?
+        self.saved_lines.length >= MAX_LINES
       end
 
       def is_finished?(lookahead = 0)
