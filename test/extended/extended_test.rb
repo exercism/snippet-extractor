@@ -304,6 +304,61 @@ module SnippetExtractor
         assert_equal expected, Extract.(code, rules).join
       end
 
+      def test_first_loc_skips_indented_lines_that_continue_a_skipped_header
+        rules = ['!e stop_at_first_loc', 'import']
+        code = <<~CODE
+          import a.{
+            B,
+            C
+          }
+
+          code1
+            code2
+        CODE
+        expected = <<~CODE
+          code1
+            code2
+        CODE
+
+        assert_equal expected, Extract.(code, rules).join
+      end
+
+      def test_first_loc_keeps_indented_code_after_a_code_line
+        rules = ['!e stop_at_first_loc', 'import']
+        code = <<~CODE
+          import a
+          if x:
+              import b
+              code
+        CODE
+        expected = <<~CODE
+          if x:
+              import b
+              code
+        CODE
+
+        assert_equal expected, Extract.(code, rules).join
+      end
+
+      def test_first_loc_skips_closing_bracket_line_of_a_skipped_header
+        rules = ['!e stop_at_first_loc', 'import']
+        code = <<~CODE
+          import (
+            a
+          )
+          code
+        CODE
+
+        assert_equal "code\n", Extract.(code, rules).join
+      end
+
+      def test_first_loc_without_a_skipped_header_keeps_indented_first_line
+        rules = ['!e stop_at_first_loc', 'import']
+        code = "  code1\n  code2\n"
+
+        assert_equal code, Extract.(code, rules).join
+      end
+
       def test_empty_lines_at_beginning_are_ignored
         # Given
         rules = ['!e']

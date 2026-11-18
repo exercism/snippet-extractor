@@ -28,6 +28,24 @@ There is currently one extra flag: `stop_at_first_loc`.
 This flag forces the parse to immediately return the next 10 lines of code once it finds any line that is not stripped out.
 By default, the extended parser will try to remove all comments from your code, but for many languages this produces too many false strips and so is problematic.
 
+Header lines can span several lines, such as a multi-line import list.
+In this mode, once a header line has been skipped, the parser also skips the lines that follow it if they are indented or start with a closing bracket (`)`, `]` or `}`).
+It stops at the first line that is neither.
+For example, with the rule `import`, this code:
+
+```txt
+import a.{
+  B,
+  C
+}
+
+class Foo
+```
+
+gives a snippet that starts at `class Foo`.
+A line of code that is indented because it is inside a block (such as the body of an `if` straight after the imports) is not affected, because the line that opens the block already stops the parser.
+Code that starts indented with no header before it is also kept.
+
 To use this, add `stop_at_first_loc` after the `!e`:
 
 ```txt

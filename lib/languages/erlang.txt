@@ -1,7 +1,7 @@
 !e stop_at_first_loc
 %\p
 -module\p
--export\pj-->>).\p
+-export\p
 -import\p
 -include\p
 -compile\p
