@@ -1,0 +1,5 @@
+!e stop_at_first_loc
+//\p
+/*\pj-->>*/\pj
+package
+import
