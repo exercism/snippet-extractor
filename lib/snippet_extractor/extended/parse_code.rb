@@ -36,7 +36,8 @@ module SnippetExtractor
 
       protected
       attr_accessor :code, :syntax_trie, :scan_index, :current_syntax_node, :current_line, :current_line_skipped,
-                    :current_action, :queued_multiline, :header_skipped, :saved_lines, :arguments, :current_line_has_skip
+                    :current_action, :queued_multiline, :header_skipped,
+                    :saved_lines, :arguments, :current_line_has_skip
 
       def try_match_first_word
         try_match(syntax_trie.root.get_match_node(' ')) if syntax_trie.root.has_match?(' ')
@@ -104,9 +105,13 @@ module SnippetExtractor
       def continuation_line?
         return false unless self.arguments.include?(STOP_AT_FIRST_LINE_OF_CODE)
         return false unless self.header_skipped && self.saved_lines.empty? && self.current_action.nil?
-        return false unless self.current_line.empty? && (self.scan_index.zero? || self.code[self.scan_index - 1] == "\n")
+        return false unless at_line_start?
 
         self.code[self.scan_index..].match?(CONTINUATION_LINE_START)
+      end
+
+      def at_line_start?
+        self.current_line.empty? && (self.scan_index.zero? || self.code[self.scan_index - 1] == "\n")
       end
 
       def skip_continuation_line
