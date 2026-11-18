@@ -1,0 +1,10 @@
+!e stop_at_first_loc
+%\p
+-module\p
+-export\pj-->>).\p
+-import\p
+-include\p
+-compile\p
+-behaviour\p
+-behavior\p
+-author\p
