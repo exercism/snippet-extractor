@@ -5,6 +5,7 @@ module SnippetExtractor
 
       STOP_AT_FIRST_LINE_OF_CODE = "stop_at_first_loc".freeze
       MAX_LINES = 10
+      CONTINUATION_LINE_START = /\A[ \t]+\S|\A[)\]}]/
 
       def initialize(code, syntax_trie, arguments = [])
         @code = code
@@ -17,6 +18,7 @@ module SnippetExtractor
         @current_line_has_skip = false
         @current_action = nil
         @queued_multiline = nil
+        @header_skipped = false
 
         @saved_lines = []
       end
@@ -34,7 +36,7 @@ module SnippetExtractor
 
       protected
       attr_accessor :code, :syntax_trie, :scan_index, :current_syntax_node, :current_line, :current_line_skipped,
-                    :current_action, :queued_multiline, :saved_lines, :arguments, :current_line_has_skip
+                    :current_action, :queued_multiline, :header_skipped, :saved_lines, :arguments, :current_line_has_skip
 
       def try_match_first_word
         try_match(syntax_trie.root.get_match_node(' ')) if syntax_trie.root.has_match?(' ')
@@ -68,6 +70,7 @@ module SnippetExtractor
         save_if_newline_reached(skipped)
         self.scan_index += skipped
         self.current_line_has_skip = true
+        self.header_skipped = true
 
         if action.instance_of?(Just) || (action.instance_of?(Line) && code[self.scan_index - 1].include?("\n"))
           self.current_action = self.queued_multiline
@@ -85,12 +88,30 @@ module SnippetExtractor
       end
 
       def follow_strategy
+        skip_continuation_line if continuation_line?
+
         case self.current_action
         when Line then line_strategy
         when Multi then multi_strategy
         else
           looking_for_match_strategy
         end
+      end
+
+      # In stop_at_first_loc mode, an indented line (or one starting with a closing bracket)
+      # straight after skipped header lines continues that header, for example
+      # the names inside a multi-line import. It is skipped like the header itself.
+      def continuation_line?
+        return false unless self.arguments.include?(STOP_AT_FIRST_LINE_OF_CODE)
+        return false unless self.header_skipped && self.saved_lines.empty? && self.current_action.nil?
+        return false unless self.current_line.empty? && (self.scan_index.zero? || self.code[self.scan_index - 1] == "\n")
+
+        self.code[self.scan_index..].match?(CONTINUATION_LINE_START)
+      end
+
+      def skip_continuation_line
+        self.current_action = Line.new("")
+        self.current_line_has_skip = true
       end
 
       def looking_for_match_strategy
