@@ -67,16 +67,34 @@ module SnippetExtractor
           return
         end
 
-        save_if_newline_reached(skipped)
+        finish_line_before_skip(skipped)
         self.scan_index += skipped
         self.current_line_has_skip = true
         self.header_skipped = true
 
         if action.instance_of?(Just) || (action.instance_of?(Line) && code[self.scan_index - 1].include?("\n"))
-          self.current_action = self.queued_multiline
-          self.queued_multiline = nil
+          finish_skipped_token(action)
         else
           self.current_action = action
+        end
+      end
+
+      def finish_skipped_token(action)
+        # If a skipped line's newline was matched and no multiline block
+        # follows, the next line is a fresh one.
+        self.current_line_has_skip = false if action.instance_of?(Line) && self.queued_multiline.nil?
+        self.current_action = self.queued_multiline
+        self.queued_multiline = nil
+      end
+
+      # If the current line only holds the indentation in front of the
+      # skipped token, drop it so it isn't saved as a blank line.
+      def finish_line_before_skip(skipped)
+        token_on_this_line = !code[self.scan_index, skipped][/\A\s*/].include?("\n")
+        if token_on_this_line && current_line.strip.empty?
+          self.current_line = ""
+        else
+          save_if_newline_reached(skipped)
         end
       end
 
