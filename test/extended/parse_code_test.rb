@@ -16,14 +16,14 @@ module SnippetExtractor
         assert_equal expected, ParseCode.(code, syntax_trie).join
       end
 
-      def test_stops_parsing_once_ten_lines_are_saved
+      def test_stops_parsing_once_the_maximum_lines_are_saved
         # Given
         syntax_trie = SyntaxTrie.new(Node.new({}, "", nil))
-        lines = (1..20).map { |i| "line#{i}\n" }
+        lines = (1..(MAX_LINES + 10)).map { |i| "line#{i}\n" }
         code = lines.join
 
         # Expect
-        assert_equal lines.first(10), ParseCode.(code, syntax_trie)
+        assert_equal lines.first(MAX_LINES), ParseCode.(code, syntax_trie)
       end
 
       def test_parsing_no_code_returns_no_code

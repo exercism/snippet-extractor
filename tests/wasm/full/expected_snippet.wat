@@ -8,3 +8,8 @@
         (f32.mul (local.get $y) (local.get $y)))))
 
     (if (f32.gt (local.get $distance) (f32.const 10.0)) (then
+      (return (i32.const 0))
+    ))
+
+    (if (f32.gt (local.get $distance) (f32.const 5.0)) (then
+      (return (i32.const 1))

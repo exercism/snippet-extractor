@@ -8,3 +8,8 @@
     [(_ (num char ...) ...)
     #'(lambda (word)
         (apply + (map (lambda (s)
+                        (cond
+                          [(member (string-upcase (string s))
+                                    (list (symbol->string (quote char)) ...)) num] ...
+                          [else 0]))
+                      (string->list word))))]))

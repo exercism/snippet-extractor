@@ -8,3 +8,8 @@ Public Module Grains
     End Function
 
     Public Function Total() As ULong
+        Dim lTotal As ULong = 0
+
+        For i = 1 To 64
+            lTotal += Square(i)
+        Next

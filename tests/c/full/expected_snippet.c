@@ -8,3 +8,7 @@ static uint16_t get_digit_count(uint32_t candidate)
    return count;
 }
 
+bool is_armstrong_number(uint32_t candidate)
+{
+   return false;
+}

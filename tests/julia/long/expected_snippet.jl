@@ -8,3 +8,8 @@ struct Cat <: Pet
     name::AbstractString
 end
 
+"""
+    encounter(a, b)
+
+Simulate an encounter between `a` and `b`.
+"""

@@ -4,7 +4,6 @@ module SnippetExtractor
       include Mandate
 
       STOP_AT_FIRST_LINE_OF_CODE = "stop_at_first_loc".freeze
-      MAX_LINES = 10
       CONTINUATION_LINE_START = /\A[ \t]+\S|\A[)\]}]/
 
       def initialize(code, syntax_trie, arguments = [])

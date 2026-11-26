@@ -8,3 +8,6 @@ add a b =
     , imaginary = a.imaginary + b.imaginary
     }
 
+abs : Complex -> Float
+abs z =
+    sqrt (z.real ^ 2 + z.imaginary ^ 2)

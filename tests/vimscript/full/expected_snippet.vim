@@ -8,3 +8,5 @@ function! AtbashEncode(plaintext) abort
     let str = AtbashDecode(a:plaintext)
     " let str = substitute(str, '.\{5\}', '& ', 'g')
     " return substitute(str, ' $', '', '')
+    return join(split(str, '.\{5\}\zs'), ' ')
+endfunction

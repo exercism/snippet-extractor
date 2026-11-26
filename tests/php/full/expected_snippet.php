@@ -8,3 +8,8 @@ public class Grains
         return pow(2, $n - 1);
     }
 
+    function total()
+    {
+        return array_reduce(range(1, 64), function ($acc, $n) {
+            return $acc += square($n);
+        });

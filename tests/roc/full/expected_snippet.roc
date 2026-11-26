@@ -8,3 +8,8 @@ valid = \number ->
             |> List.sum
             |> Num.isMultipleOf 10
 
+        _ -> Bool.false
+
+toDigits : Str -> Result (List U16) _
+toDigits = \number ->
+    help = \input, digits ->

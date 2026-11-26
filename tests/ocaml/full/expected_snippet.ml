@@ -8,3 +8,7 @@ let neighbours board x y =
   List.filter_map
     [ (-1, -1); (0, -1); (1, -1); (-1, 0); (1, 0); (-1, 1); (0, 1); (1, 1) ]
     ~f:(fun (dx, dy) ->
+      let nx = x + dx and ny = y + dy in
+      if nx >= 0 && nx < board.width && ny >= 0 && ny < board.height
+      then Some board.fields.(ny).(nx)
+      else None)
