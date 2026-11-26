@@ -4,7 +4,8 @@ This allows for more complex pattern and rules than the [Basic Mode](./basic.md)
 It adds support for multiline and partial line rules.
 
 It can be configured to only make modifications before the first non-matching code, or throughout the code.
-In either scenario, it will return 10 lines of code.
+In either scenario, it will return 15 lines of code.
+Lines longer than 200 characters are cut to 200 characters.
 
 ## Usage
 
@@ -25,7 +26,7 @@ You can pass extra flags at the beginning of the file to enable specific functio
 
 There is currently one extra flag: `stop_at_first_loc`.
 
-This flag forces the parse to immediately return the next 10 lines of code once it finds any line that is not stripped out.
+This flag forces the parse to immediately return the next 15 lines of code once it finds any line that is not stripped out.
 By default, the extended parser will try to remove all comments from your code, but for many languages this produces too many false strips and so is problematic.
 
 Header lines can span several lines, such as a multi-line import list.
@@ -319,7 +320,7 @@ All of these are open to future improvements if a track needs it, until we have 
 ## Improvements
 
 - We are able to support arguments supplying them after the `!e` in the first line.
-  For example, not limiting ourselves to 10 lines. It might be useful to add extra meta functionality for specific tracks.
+  For example, not limiting ourselves to 15 lines. It might be useful to add extra meta functionality for specific tracks.
 - Repeat character rule is quirky.
   Is the most painful in the code, but is needed for some languages.
   Leave it at is? Not? Disable it? Yada yada? Open to suggestions.

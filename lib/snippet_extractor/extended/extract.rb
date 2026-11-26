@@ -11,7 +11,7 @@ module SnippetExtractor
         args = rules_file[0].split(' ')
         rules = ParseRules.(rules_file[1..])
         syntax_trie = BuildSyntaxTrie.(rules)
-        ParseCode.(code, syntax_trie, args)[0...ParseCode::MAX_LINES]
+        ParseCode.(code, syntax_trie, args)[0...MAX_LINES]
       end
     end
   end

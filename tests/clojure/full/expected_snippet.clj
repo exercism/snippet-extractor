@@ -8,3 +8,6 @@
   (let [idx (.indexOf alphabet letter)] ; position in the alphabet
     (str/join (repeat idx \space))))
 
+(defn diamond [letter]
+  (let [rows (map #(row % 5) alphabet)]
+    (str/join ";" rows)))

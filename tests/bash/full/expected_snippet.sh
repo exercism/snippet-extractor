@@ -8,3 +8,6 @@ for (( i = 0; i < ${#LOWERCASE_INPUT}; i++ )); do
         echo false
         exit 0
     fi
+    seen[$char]=1
+done
+echo true

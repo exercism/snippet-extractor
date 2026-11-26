@@ -8,3 +8,4 @@ saddle_points(Matrix) ->
 	Cols = transpose(Matrix),
 	[{R, C} || {R, Row} <- enumerate(Rows),
 	           {C, Col} <- enumerate(Cols),
+	           is_saddle(Row, Col)].

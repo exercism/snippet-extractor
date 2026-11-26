@@ -8,3 +8,8 @@
   (cl-some (lambda (partition)
              (equal list1 partition))
            (list--partition list2 (length list1))))
+
+(defun list-classify (list1 list2)
+  (cond ((equal list1 list2) :equal)
+        ((list-sublist list2 list1) :superlist)
+        ((list-sublist list1 list2) :sublist)

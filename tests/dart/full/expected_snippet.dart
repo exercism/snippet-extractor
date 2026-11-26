@@ -8,3 +8,4 @@ class Anagram {
   }
 
   String _sort(String word) => (word.split('')..sort()).join();
+}
