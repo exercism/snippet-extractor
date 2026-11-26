@@ -8,3 +8,5 @@ tick <- function(cells) {
     cols <- max(1, coord[2] - 1):min(ncol(cells), coord[2] + 1)
     alive <- sum(cells[rows, cols]) - cell
     as.integer(alive == 3 || (cell == 1 && alive == 2))
+  }), nrow = nrow(cells))
+}

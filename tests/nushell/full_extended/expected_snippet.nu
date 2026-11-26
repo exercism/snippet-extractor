@@ -8,3 +8,5 @@ def vip-greet [
 
   print $"And a special welcome to our VIP today, ($vip)!"
 }
+
+vip-greet Bob

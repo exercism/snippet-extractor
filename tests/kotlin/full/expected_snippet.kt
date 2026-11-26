@@ -8,3 +8,5 @@ class Meetup(private val monthOfYear: Int, private val year: Int) {
             .filter { it.dayOfWeek == dayOfWeek }
             .toList()
         return days.first()
+    }
+}

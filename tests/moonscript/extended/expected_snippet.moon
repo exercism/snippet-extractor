@@ -8,3 +8,8 @@ change = (amount, denominations) ->
 
     for i = 1, #denominations
       if denominations[i] <= p
+        if C[p - denominations[i]] < min
+          min = 1 + C[p - denominations[i]]
+          coin_idx = i
+
+    C[p] = min

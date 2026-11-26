@@ -8,3 +8,8 @@ function Pangram.is_pangram(s)
   local count = 0
   for _ in pairs(letters) do
     count = count + 1
+  end
+  return count == 26
+end
+
+return Pangram
